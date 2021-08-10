@@ -1,0 +1,47 @@
+55157:
+
+encodeProto
+46042:
+
+decodeProto
+53939:
+
+Binary
+17643:
+
+
+5816: ?????
+
+
+i = r(n(5816)), // 5816
+
+
+Buscamos la funcion d.Cipher.encryptSignalProto, esta funcion recibe dos parametros el primero es un objeto y el segundo es la llamada a la funcion endoceAndPad y se le pasa a como parametro
+
+t = {
+server: "c.us"
+user: "573178508741"
+_serialized: "573178508741@c.us"
+}
+
+a = {
+conversation: "15478"
+}
+
+
+var ? = encryptSignalProto(t, encodeAndPad(a));
+
+
+
+encodeAndPad(a){
+var t = (0, s.encodeProto)(c.MessageSpec, e);
+return m.writeRandomPadMax16(t), t.readByteArray()
+}
+
+
+
+decodeProto = function(e, t) {
+var n = new i.Binary(t),
+r = m(e, n, void 0, !1);
+return (0, l.checkRequirements)(e, r), r
+}
