@@ -5115,13 +5115,13 @@
                             re = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g,
                             ie = /[\\^$.*+?()[\]{}|]/g,
                             ae = RegExp(ie.source),
-                            oe = /^\s+|\s+$/g,
-                            se = /^\s+/,
-                            ue = /\s+$/,
-                            ce = /\{(?:\n\/\* \[wrapped with .+\] \*\/)?\n?/,
-                            le = /\{\n\/\* \[wrapped with (.+)\] \*/,
-                            de = /,? & /,
-                            fe = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g,
+                            oe = /^\s+/,
+                            se = /\s/,
+                            ue = /\{(?:\n\/\* \[wrapped with .+\] \*\/)?\n?/,
+                            ce = /\{\n\/\* \[wrapped with (.+)\] \*/,
+                            le = /,? & /,
+                            de = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g,
+                            fe = /[()=,{}\[\]\/\s]/,
                             he = /\\(\\)?/g,
                             pe = /\$\{([^\\}]*(?:\\.[^\\}]*)*)\}/g,
                             me = /\w*$/,
@@ -5359,36 +5359,40 @@
                         }
 
                         function Zt(e) {
+                            return e ? e.slice(0, mn(e) + 1).replace(oe, "") : e
+                        }
+
+                        function Xt(e) {
                             return function(t) {
                                 return e(t)
                             }
                         }
 
-                        function Xt(e, t) {
+                        function Jt(e, t) {
                             return It(t, (function(t) {
                                 return e[t]
                             }))
                         }
 
-                        function Jt(e, t) {
+                        function Qt(e, t) {
                             return e.has(t)
                         }
 
-                        function Qt(e, t) {
+                        function en(e, t) {
                             for (var n = -1, r = e.length; ++n < r && Bt(t, e[n], 0) > -1;);
                             return n
                         }
 
-                        function en(e, t) {
+                        function tn(e, t) {
                             for (var n = e.length; n-- && Bt(t, e[n], 0) > -1;);
                             return n
                         }
 
-                        function tn(e, t) {
+                        function nn(e, t) {
                             for (var n = e.length, r = 0; n--;) e[n] === t && ++r;
                             return r
                         }
-                        var nn = zt({
+                        var rn = zt({
                                 À: "A",
                                 Á: "A",
                                 Â: "A",
@@ -5580,7 +5584,7 @@
                                 ŉ: "'n",
                                 ſ: "s"
                             }),
-                            rn = zt({
+                            an = zt({
                                 "&": "&amp;",
                                 "<": "&lt;",
                                 ">": "&gt;",
@@ -5588,15 +5592,15 @@
                                 "'": "&#39;"
                             });
 
-                        function an(e) {
+                        function on(e) {
                             return "\\" + ut[e]
                         }
 
-                        function on(e) {
+                        function sn(e) {
                             return nt.test(e)
                         }
 
-                        function sn(e) {
+                        function un(e) {
                             var t = -1,
                                 n = Array(e.size);
                             return e.forEach((function(e, r) {
@@ -5604,13 +5608,13 @@
                             })), n
                         }
 
-                        function un(e, t) {
+                        function cn(e, t) {
                             return function(n) {
                                 return e(t(n))
                             }
                         }
 
-                        function cn(e, t) {
+                        function ln(e, t) {
                             for (var n = -1, r = e.length, i = 0, a = []; ++n < r;) {
                                 var o = e[n];
                                 o !== t && o !== s || (e[n] = s, a[i++] = n)
@@ -5618,7 +5622,7 @@
                             return a
                         }
 
-                        function ln(e) {
+                        function dn(e) {
                             var t = -1,
                                 n = Array(e.size);
                             return e.forEach((function(e) {
@@ -5626,7 +5630,7 @@
                             })), n
                         }
 
-                        function dn(e) {
+                        function fn(e) {
                             var t = -1,
                                 n = Array(e.size);
                             return e.forEach((function(e) {
@@ -5634,135 +5638,131 @@
                             })), n
                         }
 
-                        function fn(e) {
-                            return on(e) ? function(e) {
+                        function hn(e) {
+                            return sn(e) ? function(e) {
                                 var t = et.lastIndex = 0;
                                 for (; et.test(e);) ++t;
                                 return t
                             }(e) : Ut(e)
                         }
 
-                        function hn(e) {
-                            return on(e) ? function(e) {
+                        function pn(e) {
+                            return sn(e) ? function(e) {
                                 return e.match(et) || []
                             }(e) : function(e) {
                                 return e.split("")
                             }(e)
                         }
-                        var pn = zt({
+
+                        function mn(e) {
+                            for (var t = e.length; t-- && se.test(e.charAt(t)););
+                            return t
+                        }
+                        var _n = zt({
                             "&amp;": "&",
                             "&lt;": "<",
                             "&gt;": ">",
                             "&quot;": '"',
                             "&#39;": "'"
                         });
-                        var mn = function e(t) {
-                            var n, r = (t = null == t ? ht : mn.defaults(ht.Object(), t, mn.pick(ht, it))).Array,
-                                Se = t.Date,
-                                Te = t.Error,
-                                Ce = t.Function,
-                                ke = t.Math,
-                                Oe = t.Object,
-                                xe = t.RegExp,
-                                De = t.String,
-                                Ne = t.TypeError,
-                                Le = r.prototype,
-                                Ie = Ce.prototype,
-                                Me = Oe.prototype,
-                                Re = t["__core-js_shared__"],
-                                Pe = Ie.toString,
-                                We = Me.hasOwnProperty,
-                                Ue = 0,
-                                je = (n = /[^.]+$/.exec(Re && Re.keys && Re.keys.IE_PROTO || "")) ? "Symbol(src)_1." + n : "",
-                                Fe = Me.toString,
-                                Be = Pe.call(Oe),
-                                Ve = ht._,
-                                qe = xe("^" + Pe.call(We).replace(ie, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"),
-                                Ge = _t ? t.Buffer : i,
-                                Ye = t.Symbol,
-                                ze = t.Uint8Array,
-                                He = Ge ? Ge.allocUnsafe : i,
-                                $e = un(Oe.getPrototypeOf, Oe),
-                                Ke = Oe.create,
-                                Ze = Me.propertyIsEnumerable,
-                                Xe = Le.splice,
-                                et = Ye ? Ye.isConcatSpreadable : i,
-                                nt = Ye ? Ye.iterator : i,
-                                ut = Ye ? Ye.toStringTag : i,
-                                dt = function() {
+                        var gn = function e(t) {
+                            var n, r = (t = null == t ? ht : gn.defaults(ht.Object(), t, gn.pick(ht, it))).Array,
+                                se = t.Date,
+                                Se = t.Error,
+                                Te = t.Function,
+                                Ce = t.Math,
+                                ke = t.Object,
+                                Oe = t.RegExp,
+                                xe = t.String,
+                                De = t.TypeError,
+                                Ne = r.prototype,
+                                Le = Te.prototype,
+                                Ie = ke.prototype,
+                                Me = t["__core-js_shared__"],
+                                Re = Le.toString,
+                                Pe = Ie.hasOwnProperty,
+                                We = 0,
+                                Ue = (n = /[^.]+$/.exec(Me && Me.keys && Me.keys.IE_PROTO || "")) ? "Symbol(src)_1." + n : "",
+                                je = Ie.toString,
+                                Fe = Re.call(ke),
+                                Be = ht._,
+                                Ve = Oe("^" + Re.call(Pe).replace(ie, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"),
+                                qe = _t ? t.Buffer : i,
+                                Ge = t.Symbol,
+                                Ye = t.Uint8Array,
+                                ze = qe ? qe.allocUnsafe : i,
+                                He = cn(ke.getPrototypeOf, ke),
+                                $e = ke.create,
+                                Ke = Ie.propertyIsEnumerable,
+                                Ze = Ne.splice,
+                                Xe = Ge ? Ge.isConcatSpreadable : i,
+                                et = Ge ? Ge.iterator : i,
+                                nt = Ge ? Ge.toStringTag : i,
+                                ut = function() {
                                     try {
-                                        var e = fa(Oe, "defineProperty");
+                                        var e = ha(ke, "defineProperty");
                                         return e({}, "", {}), e
                                     } catch (e) {}
                                 }(),
-                                ft = t.clearTimeout !== ht.clearTimeout && t.clearTimeout,
-                                pt = Se && Se.now !== ht.Date.now && Se.now,
-                                mt = t.setTimeout !== ht.setTimeout && t.setTimeout,
-                                gt = ke.ceil,
-                                vt = ke.floor,
-                                Ut = Oe.getOwnPropertySymbols,
-                                zt = Ge ? Ge.isBuffer : i,
-                                _n = t.isFinite,
-                                gn = Le.join,
-                                vn = un(Oe.keys, Oe),
-                                bn = ke.max,
-                                yn = ke.min,
-                                wn = Se.now,
-                                En = t.parseInt,
-                                An = ke.random,
-                                Sn = Le.reverse,
-                                Tn = fa(t, "DataView"),
-                                Cn = fa(t, "Map"),
-                                kn = fa(t, "Promise"),
-                                On = fa(t, "Set"),
-                                xn = fa(t, "WeakMap"),
-                                Dn = fa(Oe, "create"),
-                                Nn = xn && new xn,
-                                Ln = {},
-                                In = ja(Tn),
-                                Mn = ja(Cn),
-                                Rn = ja(kn),
-                                Pn = ja(On),
-                                Wn = ja(xn),
-                                Un = Ye ? Ye.prototype : i,
-                                jn = Un ? Un.valueOf : i,
-                                Fn = Un ? Un.toString : i;
+                                dt = t.clearTimeout !== ht.clearTimeout && t.clearTimeout,
+                                ft = se && se.now !== ht.Date.now && se.now,
+                                pt = t.setTimeout !== ht.setTimeout && t.setTimeout,
+                                mt = Ce.ceil,
+                                gt = Ce.floor,
+                                vt = ke.getOwnPropertySymbols,
+                                Ut = qe ? qe.isBuffer : i,
+                                zt = t.isFinite,
+                                vn = Ne.join,
+                                bn = cn(ke.keys, ke),
+                                yn = Ce.max,
+                                wn = Ce.min,
+                                En = se.now,
+                                An = t.parseInt,
+                                Sn = Ce.random,
+                                Tn = Ne.reverse,
+                                Cn = ha(t, "DataView"),
+                                kn = ha(t, "Map"),
+                                On = ha(t, "Promise"),
+                                xn = ha(t, "Set"),
+                                Dn = ha(t, "WeakMap"),
+                                Nn = ha(ke, "create"),
+                                Ln = Dn && new Dn,
+                                In = {},
+                                Mn = Fa(Cn),
+                                Rn = Fa(kn),
+                                Pn = Fa(On),
+                                Wn = Fa(xn),
+                                Un = Fa(Dn),
+                                jn = Ge ? Ge.prototype : i,
+                                Fn = jn ? jn.valueOf : i,
+                                Bn = jn ? jn.toString : i;
 
-                            function Bn(e) {
-                                if (rs(e) && !zo(e) && !(e instanceof Yn)) {
-                                    if (e instanceof Gn) return e;
-                                    if (We.call(e, "__wrapped__")) return Fa(e)
+                            function Vn(e) {
+                                if (is(e) && !Ho(e) && !(e instanceof zn)) {
+                                    if (e instanceof Yn) return e;
+                                    if (Pe.call(e, "__wrapped__")) return Ba(e)
                                 }
-                                return new Gn(e)
+                                return new Yn(e)
                             }
-                            var Vn = function() {
+                            var qn = function() {
                                 function e() {}
                                 return function(t) {
-                                    if (!ns(t)) return {};
-                                    if (Ke) return Ke(t);
+                                    if (!rs(t)) return {};
+                                    if ($e) return $e(t);
                                     e.prototype = t;
                                     var n = new e;
                                     return e.prototype = i, n
                                 }
                             }();
 
-                            function qn() {}
+                            function Gn() {}
 
-                            function Gn(e, t) {
+                            function Yn(e, t) {
                                 this.__wrapped__ = e, this.__actions__ = [], this.__chain__ = !!t, this.__index__ = 0, this.__values__ = i
                             }
 
-                            function Yn(e) {
-                                this.__wrapped__ = e, this.__actions__ = [], this.__dir__ = 1, this.__filtered__ = !1, this.__iteratees__ = [], this.__takeCount__ = _, this.__views__ = []
-                            }
-
                             function zn(e) {
-                                var t = -1,
-                                    n = null == e ? 0 : e.length;
-                                for (this.clear(); ++t < n;) {
-                                    var r = e[t];
-                                    this.set(r[0], r[1])
-                                }
+                                this.__wrapped__ = e, this.__actions__ = [], this.__dir__ = 1, this.__filtered__ = !1, this.__iteratees__ = [], this.__takeCount__ = _, this.__views__ = []
                             }
 
                             function Hn(e) {
@@ -5786,66 +5786,75 @@
                             function Kn(e) {
                                 var t = -1,
                                     n = null == e ? 0 : e.length;
-                                for (this.__data__ = new $n; ++t < n;) this.add(e[t])
+                                for (this.clear(); ++t < n;) {
+                                    var r = e[t];
+                                    this.set(r[0], r[1])
+                                }
                             }
 
                             function Zn(e) {
-                                var t = this.__data__ = new Hn(e);
+                                var t = -1,
+                                    n = null == e ? 0 : e.length;
+                                for (this.__data__ = new Kn; ++t < n;) this.add(e[t])
+                            }
+
+                            function Xn(e) {
+                                var t = this.__data__ = new $n(e);
                                 this.size = t.size
                             }
 
-                            function Xn(e, t) {
-                                var n = zo(e),
-                                    r = !n && Yo(e),
-                                    i = !n && !r && Zo(e),
-                                    a = !n && !r && !i && ds(e),
+                            function Jn(e, t) {
+                                var n = Ho(e),
+                                    r = !n && zo(e),
+                                    i = !n && !r && Xo(e),
+                                    a = !n && !r && !i && fs(e),
                                     o = n || r || i || a,
-                                    s = o ? Kt(e.length, De) : [],
+                                    s = o ? Kt(e.length, xe) : [],
                                     u = s.length;
-                                for (var c in e) !t && !We.call(e, c) || o && ("length" == c || i && ("offset" == c || "parent" == c) || a && ("buffer" == c || "byteLength" == c || "byteOffset" == c) || ba(c, u)) || s.push(c);
+                                for (var c in e) !t && !Pe.call(e, c) || o && ("length" == c || i && ("offset" == c || "parent" == c) || a && ("buffer" == c || "byteLength" == c || "byteOffset" == c) || ya(c, u)) || s.push(c);
                                 return s
                             }
 
-                            function Jn(e) {
+                            function Qn(e) {
                                 var t = e.length;
-                                return t ? e[Kr(0, t - 1)] : i
+                                return t ? e[Zr(0, t - 1)] : i
                             }
 
-                            function Qn(e, t) {
-                                return Pa(Di(e), ur(t, 0, e.length))
+                            function er(e, t) {
+                                return Wa(Ni(e), cr(t, 0, e.length))
                             }
 
-                            function er(e) {
-                                return Pa(Di(e))
-                            }
-
-                            function tr(e, t, n) {
-                                (n !== i && !Vo(e[t], n) || n === i && !(t in e)) && or(e, t, n)
+                            function tr(e) {
+                                return Wa(Ni(e))
                             }
 
                             function nr(e, t, n) {
-                                var r = e[t];
-                                We.call(e, t) && Vo(r, n) && (n !== i || t in e) || or(e, t, n)
+                                (n !== i && !qo(e[t], n) || n === i && !(t in e)) && sr(e, t, n)
                             }
 
-                            function rr(e, t) {
+                            function rr(e, t, n) {
+                                var r = e[t];
+                                Pe.call(e, t) && qo(r, n) && (n !== i || t in e) || sr(e, t, n)
+                            }
+
+                            function ir(e, t) {
                                 for (var n = e.length; n--;)
-                                    if (Vo(e[n][0], t)) return n;
+                                    if (qo(e[n][0], t)) return n;
                                 return -1
                             }
 
-                            function ir(e, t, n, r) {
-                                return hr(e, (function(e, i, a) {
+                            function ar(e, t, n, r) {
+                                return pr(e, (function(e, i, a) {
                                     t(r, e, n(e), a)
                                 })), r
                             }
 
-                            function ar(e, t) {
-                                return e && Ni(t, Is(t), e)
+                            function or(e, t) {
+                                return e && Li(t, Ms(t), e)
                             }
 
-                            function or(e, t, n) {
-                                "__proto__" == t && dt ? dt(e, t, {
+                            function sr(e, t, n) {
+                                "__proto__" == t && ut ? ut(e, t, {
                                     configurable: !0,
                                     enumerable: !0,
                                     value: n,
@@ -5853,54 +5862,54 @@
                                 }) : e[t] = n
                             }
 
-                            function sr(e, t) {
-                                for (var n = -1, a = t.length, o = r(a), s = null == e; ++n < a;) o[n] = s ? i : Os(e, t[n]);
+                            function ur(e, t) {
+                                for (var n = -1, a = t.length, o = r(a), s = null == e; ++n < a;) o[n] = s ? i : xs(e, t[n]);
                                 return o
                             }
 
-                            function ur(e, t, n) {
+                            function cr(e, t, n) {
                                 return e == e && (n !== i && (e = e <= n ? e : n), t !== i && (e = e >= t ? e : t)), e
                             }
 
-                            function cr(e, t, n, r, a, o) {
+                            function lr(e, t, n, r, a, o) {
                                 var s, u = 1 & t,
                                     c = 2 & t,
                                     l = 4 & t;
                                 if (n && (s = a ? n(e, r, a, o) : n(e)), s !== i) return s;
-                                if (!ns(e)) return e;
-                                var d = zo(e);
+                                if (!rs(e)) return e;
+                                var d = Ho(e);
                                 if (d) {
                                     if (s = function(e) {
                                             var t = e.length,
                                                 n = new e.constructor(t);
-                                            t && "string" == typeof e[0] && We.call(e, "index") && (n.index = e.index, n.input = e.input);
+                                            t && "string" == typeof e[0] && Pe.call(e, "index") && (n.index = e.index, n.input = e.input);
                                             return n
-                                        }(e), !u) return Di(e, s)
+                                        }(e), !u) return Ni(e, s)
                                 } else {
-                                    var f = ma(e),
+                                    var f = _a(e),
                                         h = f == A || f == S;
-                                    if (Zo(e)) return Si(e, u);
+                                    if (Xo(e)) return Ti(e, u);
                                     if (f == k || f == v || h && !a) {
-                                        if (s = c || h ? {} : ga(e), !u) return c ? function(e, t) {
-                                            return Ni(e, pa(e), t)
+                                        if (s = c || h ? {} : va(e), !u) return c ? function(e, t) {
+                                            return Li(e, ma(e), t)
                                         }(e, function(e, t) {
-                                            return e && Ni(t, Ms(t), e)
+                                            return e && Li(t, Rs(t), e)
                                         }(s, e)) : function(e, t) {
-                                            return Ni(e, ha(e), t)
-                                        }(e, ar(s, e))
+                                            return Li(e, pa(e), t)
+                                        }(e, or(s, e))
                                     } else {
                                         if (!st[f]) return a ? e : {};
                                         s = function(e, t, n) {
                                             var r = e.constructor;
                                             switch (t) {
                                                 case M:
-                                                    return Ti(e);
+                                                    return Ci(e);
                                                 case y:
                                                 case w:
                                                     return new r(+e);
                                                 case R:
                                                     return function(e, t) {
-                                                        var n = t ? Ti(e.buffer) : e.buffer;
+                                                        var n = t ? Ci(e.buffer) : e.buffer;
                                                         return new e.constructor(n, e.byteOffset, e.byteLength)
                                                     }(e, n);
                                                 case P:
@@ -5912,7 +5921,7 @@
                                                 case V:
                                                 case q:
                                                 case G:
-                                                    return Ci(e, n);
+                                                    return ki(e, n);
                                                 case T:
                                                     return new r;
                                                 case C:
@@ -5926,30 +5935,30 @@
                                                 case D:
                                                     return new r;
                                                 case L:
-                                                    return i = e, jn ? Oe(jn.call(i)) : {}
+                                                    return i = e, Fn ? ke(Fn.call(i)) : {}
                                             }
                                             var i
                                         }(e, f, u)
                                     }
                                 }
-                                o || (o = new Zn);
+                                o || (o = new Xn);
                                 var p = o.get(e);
                                 if (p) return p;
-                                o.set(e, s), us(e) ? e.forEach((function(r) {
-                                    s.add(cr(r, t, n, r, e, o))
-                                })) : is(e) && e.forEach((function(r, i) {
-                                    s.set(i, cr(r, t, n, i, e, o))
+                                o.set(e, s), cs(e) ? e.forEach((function(r) {
+                                    s.add(lr(r, t, n, r, e, o))
+                                })) : as(e) && e.forEach((function(r, i) {
+                                    s.set(i, lr(r, t, n, i, e, o))
                                 }));
-                                var m = d ? i : (l ? c ? aa : ia : c ? Ms : Is)(e);
+                                var m = d ? i : (l ? c ? oa : aa : c ? Rs : Ms)(e);
                                 return kt(m || e, (function(r, i) {
-                                    m && (r = e[i = r]), nr(s, i, cr(r, t, n, i, e, o))
+                                    m && (r = e[i = r]), rr(s, i, lr(r, t, n, i, e, o))
                                 })), s
                             }
 
-                            function lr(e, t, n) {
+                            function dr(e, t, n) {
                                 var r = n.length;
                                 if (null == e) return !r;
-                                for (e = Oe(e); r--;) {
+                                for (e = ke(e); r--;) {
                                     var a = n[r],
                                         o = t[a],
                                         s = e[a];
@@ -5958,14 +5967,14 @@
                                 return !0
                             }
 
-                            function dr(e, t, n) {
-                                if ("function" != typeof e) throw new Ne(a);
-                                return La((function() {
+                            function fr(e, t, n) {
+                                if ("function" != typeof e) throw new De(a);
+                                return Ia((function() {
                                     e.apply(i, n)
                                 }), t)
                             }
 
-                            function fr(e, t, n, r) {
+                            function hr(e, t, n, r) {
                                 var i = -1,
                                     a = Nt,
                                     o = !0,
@@ -5973,7 +5982,7 @@
                                     u = [],
                                     c = t.length;
                                 if (!s) return u;
-                                n && (t = It(t, Zt(n))), r ? (a = Lt, o = !1) : t.length >= 200 && (a = Jt, o = !1, t = new Kn(t));
+                                n && (t = It(t, Xt(n))), r ? (a = Lt, o = !1) : t.length >= 200 && (a = Qt, o = !1, t = new Zn(t));
                                 e: for (; ++i < s;) {
                                     var l = e[i],
                                         d = null == n ? l : n(l);
@@ -5985,183 +5994,183 @@
                                 }
                                 return u
                             }
-                            Bn.templateSettings = {
+                            Vn.templateSettings = {
                                 escape: J,
                                 evaluate: Q,
                                 interpolate: ee,
                                 variable: "",
                                 imports: {
-                                    _: Bn
+                                    _: Vn
                                 }
-                            }, Bn.prototype = qn.prototype, Bn.prototype.constructor = Bn, Gn.prototype = Vn(qn.prototype), Gn.prototype.constructor = Gn, Yn.prototype = Vn(qn.prototype), Yn.prototype.constructor = Yn, zn.prototype.clear = function() {
-                                this.__data__ = Dn ? Dn(null) : {}, this.size = 0
-                            }, zn.prototype.delete = function(e) {
+                            }, Vn.prototype = Gn.prototype, Vn.prototype.constructor = Vn, Yn.prototype = qn(Gn.prototype), Yn.prototype.constructor = Yn, zn.prototype = qn(Gn.prototype), zn.prototype.constructor = zn, Hn.prototype.clear = function() {
+                                this.__data__ = Nn ? Nn(null) : {}, this.size = 0
+                            }, Hn.prototype.delete = function(e) {
                                 var t = this.has(e) && delete this.__data__[e];
                                 return this.size -= t ? 1 : 0, t
-                            }, zn.prototype.get = function(e) {
+                            }, Hn.prototype.get = function(e) {
                                 var t = this.__data__;
-                                if (Dn) {
+                                if (Nn) {
                                     var n = t[e];
                                     return n === o ? i : n
                                 }
-                                return We.call(t, e) ? t[e] : i
-                            }, zn.prototype.has = function(e) {
-                                var t = this.__data__;
-                                return Dn ? t[e] !== i : We.call(t, e)
-                            }, zn.prototype.set = function(e, t) {
-                                var n = this.__data__;
-                                return this.size += this.has(e) ? 0 : 1, n[e] = Dn && t === i ? o : t, this
-                            }, Hn.prototype.clear = function() {
-                                this.__data__ = [], this.size = 0
-                            }, Hn.prototype.delete = function(e) {
-                                var t = this.__data__,
-                                    n = rr(t, e);
-                                return !(n < 0) && (n == t.length - 1 ? t.pop() : Xe.call(t, n, 1), --this.size, !0)
-                            }, Hn.prototype.get = function(e) {
-                                var t = this.__data__,
-                                    n = rr(t, e);
-                                return n < 0 ? i : t[n][1]
+                                return Pe.call(t, e) ? t[e] : i
                             }, Hn.prototype.has = function(e) {
-                                return rr(this.__data__, e) > -1
+                                var t = this.__data__;
+                                return Nn ? t[e] !== i : Pe.call(t, e)
                             }, Hn.prototype.set = function(e, t) {
-                                var n = this.__data__,
-                                    r = rr(n, e);
-                                return r < 0 ? (++this.size, n.push([e, t])) : n[r][1] = t, this
+                                var n = this.__data__;
+                                return this.size += this.has(e) ? 0 : 1, n[e] = Nn && t === i ? o : t, this
                             }, $n.prototype.clear = function() {
-                                this.size = 0, this.__data__ = {
-                                    hash: new zn,
-                                    map: new(Cn || Hn),
-                                    string: new zn
-                                }
+                                this.__data__ = [], this.size = 0
                             }, $n.prototype.delete = function(e) {
-                                var t = la(this, e).delete(e);
-                                return this.size -= t ? 1 : 0, t
+                                var t = this.__data__,
+                                    n = ir(t, e);
+                                return !(n < 0) && (n == t.length - 1 ? t.pop() : Ze.call(t, n, 1), --this.size, !0)
                             }, $n.prototype.get = function(e) {
-                                return la(this, e).get(e)
+                                var t = this.__data__,
+                                    n = ir(t, e);
+                                return n < 0 ? i : t[n][1]
                             }, $n.prototype.has = function(e) {
-                                return la(this, e).has(e)
+                                return ir(this.__data__, e) > -1
                             }, $n.prototype.set = function(e, t) {
-                                var n = la(this, e),
+                                var n = this.__data__,
+                                    r = ir(n, e);
+                                return r < 0 ? (++this.size, n.push([e, t])) : n[r][1] = t, this
+                            }, Kn.prototype.clear = function() {
+                                this.size = 0, this.__data__ = {
+                                    hash: new Hn,
+                                    map: new(kn || $n),
+                                    string: new Hn
+                                }
+                            }, Kn.prototype.delete = function(e) {
+                                var t = da(this, e).delete(e);
+                                return this.size -= t ? 1 : 0, t
+                            }, Kn.prototype.get = function(e) {
+                                return da(this, e).get(e)
+                            }, Kn.prototype.has = function(e) {
+                                return da(this, e).has(e)
+                            }, Kn.prototype.set = function(e, t) {
+                                var n = da(this, e),
                                     r = n.size;
                                 return n.set(e, t), this.size += n.size == r ? 0 : 1, this
-                            }, Kn.prototype.add = Kn.prototype.push = function(e) {
+                            }, Zn.prototype.add = Zn.prototype.push = function(e) {
                                 return this.__data__.set(e, o), this
-                            }, Kn.prototype.has = function(e) {
+                            }, Zn.prototype.has = function(e) {
                                 return this.__data__.has(e)
-                            }, Zn.prototype.clear = function() {
-                                this.__data__ = new Hn, this.size = 0
-                            }, Zn.prototype.delete = function(e) {
+                            }, Xn.prototype.clear = function() {
+                                this.__data__ = new $n, this.size = 0
+                            }, Xn.prototype.delete = function(e) {
                                 var t = this.__data__,
                                     n = t.delete(e);
                                 return this.size = t.size, n
-                            }, Zn.prototype.get = function(e) {
+                            }, Xn.prototype.get = function(e) {
                                 return this.__data__.get(e)
-                            }, Zn.prototype.has = function(e) {
+                            }, Xn.prototype.has = function(e) {
                                 return this.__data__.has(e)
-                            }, Zn.prototype.set = function(e, t) {
+                            }, Xn.prototype.set = function(e, t) {
                                 var n = this.__data__;
-                                if (n instanceof Hn) {
+                                if (n instanceof $n) {
                                     var r = n.__data__;
-                                    if (!Cn || r.length < 199) return r.push([e, t]), this.size = ++n.size, this;
-                                    n = this.__data__ = new $n(r)
+                                    if (!kn || r.length < 199) return r.push([e, t]), this.size = ++n.size, this;
+                                    n = this.__data__ = new Kn(r)
                                 }
                                 return n.set(e, t), this.size = n.size, this
                             };
-                            var hr = Mi(wr),
-                                pr = Mi(Er, !0);
+                            var pr = Ri(Er),
+                                mr = Ri(Ar, !0);
 
-                            function mr(e, t) {
+                            function _r(e, t) {
                                 var n = !0;
-                                return hr(e, (function(e, r, i) {
+                                return pr(e, (function(e, r, i) {
                                     return n = !!t(e, r, i)
                                 })), n
                             }
 
-                            function _r(e, t, n) {
+                            function gr(e, t, n) {
                                 for (var r = -1, a = e.length; ++r < a;) {
                                     var o = e[r],
                                         s = t(o);
-                                    if (null != s && (u === i ? s == s && !ls(s) : n(s, u))) var u = s,
+                                    if (null != s && (u === i ? s == s && !ds(s) : n(s, u))) var u = s,
                                         c = o
                                 }
                                 return c
                             }
 
-                            function gr(e, t) {
+                            function vr(e, t) {
                                 var n = [];
-                                return hr(e, (function(e, r, i) {
+                                return pr(e, (function(e, r, i) {
                                     t(e, r, i) && n.push(e)
                                 })), n
                             }
 
-                            function vr(e, t, n, r, i) {
+                            function br(e, t, n, r, i) {
                                 var a = -1,
                                     o = e.length;
-                                for (n || (n = va), i || (i = []); ++a < o;) {
+                                for (n || (n = ba), i || (i = []); ++a < o;) {
                                     var s = e[a];
-                                    t > 0 && n(s) ? t > 1 ? vr(s, t - 1, n, r, i) : Mt(i, s) : r || (i[i.length] = s)
+                                    t > 0 && n(s) ? t > 1 ? br(s, t - 1, n, r, i) : Mt(i, s) : r || (i[i.length] = s)
                                 }
                                 return i
                             }
-                            var br = Ri(),
-                                yr = Ri(!0);
-
-                            function wr(e, t) {
-                                return e && br(e, t, Is)
-                            }
+                            var yr = Pi(),
+                                wr = Pi(!0);
 
                             function Er(e, t) {
-                                return e && yr(e, t, Is)
+                                return e && yr(e, t, Ms)
                             }
 
                             function Ar(e, t) {
-                                return Dt(t, (function(t) {
-                                    return Qo(e[t])
-                                }))
+                                return e && wr(e, t, Ms)
                             }
 
                             function Sr(e, t) {
-                                for (var n = 0, r = (t = yi(t, e)).length; null != e && n < r;) e = e[Ua(t[n++])];
+                                return Dt(t, (function(t) {
+                                    return es(e[t])
+                                }))
+                            }
+
+                            function Tr(e, t) {
+                                for (var n = 0, r = (t = wi(t, e)).length; null != e && n < r;) e = e[ja(t[n++])];
                                 return n && n == r ? e : i
                             }
 
-                            function Tr(e, t, n) {
+                            function Cr(e, t, n) {
                                 var r = t(e);
-                                return zo(e) ? r : Mt(r, n(e))
+                                return Ho(e) ? r : Mt(r, n(e))
                             }
 
-                            function Cr(e) {
-                                return null == e ? e === i ? "[object Undefined]" : "[object Null]" : ut && ut in Oe(e) ? function(e) {
-                                    var t = We.call(e, ut),
-                                        n = e[ut];
+                            function kr(e) {
+                                return null == e ? e === i ? "[object Undefined]" : "[object Null]" : nt && nt in ke(e) ? function(e) {
+                                    var t = Pe.call(e, nt),
+                                        n = e[nt];
                                     try {
-                                        e[ut] = i;
+                                        e[nt] = i;
                                         var r = !0
                                     } catch (e) {}
-                                    var a = Fe.call(e);
-                                    r && (t ? e[ut] = n : delete e[ut]);
+                                    var a = je.call(e);
+                                    r && (t ? e[nt] = n : delete e[nt]);
                                     return a
                                 }(e) : function(e) {
-                                    return Fe.call(e)
+                                    return je.call(e)
                                 }(e)
                             }
 
-                            function kr(e, t) {
+                            function Or(e, t) {
                                 return e > t
                             }
 
-                            function Or(e, t) {
-                                return null != e && We.call(e, t)
-                            }
-
                             function xr(e, t) {
-                                return null != e && t in Oe(e)
+                                return null != e && Pe.call(e, t)
                             }
 
-                            function Dr(e, t, n) {
+                            function Dr(e, t) {
+                                return null != e && t in ke(e)
+                            }
+
+                            function Nr(e, t, n) {
                                 for (var a = n ? Lt : Nt, o = e[0].length, s = e.length, u = s, c = r(s), l = 1 / 0, d = []; u--;) {
                                     var f = e[u];
-                                    u && t && (f = It(f, Zt(t))), l = yn(f.length, l), c[u] = !n && (t || o >= 120 && f.length >= 120) ? new Kn(u && f) : i
+                                    u && t && (f = It(f, Xt(t))), l = wn(f.length, l), c[u] = !n && (t || o >= 120 && f.length >= 120) ? new Zn(u && f) : i
                                 }
                                 f = e[0];
                                 var h = -1,
@@ -6169,10 +6178,10 @@
                                 e: for (; ++h < o && d.length < l;) {
                                     var m = f[h],
                                         _ = t ? t(m) : m;
-                                    if (m = n || 0 !== m ? m : 0, !(p ? Jt(p, _) : a(d, _, n))) {
+                                    if (m = n || 0 !== m ? m : 0, !(p ? Qt(p, _) : a(d, _, n))) {
                                         for (u = s; --u;) {
                                             var g = c[u];
-                                            if (!(g ? Jt(g, _) : a(e[u], _, n))) continue e
+                                            if (!(g ? Qt(g, _) : a(e[u], _, n))) continue e
                                         }
                                         p && p.push(_), d.push(m)
                                     }
@@ -6180,80 +6189,80 @@
                                 return d
                             }
 
-                            function Nr(e, t, n) {
-                                var r = null == (e = Oa(e, t = yi(t, e))) ? e : e[Ua(Xa(t))];
+                            function Lr(e, t, n) {
+                                var r = null == (e = xa(e, t = wi(t, e))) ? e : e[ja(Ja(t))];
                                 return null == r ? i : Tt(r, e, n)
                             }
 
-                            function Lr(e) {
-                                return rs(e) && Cr(e) == v
+                            function Ir(e) {
+                                return is(e) && kr(e) == v
                             }
 
-                            function Ir(e, t, n, r, a) {
-                                return e === t || (null == e || null == t || !rs(e) && !rs(t) ? e != e && t != t : function(e, t, n, r, a, o) {
-                                    var s = zo(e),
-                                        u = zo(t),
-                                        c = s ? b : ma(e),
-                                        l = u ? b : ma(t),
+                            function Mr(e, t, n, r, a) {
+                                return e === t || (null == e || null == t || !is(e) && !is(t) ? e != e && t != t : function(e, t, n, r, a, o) {
+                                    var s = Ho(e),
+                                        u = Ho(t),
+                                        c = s ? b : _a(e),
+                                        l = u ? b : _a(t),
                                         d = (c = c == v ? k : c) == k,
                                         f = (l = l == v ? k : l) == k,
                                         h = c == l;
-                                    if (h && Zo(e)) {
-                                        if (!Zo(t)) return !1;
+                                    if (h && Xo(e)) {
+                                        if (!Xo(t)) return !1;
                                         s = !0, d = !1
                                     }
-                                    if (h && !d) return o || (o = new Zn), s || ds(e) ? na(e, t, n, r, a, o) : function(e, t, n, r, i, a, o) {
+                                    if (h && !d) return o || (o = new Xn), s || fs(e) ? ra(e, t, n, r, a, o) : function(e, t, n, r, i, a, o) {
                                         switch (n) {
                                             case R:
                                                 if (e.byteLength != t.byteLength || e.byteOffset != t.byteOffset) return !1;
                                                 e = e.buffer, t = t.buffer;
                                             case M:
-                                                return !(e.byteLength != t.byteLength || !a(new ze(e), new ze(t)));
+                                                return !(e.byteLength != t.byteLength || !a(new Ye(e), new Ye(t)));
                                             case y:
                                             case w:
                                             case C:
-                                                return Vo(+e, +t);
+                                                return qo(+e, +t);
                                             case E:
                                                 return e.name == t.name && e.message == t.message;
                                             case x:
                                             case N:
                                                 return e == t + "";
                                             case T:
-                                                var s = sn;
+                                                var s = un;
                                             case D:
                                                 var u = 1 & r;
-                                                if (s || (s = ln), e.size != t.size && !u) return !1;
+                                                if (s || (s = dn), e.size != t.size && !u) return !1;
                                                 var c = o.get(e);
                                                 if (c) return c == t;
                                                 r |= 2, o.set(e, t);
-                                                var l = na(s(e), s(t), r, i, a, o);
+                                                var l = ra(s(e), s(t), r, i, a, o);
                                                 return o.delete(e), l;
                                             case L:
-                                                if (jn) return jn.call(e) == jn.call(t)
+                                                if (Fn) return Fn.call(e) == Fn.call(t)
                                         }
                                         return !1
                                     }(e, t, c, n, r, a, o);
                                     if (!(1 & n)) {
-                                        var p = d && We.call(e, "__wrapped__"),
-                                            m = f && We.call(t, "__wrapped__");
+                                        var p = d && Pe.call(e, "__wrapped__"),
+                                            m = f && Pe.call(t, "__wrapped__");
                                         if (p || m) {
                                             var _ = p ? e.value() : e,
                                                 g = m ? t.value() : t;
-                                            return o || (o = new Zn), a(_, g, n, r, o)
+                                            return o || (o = new Xn), a(_, g, n, r, o)
                                         }
                                     }
                                     if (!h) return !1;
-                                    return o || (o = new Zn),
+                                    return o || (o = new Xn),
                                         function(e, t, n, r, a, o) {
                                             var s = 1 & n,
-                                                u = ia(e),
+                                                u = aa(e),
                                                 c = u.length,
-                                                l = ia(t).length;
+                                                l = aa(t).length;
                                             if (c != l && !s) return !1;
                                             var d = c;
                                             for (; d--;) {
                                                 var f = u[d];
-                                                if (!(s ? f in t : We.call(t, f))) return !1
+                                                if (!(s ? f in t : Pe.call(t, f))) return !1
                                             }
                                             var h = o.get(e),
                                                 p = o.get(t);
@@ -6278,15 +6287,15 @@
                                             }
                                             return o.delete(e), o.delete(t), m
                                         }(e, t, n, r, a, o)
-                                }(e, t, n, r, Ir, a))
+                                }(e, t, n, r, Mr, a))
                             }
 
-                            function Mr(e, t, n, r) {
+                            function Rr(e, t, n, r) {
                                 var a = n.length,
                                     o = a,
                                     s = !r;
                                 if (null == e) return !o;
-                                for (e = Oe(e); a--;) {
+                                for (e = ke(e); a--;) {
                                     var u = n[a];
                                     if (s && u[2] ? u[1] !== e[u[0]] : !(u[0] in e)) return !1
                                 }
@@ -6297,112 +6306,112 @@
                                     if (s && u[2]) {
                                         if (l === i && !(c in e)) return !1
                                     } else {
-                                        var f = new Zn;
+                                        var f = new Xn;
                                         if (r) var h = r(l, d, c, e, t, f);
-                                        if (!(h === i ? Ir(d, l, 3, r, f) : h)) return !1
+                                        if (!(h === i ? Mr(d, l, 3, r, f) : h)) return !1
                                     }
                                 }
                                 return !0
                             }
 
-                            function Rr(e) {
-                                return !(!ns(e) || (t = e, je && je in t)) && (Qo(e) ? qe : ve).test(ja(e));
+                            function Pr(e) {
+                                return !(!rs(e) || (t = e, Ue && Ue in t)) && (es(e) ? Ve : ve).test(Fa(e));
                                 var t
                             }
 
-                            function Pr(e) {
-                                return "function" == typeof e ? e : null == e ? au : "object" == typeof e ? zo(e) ? Vr(e[0], e[1]) : Br(e) : pu(e)
-                            }
-
                             function Wr(e) {
-                                if (!Sa(e)) return vn(e);
-                                var t = [];
-                                for (var n in Oe(e)) We.call(e, n) && "constructor" != n && t.push(n);
-                                return t
+                                return "function" == typeof e ? e : null == e ? ou : "object" == typeof e ? Ho(e) ? qr(e[0], e[1]) : Vr(e) : mu(e)
                             }
 
                             function Ur(e) {
-                                if (!ns(e)) return function(e) {
+                                if (!Ta(e)) return bn(e);
+                                var t = [];
+                                for (var n in ke(e)) Pe.call(e, n) && "constructor" != n && t.push(n);
+                                return t
+                            }
+
+                            function jr(e) {
+                                if (!rs(e)) return function(e) {
                                     var t = [];
                                     if (null != e)
-                                        for (var n in Oe(e)) t.push(n);
+                                        for (var n in ke(e)) t.push(n);
                                     return t
                                 }(e);
-                                var t = Sa(e),
+                                var t = Ta(e),
                                     n = [];
-                                for (var r in e)("constructor" != r || !t && We.call(e, r)) && n.push(r);
+                                for (var r in e)("constructor" != r || !t && Pe.call(e, r)) && n.push(r);
                                 return n
                             }
 
-                            function jr(e, t) {
+                            function Fr(e, t) {
                                 return e < t
                             }
 
-                            function Fr(e, t) {
+                            function Br(e, t) {
                                 var n = -1,
-                                    i = $o(e) ? r(e.length) : [];
-                                return hr(e, (function(e, r, a) {
+                                    i = Ko(e) ? r(e.length) : [];
+                                return pr(e, (function(e, r, a) {
                                     i[++n] = t(e, r, a)
                                 })), i
                             }
 
-                            function Br(e) {
-                                var t = da(e);
-                                return 1 == t.length && t[0][2] ? Ca(t[0][0], t[0][1]) : function(n) {
-                                    return n === e || Mr(n, e, t)
+                            function Vr(e) {
+                                var t = fa(e);
+                                return 1 == t.length && t[0][2] ? ka(t[0][0], t[0][1]) : function(n) {
+                                    return n === e || Rr(n, e, t)
                                 }
                             }
 
-                            function Vr(e, t) {
-                                return wa(e) && Ta(t) ? Ca(Ua(e), t) : function(n) {
-                                    var r = Os(n, e);
-                                    return r === i && r === t ? xs(n, e) : Ir(t, r, 3)
+                            function qr(e, t) {
+                                return Ea(e) && Ca(t) ? ka(ja(e), t) : function(n) {
+                                    var r = xs(n, e);
+                                    return r === i && r === t ? Ds(n, e) : Mr(t, r, 3)
                                 }
                             }
 
-                            function qr(e, t, n, r, a) {
-                                e !== t && br(t, (function(o, s) {
-                                    if (a || (a = new Zn), ns(o)) ! function(e, t, n, r, a, o, s) {
-                                        var u = Da(e, n),
-                                            c = Da(t, n),
+                            function Gr(e, t, n, r, a) {
+                                e !== t && yr(t, (function(o, s) {
+                                    if (a || (a = new Xn), rs(o)) ! function(e, t, n, r, a, o, s) {
+                                        var u = Na(e, n),
+                                            c = Na(t, n),
                                             l = s.get(c);
-                                        if (l) return void tr(e, n, l);
+                                        if (l) return void nr(e, n, l);
                                         var d = o ? o(u, c, n + "", e, t, s) : i,
                                             f = d === i;
                                         if (f) {
-                                            var h = zo(c),
-                                                p = !h && Zo(c),
-                                                m = !h && !p && ds(c);
-                                            d = c, h || p || m ? zo(u) ? d = u : Ko(u) ? d = Di(u) : p ? (f = !1, d = Si(c, !0)) : m ? (f = !1, d = Ci(c, !0)) : d = [] : os(c) || Yo(c) ? (d = u, Yo(u) ? d = bs(u) : ns(u) && !Qo(u) || (d = ga(c))) : f = !1
+                                            var h = Ho(c),
+                                                p = !h && Xo(c),
+                                                m = !h && !p && fs(c);
+                                            d = c, h || p || m ? Ho(u) ? d = u : Zo(u) ? d = Ni(u) : p ? (f = !1, d = Ti(c, !0)) : m ? (f = !1, d = ki(c, !0)) : d = [] : ss(c) || zo(c) ? (d = u, zo(u) ? d = ys(u) : rs(u) && !es(u) || (d = va(c))) : f = !1
                                         }
                                         f && (s.set(c, d), a(d, c, r, o, s), s.delete(c));
-                                        tr(e, n, d)
-                                    }(e, t, s, n, qr, r, a);
+                                        nr(e, n, d)
+                                    }(e, t, s, n, Gr, r, a);
                                     else {
-                                        var u = r ? r(Da(e, s), o, s + "", e, t, a) : i;
-                                        u === i && (u = o), tr(e, s, u)
+                                        var u = r ? r(Na(e, s), o, s + "", e, t, a) : i;
+                                        u === i && (u = o), nr(e, s, u)
                                     }
-                                }), Ms)
+                                }), Rs)
                             }
 
-                            function Gr(e, t) {
+                            function Yr(e, t) {
                                 var n = e.length;
-                                if (n) return ba(t += t < 0 ? n : 0, n) ? e[t] : i
+                                if (n) return ya(t += t < 0 ? n : 0, n) ? e[t] : i
                             }
 
-                            function Yr(e, t, n) {
+                            function zr(e, t, n) {
                                 t = t.length ? It(t, (function(e) {
-                                    return zo(e) ? function(t) {
-                                        return Sr(t, 1 === e.length ? e[0] : e)
+                                    return Ho(e) ? function(t) {
+                                        return Tr(t, 1 === e.length ? e[0] : e)
                                     } : e
-                                })) : [au];
+                                })) : [ou];
                                 var r = -1;
-                                return t = It(t, Zt(ca())),
+                                return t = It(t, Xt(la())),
                                     function(e, t) {
                                         var n = e.length;
                                         for (e.sort(t); n--;) e[n] = e[n].value;
                                         return e
-                                    }(Fr(e, (function(e, n, i) {
+                                    }(Br(e, (function(e, n, i) {
                                         return {
                                             criteria: It(t, (function(t) {
                                                 return t(e)
@@ -6418,7 +6427,7 @@
                                                 o = i.length,
                                                 s = n.length;
                                             for (; ++r < o;) {
-                                                var u = ki(i[r], a[r]);
+                                                var u = Oi(i[r], a[r]);
                                                 if (u) return r >= s ? u : u * ("desc" == n[r] ? -1 : 1)
                                             }
                                             return e.index - t.index
@@ -6426,94 +6435,94 @@
                                     }))
                             }
 
-                            function zr(e, t, n) {
+                            function Hr(e, t, n) {
                                 for (var r = -1, i = t.length, a = {}; ++r < i;) {
                                     var o = t[r],
-                                        s = Sr(e, o);
-                                    n(s, o) && ei(a, yi(o, e), s)
+                                        s = Tr(e, o);
+                                    n(s, o) && ti(a, wi(o, e), s)
                                 }
                                 return a
                             }
 
-                            function Hr(e, t, n, r) {
+                            function $r(e, t, n, r) {
                                 var i = r ? Vt : Bt,
                                     a = -1,
                                     o = t.length,
                                     s = e;
-                                for (e === t && (t = Di(t)), n && (s = It(e, Zt(n))); ++a < o;)
+                                for (e === t && (t = Ni(t)), n && (s = It(e, Xt(n))); ++a < o;)
                                     for (var u = 0, c = t[a], l = n ? n(c) : c;
-                                        (u = i(s, l, u, r)) > -1;) s !== e && Xe.call(s, u, 1), Xe.call(e, u, 1);
-                                return e
-                            }
-
-                            function $r(e, t) {
-                                for (var n = e ? t.length : 0, r = n - 1; n--;) {
-                                    var i = t[n];
-                                    if (n == r || i !== a) {
-                                        var a = i;
-                                        ba(i) ? Xe.call(e, i, 1) : fi(e, i)
-                                    }
-                                }
+                                        (u = i(s, l, u, r)) > -1;) s !== e && Ze.call(s, u, 1), Ze.call(e, u, 1);
                                 return e
                             }
 
                             function Kr(e, t) {
-                                return e + vt(An() * (t - e + 1))
+                                for (var n = e ? t.length : 0, r = n - 1; n--;) {
+                                    var i = t[n];
+                                    if (n == r || i !== a) {
+                                        var a = i;
+                                        ya(i) ? Ze.call(e, i, 1) : hi(e, i)
+                                    }
+                                }
+                                return e
                             }
 
                             function Zr(e, t) {
+                                return e + gt(Sn() * (t - e + 1))
+                            }
+
+                            function Xr(e, t) {
                                 var n = "";
                                 if (!e || t < 1 || t > p) return n;
                                 do {
-                                    t % 2 && (n += e), (t = vt(t / 2)) && (e += e)
+                                    t % 2 && (n += e), (t = gt(t / 2)) && (e += e)
                                 } while (t);
                                 return n
                             }
 
-                            function Xr(e, t) {
-                                return Ia(ka(e, t, au), e + "")
+                            function Jr(e, t) {
+                                return Ma(Oa(e, t, ou), e + "")
                             }
 
-                            function Jr(e) {
-                                return Jn(Vs(e))
+                            function Qr(e) {
+                                return Qn(qs(e))
                             }
 
-                            function Qr(e, t) {
-                                var n = Vs(e);
-                                return Pa(n, ur(t, 0, n.length))
+                            function ei(e, t) {
+                                var n = qs(e);
+                                return Wa(n, cr(t, 0, n.length))
                             }
 
-                            function ei(e, t, n, r) {
-                                if (!ns(e)) return e;
-                                for (var a = -1, o = (t = yi(t, e)).length, s = o - 1, u = e; null != u && ++a < o;) {
-                                    var c = Ua(t[a]),
+                            function ti(e, t, n, r) {
+                                if (!rs(e)) return e;
+                                for (var a = -1, o = (t = wi(t, e)).length, s = o - 1, u = e; null != u && ++a < o;) {
+                                    var c = ja(t[a]),
                                         l = n;
                                     if ("__proto__" === c || "constructor" === c || "prototype" === c) return e;
                                     if (a != s) {
                                         var d = u[c];
-                                        (l = r ? r(d, c, u) : i) === i && (l = ns(d) ? d : ba(t[a + 1]) ? [] : {})
+                                        (l = r ? r(d, c, u) : i) === i && (l = rs(d) ? d : ya(t[a + 1]) ? [] : {})
                                     }
-                                    nr(u, c, l), u = u[c]
+                                    rr(u, c, l), u = u[c]
                                 }
                                 return e
                             }
-                            var ti = Nn ? function(e, t) {
-                                    return Nn.set(e, t), e
-                                } : au,
-                                ni = dt ? function(e, t) {
-                                    return dt(e, "toString", {
+                            var ni = Ln ? function(e, t) {
+                                    return Ln.set(e, t), e
+                                } : ou,
+                                ri = ut ? function(e, t) {
+                                    return ut(e, "toString", {
                                         configurable: !0,
                                         enumerable: !1,
-                                        value: nu(t),
+                                        value: ru(t),
                                         writable: !0
                                     })
-                                } : au;
+                                } : ou;
 
-                            function ri(e) {
-                                return Pa(Vs(e))
+                            function ii(e) {
+                                return Wa(qs(e))
                             }
 
-                            function ii(e, t, n) {
+                            function ai(e, t, n) {
                                 var i = -1,
                                     a = e.length;
                                 t < 0 && (t = -t > a ? 0 : a + t), (n = n > a ? a : n) < 0 && (n += a), a = t > n ? 0 : n - t >>> 0, t >>>= 0;
@@ -6521,50 +6530,50 @@
                                 return o
                             }
 
-                            function ai(e, t) {
+                            function oi(e, t) {
                                 var n;
-                                return hr(e, (function(e, r, i) {
+                                return pr(e, (function(e, r, i) {
                                     return !(n = t(e, r, i))
                                 })), !!n
                             }
 
-                            function oi(e, t, n) {
+                            function si(e, t, n) {
                                 var r = 0,
                                     i = null == e ? r : e.length;
                                 if ("number" == typeof t && t == t && i <= 2147483647) {
                                     for (; r < i;) {
                                         var a = r + i >>> 1,
                                             o = e[a];
-                                        null !== o && !ls(o) && (n ? o <= t : o < t) ? r = a + 1 : i = a
+                                        null !== o && !ds(o) && (n ? o <= t : o < t) ? r = a + 1 : i = a
                                     }
                                     return i
                                 }
-                                return si(e, t, au, n)
+                                return ui(e, t, ou, n)
                             }
 
-                            function si(e, t, n, r) {
+                            function ui(e, t, n, r) {
                                 var a = 0,
                                     o = null == e ? 0 : e.length;
                                 if (0 === o) return 0;
-                                for (var s = (t = n(t)) != t, u = null === t, c = ls(t), l = t === i; a < o;) {
-                                    var d = vt((a + o) / 2),
+                                for (var s = (t = n(t)) != t, u = null === t, c = ds(t), l = t === i; a < o;) {
+                                    var d = gt((a + o) / 2),
                                         f = n(e[d]),
                                         h = f !== i,
                                         p = null === f,
                                         m = f == f,
-                                        _ = ls(f);
+                                        _ = ds(f);
                                     if (s) var g = r || m;
                                     else g = l ? m && (r || h) : u ? m && h && (r || !p) : c ? m && h && !p && (r || !_) : !p && !_ && (r ? f <= t : f < t);
                                     g ? a = d + 1 : o = d
                                 }
-                                return yn(o, 4294967294)
+                                return wn(o, 4294967294)
                             }
 
-                            function ui(e, t) {
+                            function ci(e, t) {
                                 for (var n = -1, r = e.length, i = 0, a = []; ++n < r;) {
                                     var o = e[n],
                                         s = t ? t(o) : o;
-                                    if (!n || !Vo(s, u)) {
+                                    if (!n || !qo(s, u)) {
                                         var u = s;
                                         a[i++] = 0 === o ? 0 : o
                                     }
@@ -6572,19 +6581,19 @@
                                 return a
                             }
 
-                            function ci(e) {
-                                return "number" == typeof e ? e : ls(e) ? m : +e
+                            function li(e) {
+                                return "number" == typeof e ? e : ds(e) ? m : +e
                             }
 
-                            function li(e) {
+                            function di(e) {
                                 if ("string" == typeof e) return e;
-                                if (zo(e)) return It(e, li) + "";
-                                if (ls(e)) return Fn ? Fn.call(e) : "";
+                                if (Ho(e)) return It(e, di) + "";
+                                if (ds(e)) return Bn ? Bn.call(e) : "";
                                 var t = e + "";
                                 return "0" == t && 1 / e == -1 / 0 ? "-0" : t
                             }
 
-                            function di(e, t, n) {
+                            function fi(e, t, n) {
                                 var r = -1,
                                     i = Nt,
                                     a = e.length,
@@ -6593,9 +6602,9 @@
                                     u = s;
                                 if (n) o = !1, i = Lt;
                                 else if (a >= 200) {
-                                    var c = t ? null : Zi(e);
-                                    if (c) return ln(c);
-                                    o = !1, i = Jt, u = new Kn
+                                    var c = t ? null : Xi(e);
+                                    if (c) return dn(c);
+                                    o = !1, i = Qt, u = new Zn
                                 } else u = t ? [] : s;
                                 e: for (; ++r < a;) {
                                     var l = e[r],
@@ -6609,36 +6618,36 @@
                                 return s
                             }
 
-                            function fi(e, t) {
-                                return null == (e = Oa(e, t = yi(t, e))) || delete e[Ua(Xa(t))]
-                            }
-
-                            function hi(e, t, n, r) {
-                                return ei(e, t, n(Sr(e, t)), r)
+                            function hi(e, t) {
+                                return null == (e = xa(e, t = wi(t, e))) || delete e[ja(Ja(t))]
                             }
 
                             function pi(e, t, n, r) {
-                                for (var i = e.length, a = r ? i : -1;
-                                    (r ? a-- : ++a < i) && t(e[a], a, e););
-                                return n ? ii(e, r ? 0 : a, r ? a + 1 : i) : ii(e, r ? a + 1 : 0, r ? i : a)
+                                return ti(e, t, n(Tr(e, t)), r)
                             }
 
-                            function mi(e, t) {
+                            function mi(e, t, n, r) {
+                                for (var i = e.length, a = r ? i : -1;
+                                    (r ? a-- : ++a < i) && t(e[a], a, e););
+                                return n ? ai(e, r ? 0 : a, r ? a + 1 : i) : ai(e, r ? a + 1 : 0, r ? i : a)
+                            }
+
+                            function _i(e, t) {
                                 var n = e;
-                                return n instanceof Yn && (n = n.value()), Rt(t, (function(e, t) {
+                                return n instanceof zn && (n = n.value()), Rt(t, (function(e, t) {
                                     return t.func.apply(t.thisArg, Mt([e], t.args))
                                 }), n)
                             }
 
-                            function _i(e, t, n) {
+                            function gi(e, t, n) {
                                 var i = e.length;
-                                if (i < 2) return i ? di(e[0]) : [];
+                                if (i < 2) return i ? fi(e[0]) : [];
                                 for (var a = -1, o = r(i); ++a < i;)
-                                    for (var s = e[a], u = -1; ++u < i;) u != a && (o[a] = fr(o[a] || s, e[u], t, n));
-                                return di(vr(o, 1), t, n)
+                                    for (var s = e[a], u = -1; ++u < i;) u != a && (o[a] = hr(o[a] || s, e[u], t, n));
+                                return fi(br(o, 1), t, n)
                             }
 
-                            function gi(e, t, n) {
+                            function vi(e, t, n) {
                                 for (var r = -1, a = e.length, o = t.length, s = {}; ++r < a;) {
                                     var u = r < o ? t[r] : i;
                                     n(s, e[r], u)
@@ -6646,107 +6655,107 @@
                                 return s
                             }
 
-                            function vi(e) {
-                                return Ko(e) ? e : []
-                            }
-
                             function bi(e) {
-                                return "function" == typeof e ? e : au
+                                return Zo(e) ? e : []
                             }
 
-                            function yi(e, t) {
-                                return zo(e) ? e : wa(e, t) ? [e] : Wa(ys(e))
+                            function yi(e) {
+                                return "function" == typeof e ? e : ou
                             }
-                            var wi = Xr;
 
-                            function Ei(e, t, n) {
+                            function wi(e, t) {
+                                return Ho(e) ? e : Ea(e, t) ? [e] : Ua(ws(e))
+                            }
+                            var Ei = Jr;
+
+                            function Ai(e, t, n) {
                                 var r = e.length;
-                                return n = n === i ? r : n, !t && n >= r ? e : ii(e, t, n)
+                                return n = n === i ? r : n, !t && n >= r ? e : ai(e, t, n)
                             }
-                            var Ai = ft || function(e) {
+                            var Si = dt || function(e) {
                                 return ht.clearTimeout(e)
                             };
 
-                            function Si(e, t) {
+                            function Ti(e, t) {
                                 if (t) return e.slice();
                                 var n = e.length,
-                                    r = He ? He(n) : new e.constructor(n);
+                                    r = ze ? ze(n) : new e.constructor(n);
                                 return e.copy(r), r
                             }
 
-                            function Ti(e) {
+                            function Ci(e) {
                                 var t = new e.constructor(e.byteLength);
-                                return new ze(t).set(new ze(e)), t
-                            }
-
-                            function Ci(e, t) {
-                                var n = t ? Ti(e.buffer) : e.buffer;
-                                return new e.constructor(n, e.byteOffset, e.length)
+                                return new Ye(t).set(new Ye(e)), t
                             }
 
                             function ki(e, t) {
+                                var n = t ? Ci(e.buffer) : e.buffer;
+                                return new e.constructor(n, e.byteOffset, e.length)
+                            }
+
+                            function Oi(e, t) {
                                 if (e !== t) {
                                     var n = e !== i,
                                         r = null === e,
                                         a = e == e,
-                                        o = ls(e),
+                                        o = ds(e),
                                         s = t !== i,
                                         u = null === t,
                                         c = t == t,
-                                        l = ls(t);
+                                        l = ds(t);
                                     if (!u && !l && !o && e > t || o && s && c && !u && !l || r && s && c || !n && c || !a) return 1;
                                     if (!r && !o && !l && e < t || l && n && a && !r && !o || u && n && a || !s && a || !c) return -1
                                 }
                                 return 0
                             }
 
-                            function Oi(e, t, n, i) {
-                                for (var a = -1, o = e.length, s = n.length, u = -1, c = t.length, l = bn(o - s, 0), d = r(c + l), f = !i; ++u < c;) d[u] = t[u];
+                            function xi(e, t, n, i) {
+                                for (var a = -1, o = e.length, s = n.length, u = -1, c = t.length, l = yn(o - s, 0), d = r(c + l), f = !i; ++u < c;) d[u] = t[u];
                                 for (; ++a < s;)(f || a < o) && (d[n[a]] = e[a]);
                                 for (; l--;) d[u++] = e[a++];
                                 return d
                             }
 
-                            function xi(e, t, n, i) {
-                                for (var a = -1, o = e.length, s = -1, u = n.length, c = -1, l = t.length, d = bn(o - u, 0), f = r(d + l), h = !i; ++a < d;) f[a] = e[a];
+                            function Di(e, t, n, i) {
+                                for (var a = -1, o = e.length, s = -1, u = n.length, c = -1, l = t.length, d = yn(o - u, 0), f = r(d + l), h = !i; ++a < d;) f[a] = e[a];
                                 for (var p = a; ++c < l;) f[p + c] = t[c];
                                 for (; ++s < u;)(h || a < o) && (f[p + n[s]] = e[a++]);
                                 return f
                             }
 
-                            function Di(e, t) {
+                            function Ni(e, t) {
                                 var n = -1,
                                     i = e.length;
                                 for (t || (t = r(i)); ++n < i;) t[n] = e[n];
                                 return t
                             }
 
-                            function Ni(e, t, n, r) {
+                            function Li(e, t, n, r) {
                                 var a = !n;
                                 n || (n = {});
                                 for (var o = -1, s = t.length; ++o < s;) {
                                     var u = t[o],
                                         c = r ? r(n[u], e[u], u, n, e) : i;
-                                    c === i && (c = e[u]), a ? or(n, u, c) : nr(n, u, c)
+                                    c === i && (c = e[u]), a ? sr(n, u, c) : rr(n, u, c)
                                 }
                                 return n
                             }
 
-                            function Li(e, t) {
+                            function Ii(e, t) {
                                 return function(n, r) {
-                                    var i = zo(n) ? Ct : ir,
+                                    var i = Ho(n) ? Ct : ar,
                                         a = t ? t() : {};
-                                    return i(n, e, ca(r, 2), a)
+                                    return i(n, e, la(r, 2), a)
                                 }
                             }
 
-                            function Ii(e) {
-                                return Xr((function(t, n) {
+                            function Mi(e) {
+                                return Jr((function(t, n) {
                                     var r = -1,
                                         a = n.length,
                                         o = a > 1 ? n[a - 1] : i,
                                         s = a > 2 ? n[2] : i;
-                                    for (o = e.length > 3 && "function" == typeof o ? (a--, o) : i, s && ya(n[0], n[1], s) && (o = a < 3 ? i : o, a = 1), t = Oe(t); ++r < a;) {
+                                    for (o = e.length > 3 && "function" == typeof o ? (a--, o) : i, s && wa(n[0], n[1], s) && (o = a < 3 ? i : o, a = 1), t = ke(t); ++r < a;) {
                                         var u = n[r];
                                         u && e(t, u, r, o)
                                     }
@@ -6754,19 +6763,19 @@
                                 }))
                             }
 
-                            function Mi(e, t) {
+                            function Ri(e, t) {
                                 return function(n, r) {
                                     if (null == n) return n;
-                                    if (!$o(n)) return e(n, r);
-                                    for (var i = n.length, a = t ? i : -1, o = Oe(n);
+                                    if (!Ko(n)) return e(n, r);
+                                    for (var i = n.length, a = t ? i : -1, o = ke(n);
                                         (t ? a-- : ++a < i) && !1 !== r(o[a], a, o););
                                     return n
                                 }
                             }
 
-                            function Ri(e) {
+                            function Pi(e) {
                                 return function(t, n, r) {
-                                    for (var i = -1, a = Oe(t), o = r(t), s = o.length; s--;) {
+                                    for (var i = -1, a = ke(t), o = r(t), s = o.length; s--;) {
                                         var u = o[e ? s : ++i];
                                         if (!1 === n(a[u], u, a)) break
                                     }
@@ -6774,22 +6783,22 @@
                                 }
                             }
 
-                            function Pi(e) {
+                            function Wi(e) {
                                 return function(t) {
-                                    var n = on(t = ys(t)) ? hn(t) : i,
+                                    var n = sn(t = ws(t)) ? pn(t) : i,
                                         r = n ? n[0] : t.charAt(0),
-                                        a = n ? Ei(n, 1).join("") : t.slice(1);
+                                        a = n ? Ai(n, 1).join("") : t.slice(1);
                                     return r[e]() + a
                                 }
                             }
 
-                            function Wi(e) {
+                            function Ui(e) {
                                 return function(t) {
-                                    return Rt(Qs(Ys(t).replace(Je, "")), e, "")
+                                    return Rt(eu(zs(t).replace(Je, "")), e, "")
                                 }
                             }
 
-                            function Ui(e) {
+                            function ji(e) {
                                 return function() {
                                     var t = arguments;
                                     switch (t.length) {
@@ -6810,18 +6819,18 @@
                                         case 7:
                                             return new e(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
                                     }
-                                    var n = Vn(e.prototype),
+                                    var n = qn(e.prototype),
                                         r = e.apply(n, t);
-                                    return ns(r) ? r : n
+                                    return rs(r) ? r : n
                                 }
                             }
 
-                            function ji(e) {
+                            function Fi(e) {
                                 return function(t, n, r) {
-                                    var a = Oe(t);
-                                    if (!$o(t)) {
-                                        var o = ca(n, 3);
-                                        t = Is(t), n = function(e) {
+                                    var a = ke(t);
+                                    if (!Ko(t)) {
+                                        var o = la(n, 3);
+                                        t = Ms(t), n = function(e) {
                                             return o(a[e], e, a)
                                         }
                                     }
@@ -6830,77 +6839,77 @@
                                 }
                             }
 
-                            function Fi(e) {
-                                return ra((function(t) {
+                            function Bi(e) {
+                                return ia((function(t) {
                                     var n = t.length,
                                         r = n,
-                                        o = Gn.prototype.thru;
+                                        o = Yn.prototype.thru;
                                     for (e && t.reverse(); r--;) {
                                         var s = t[r];
-                                        if ("function" != typeof s) throw new Ne(a);
-                                        if (o && !u && "wrapper" == sa(s)) var u = new Gn([], !0)
+                                        if ("function" != typeof s) throw new De(a);
+                                        if (o && !u && "wrapper" == ua(s)) var u = new Yn([], !0)
                                     }
                                     for (r = u ? r : n; ++r < n;) {
-                                        var c = sa(s = t[r]),
-                                            l = "wrapper" == c ? oa(s) : i;
-                                        u = l && Ea(l[0]) && 424 == l[1] && !l[4].length && 1 == l[9] ? u[sa(l[0])].apply(u, l[3]) : 1 == s.length && Ea(s) ? u[c]() : u.thru(s)
+                                        var c = ua(s = t[r]),
+                                            l = "wrapper" == c ? sa(s) : i;
+                                        u = l && Aa(l[0]) && 424 == l[1] && !l[4].length && 1 == l[9] ? u[ua(l[0])].apply(u, l[3]) : 1 == s.length && Aa(s) ? u[c]() : u.thru(s)
                                     }
                                     return function() {
                                         var e = arguments,
                                             r = e[0];
-                                        if (u && 1 == e.length && zo(r)) return u.plant(r).value();
+                                        if (u && 1 == e.length && Ho(r)) return u.plant(r).value();
                                         for (var i = 0, a = n ? t[i].apply(this, e) : r; ++i < n;) a = t[i].call(this, a);
                                         return a
                                     }
                                 }))
                             }
 
-                            function Bi(e, t, n, a, o, s, u, c, l, f) {
+                            function Vi(e, t, n, a, o, s, u, c, l, f) {
                                 var h = t & d,
                                     p = 1 & t,
                                     m = 2 & t,
                                     _ = 24 & t,
                                     g = 512 & t,
-                                    v = m ? i : Ui(e);
+                                    v = m ? i : ji(e);
                                 return function i() {
                                     for (var d = arguments.length, b = r(d), y = d; y--;) b[y] = arguments[y];
-                                    if (_) var w = ua(i),
-                                        E = tn(b, w);
-                                    if (a && (b = Oi(b, a, o, _)), s && (b = xi(b, s, u, _)), d -= E, _ && d < f) {
-                                        var A = cn(b, w);
-                                        return $i(e, t, Bi, i.placeholder, n, b, A, c, l, f - d)
+                                    if (_) var w = ca(i),
+                                        E = nn(b, w);
+                                    if (a && (b = xi(b, a, o, _)), s && (b = Di(b, s, u, _)), d -= E, _ && d < f) {
+                                        var A = ln(b, w);
+                                        return Ki(e, t, Vi, i.placeholder, n, b, A, c, l, f - d)
                                     }
                                     var S = p ? n : this,
                                         T = m ? S[e] : e;
-                                    return d = b.length, c ? b = xa(b, c) : g && d > 1 && b.reverse(), h && l < d && (b.length = l), this && this !== ht && this instanceof i && (T = v || Ui(T)), T.apply(S, b)
+                                    return d = b.length, c ? b = Da(b, c) : g && d > 1 && b.reverse(), h && l < d && (b.length = l), this && this !== ht && this instanceof i && (T = v || ji(T)), T.apply(S, b)
                                 }
                             }
 
-                            function Vi(e, t) {
+                            function qi(e, t) {
                                 return function(n, r) {
                                     return function(e, t, n, r) {
-                                        return wr(e, (function(e, i, a) {
+                                        return Er(e, (function(e, i, a) {
                                             t(r, n(e), i, a)
                                         })), r
                                     }(n, e, t(r), {})
                                 }
                             }
 
-                            function qi(e, t) {
+                            function Gi(e, t) {
                                 return function(n, r) {
                                     var a;
                                     if (n === i && r === i) return t;
                                     if (n !== i && (a = n), r !== i) {
                                         if (a === i) return r;
-                                        "string" == typeof n || "string" == typeof r ? (n = li(n), r = li(r)) : (n = ci(n), r = ci(r)), a = e(n, r)
+                                        "string" == typeof n || "string" == typeof r ? (n = di(n), r = di(r)) : (n = li(n), r = li(r)), a = e(n, r)
                                     }
                                     return a
                                 }
                             }
 
-                            function Gi(e) {
-                                return ra((function(t) {
-                                    return t = It(t, Zt(ca())), Xr((function(n) {
+                            function Yi(e) {
+                                return ia((function(t) {
+                                    return t = It(t, Xt(la())), Jr((function(n) {
                                         var r = this;
                                         return e(t, (function(e) {
                                             return Tt(e, r, n)
@@ -6909,55 +6918,55 @@
                                 }))
                             }
 
-                            function Yi(e, t) {
-                                var n = (t = t === i ? " " : li(t)).length;
-                                if (n < 2) return n ? Zr(t, e) : t;
-                                var r = Zr(t, gt(e / fn(t)));
-                                return on(t) ? Ei(hn(r), 0, e).join("") : r.slice(0, e)
-                            }
-
-                            function zi(e) {
-                                return function(t, n, a) {
-                                    return a && "number" != typeof a && ya(t, n, a) && (n = a = i), t = ms(t), n === i ? (n = t, t = 0) : n = ms(n),
-                                        function(e, t, n, i) {
-                                            for (var a = -1, o = bn(gt((t - e) / (n || 1)), 0), s = r(o); o--;) s[i ? o : ++a] = e, e += n;
-                                            return s
-                                        }(t, n, a = a === i ? t < n ? 1 : -1 : ms(a), e)
-                                }
+                            function zi(e, t) {
+                                var n = (t = t === i ? " " : di(t)).length;
+                                if (n < 2) return n ? Xr(t, e) : t;
+                                var r = Xr(t, mt(e / hn(t)));
+                                return sn(t) ? Ai(pn(r), 0, e).join("") : r.slice(0, e)
                             }
 
                             function Hi(e) {
-                                return function(t, n) {
-                                    return "string" == typeof t && "string" == typeof n || (t = vs(t), n = vs(n)), e(t, n)
+                                return function(t, n, a) {
+                                    return a && "number" != typeof a && wa(t, n, a) && (n = a = i), t = _s(t), n === i ? (n = t, t = 0) : n = _s(n),
+                                        function(e, t, n, i) {
+                                            for (var a = -1, o = yn(mt((t - e) / (n || 1)), 0), s = r(o); o--;) s[i ? o : ++a] = e, e += n;
+                                            return s
+                                        }(t, n, a = a === i ? t < n ? 1 : -1 : _s(a), e)
                                 }
                             }
 
-                            function $i(e, t, n, r, a, o, s, u, d, f) {
+                            function $i(e) {
+                                return function(t, n) {
+                                    return "string" == typeof t && "string" == typeof n || (t = bs(t), n = bs(n)), e(t, n)
+                                }
+                            }
+
+                            function Ki(e, t, n, r, a, o, s, u, d, f) {
                                 var h = 8 & t;
                                 t |= h ? c : l, 4 & (t &= ~(h ? l : c)) || (t &= -4);
                                 var p = [e, t, a, h ? o : i, h ? s : i, h ? i : o, h ? i : s, u, d, f],
                                     m = n.apply(i, p);
-                                return Ea(e) && Na(m, p), m.placeholder = r, Ma(m, e, t)
+                                return Aa(e) && La(m, p), m.placeholder = r, Ra(m, e, t)
                             }
 
-                            function Ki(e) {
-                                var t = ke[e];
+                            function Zi(e) {
+                                var t = Ce[e];
                                 return function(e, n) {
-                                    if (e = vs(e), (n = null == n ? 0 : yn(_s(n), 292)) && _n(e)) {
-                                        var r = (ys(e) + "e").split("e");
-                                        return +((r = (ys(t(r[0] + "e" + (+r[1] + n))) + "e").split("e"))[0] + "e" + (+r[1] - n))
+                                    if (e = bs(e), (n = null == n ? 0 : wn(gs(n), 292)) && zt(e)) {
+                                        var r = (ws(e) + "e").split("e");
+                                        return +((r = (ws(t(r[0] + "e" + (+r[1] + n))) + "e").split("e"))[0] + "e" + (+r[1] - n))
                                     }
                                     return t(e)
                                 }
                             }
-                            var Zi = On && 1 / ln(new On([, -0]))[1] == h ? function(e) {
-                                return new On(e)
-                            } : lu;
+                            var Xi = xn && 1 / dn(new xn([, -0]))[1] == h ? function(e) {
+                                return new xn(e)
+                            } : du;
 
-                            function Xi(e) {
+                            function Ji(e) {
                                 return function(t) {
-                                    var n = ma(t);
-                                    return n == T ? sn(t) : n == D ? dn(t) : function(e, t) {
+                                    var n = _a(t);
+                                    return n == T ? un(t) : n == D ? fn(t) : function(e, t) {
                                         return It(t, (function(t) {
                                             return [t, e[t]]
                                         }))
@@ -6965,16 +6974,16 @@
                                 }
                             }
 
-                            function Ji(e, t, n, o, h, p, m, _) {
+                            function Qi(e, t, n, o, h, p, m, _) {
                                 var g = 2 & t;
-                                if (!g && "function" != typeof e) throw new Ne(a);
+                                if (!g && "function" != typeof e) throw new De(a);
                                 var v = o ? o.length : 0;
-                                if (v || (t &= -97, o = h = i), m = m === i ? m : bn(_s(m), 0), _ = _ === i ? _ : _s(_), v -= h ? h.length : 0, t & l) {
+                                if (v || (t &= -97, o = h = i), m = m === i ? m : yn(gs(m), 0), _ = _ === i ? _ : gs(_), v -= h ? h.length : 0, t & l) {
                                     var b = o,
                                         y = h;
                                     o = h = i
                                 }
-                                var w = g ? i : oa(e),
+                                var w = g ? i : sa(e),
                                     E = [e, t, n, o, h, b, y, p, m, _];
                                 if (w && function(e, t) {
                                         var n = e[1],
@@ -6987,22 +6996,22 @@
                                         var u = t[3];
                                         if (u) {
                                             var c = e[3];
-                                            e[3] = c ? Oi(c, u, t[4]) : u, e[4] = c ? cn(e[3], s) : t[4]
-                                        }(u = t[5]) && (c = e[5], e[5] = c ? xi(c, u, t[6]) : u, e[6] = c ? cn(e[5], s) : t[6]);
+                                            e[3] = c ? xi(c, u, t[4]) : u, e[4] = c ? ln(e[3], s) : t[4]
+                                        }(u = t[5]) && (c = e[5], e[5] = c ? Di(c, u, t[6]) : u, e[6] = c ? ln(e[5], s) : t[6]);
                                         (u = t[7]) && (e[7] = u);
-                                        r & d && (e[8] = null == e[8] ? t[8] : yn(e[8], t[8]));
+                                        r & d && (e[8] = null == e[8] ? t[8] : wn(e[8], t[8]));
                                         null == e[9] && (e[9] = t[9]);
                                         e[0] = t[0], e[1] = i
-                                    }(E, w), e = E[0], t = E[1], n = E[2], o = E[3], h = E[4], !(_ = E[9] = E[9] === i ? g ? 0 : e.length : bn(E[9] - v, 0)) && 24 & t && (t &= -25), t && 1 != t) A = 8 == t || t == u ? function(e, t, n) {
-                                    var a = Ui(e);
+                                    }(E, w), e = E[0], t = E[1], n = E[2], o = E[3], h = E[4], !(_ = E[9] = E[9] === i ? g ? 0 : e.length : yn(E[9] - v, 0)) && 24 & t && (t &= -25), t && 1 != t) A = 8 == t || t == u ? function(e, t, n) {
+                                    var a = ji(e);
                                     return function o() {
-                                        for (var s = arguments.length, u = r(s), c = s, l = ua(o); c--;) u[c] = arguments[c];
-                                        var d = s < 3 && u[0] !== l && u[s - 1] !== l ? [] : cn(u, l);
-                                        return (s -= d.length) < n ? $i(e, t, Bi, o.placeholder, i, u, d, i, i, n - s) : Tt(this && this !== ht && this instanceof o ? a : e, this, u)
+                                        for (var s = arguments.length, u = r(s), c = s, l = ca(o); c--;) u[c] = arguments[c];
+                                        var d = s < 3 && u[0] !== l && u[s - 1] !== l ? [] : ln(u, l);
+                                        return (s -= d.length) < n ? Ki(e, t, Vi, o.placeholder, i, u, d, i, i, n - s) : Tt(this && this !== ht && this instanceof o ? a : e, this, u)
                                     }
-                                }(e, t, _) : t != c && 33 != t || h.length ? Bi.apply(i, E) : function(e, t, n, i) {
+                                }(e, t, _) : t != c && 33 != t || h.length ? Vi.apply(i, E) : function(e, t, n, i) {
                                     var a = 1 & t,
-                                        o = Ui(e);
+                                        o = ji(e);
                                     return function t() {
                                         for (var s = -1, u = arguments.length, c = -1, l = i.length, d = r(l + u), f = this && this !== ht && this instanceof t ? o : e; ++c < l;) d[c] = i[c];
                                         for (; u--;) d[c++] = arguments[++s];
@@ -7011,27 +7020,27 @@
                                 }(e, t, n, o);
                                 else var A = function(e, t, n) {
                                     var r = 1 & t,
-                                        i = Ui(e);
+                                        i = ji(e);
                                     return function t() {
                                         return (this && this !== ht && this instanceof t ? i : e).apply(r ? n : this, arguments)
                                     }
                                 }(e, t, n);
-                                return Ma((w ? ti : Na)(A, E), e, t)
+                                return Ra((w ? ni : La)(A, E), e, t)
                             }
 
-                            function Qi(e, t, n, r) {
-                                return e === i || Vo(e, Me[n]) && !We.call(r, n) ? t : e
+                            function ea(e, t, n, r) {
+                                return e === i || qo(e, Ie[n]) && !Pe.call(r, n) ? t : e
                             }
 
-                            function ea(e, t, n, r, a, o) {
-                                return ns(e) && ns(t) && (o.set(t, e), qr(e, t, i, ea, o), o.delete(t)), e
+                            function ta(e, t, n, r, a, o) {
+                                return rs(e) && rs(t) && (o.set(t, e), Gr(e, t, i, ta, o), o.delete(t)), e
                             }
 
-                            function ta(e) {
-                                return os(e) ? i : e
+                            function na(e) {
+                                return ss(e) ? i : e
                             }
 
-                            function na(e, t, n, r, a, o) {
+                            function ra(e, t, n, r, a, o) {
                                 var s = 1 & n,
                                     u = e.length,
                                     c = t.length;
@@ -7041,7 +7050,7 @@
                                 if (l && d) return l == t && d == e;
                                 var f = -1,
                                     h = !0,
-                                    p = 2 & n ? new Kn : i;
+                                    p = 2 & n ? new Zn : i;
                                 for (o.set(e, t), o.set(t, e); ++f < u;) {
                                     var m = e[f],
                                         _ = t[f];
@@ -7053,7 +7062,7 @@
                                     }
                                     if (p) {
                                         if (!Wt(t, (function(e, t) {
-                                                if (!Jt(p, t) && (m === e || a(m, e, n, r, o))) return p.push(t)
+                                                if (!Qt(p, t) && (m === e || a(m, e, n, r, o))) return p.push(t)
                                             }))) {
                                             h = !1;
                                             break
@@ -7066,23 +7075,23 @@
                                 return o.delete(e), o.delete(t), h
                             }
 
-                            function ra(e) {
-                                return Ia(ka(e, i, za), e + "")
-                            }
-
                             function ia(e) {
-                                return Tr(e, Is, ha)
+                                return Ma(Oa(e, i, Ha), e + "")
                             }
 
                             function aa(e) {
-                                return Tr(e, Ms, pa)
+                                return Cr(e, Ms, pa)
                             }
-                            var oa = Nn ? function(e) {
-                                return Nn.get(e)
-                            } : lu;
 
-                            function sa(e) {
-                                for (var t = e.name + "", n = Ln[t], r = We.call(Ln, t) ? n.length : 0; r--;) {
+                            function oa(e) {
+                                return Cr(e, Rs, ma)
+                            }
+                            var sa = Ln ? function(e) {
+                                return Ln.get(e)
+                            } : du;
+
+                            function ua(e) {
+                                for (var t = e.name + "", n = In[t], r = Pe.call(In, t) ? n.length : 0; r--;) {
                                     var i = n[r],
                                         a = i.func;
                                     if (null == a || a == e) return i.name
@@ -7090,176 +7099,176 @@
                                 return t
                             }
 
-                            function ua(e) {
-                                return (We.call(Bn, "placeholder") ? Bn : e).placeholder
+                            function ca(e) {
+                                return (Pe.call(Vn, "placeholder") ? Vn : e).placeholder
                             }
 
-                            function ca() {
-                                var e = Bn.iteratee || ou;
-                                return e = e === ou ? Pr : e, arguments.length ? e(arguments[0], arguments[1]) : e
+                            function la() {
+                                var e = Vn.iteratee || su;
+                                return e = e === su ? Wr : e, arguments.length ? e(arguments[0], arguments[1]) : e
                             }
 
-                            function la(e, t) {
+                            function da(e, t) {
                                 var n, r, i = e.__data__;
                                 return ("string" == (r = typeof(n = t)) || "number" == r || "symbol" == r || "boolean" == r ? "__proto__" !== n : null === n) ? i["string" == typeof t ? "string" : "hash"] : i.map
                             }
 
-                            function da(e) {
-                                for (var t = Is(e), n = t.length; n--;) {
+                            function fa(e) {
+                                for (var t = Ms(e), n = t.length; n--;) {
                                     var r = t[n],
                                         i = e[r];
-                                    t[n] = [r, i, Ta(i)]
+                                    t[n] = [r, i, Ca(i)]
                                 }
                                 return t
                             }
 
-                            function fa(e, t) {
+                            function ha(e, t) {
                                 var n = function(e, t) {
                                     return null == e ? i : e[t]
                                 }(e, t);
-                                return Rr(n) ? n : i
+                                return Pr(n) ? n : i
                             }
-                            var ha = Ut ? function(e) {
-                                    return null == e ? [] : (e = Oe(e), Dt(Ut(e), (function(t) {
-                                        return Ze.call(e, t)
+                            var pa = vt ? function(e) {
+                                    return null == e ? [] : (e = ke(e), Dt(vt(e), (function(t) {
+                                        return Ke.call(e, t)
                                     })))
-                                } : gu,
-                                pa = Ut ? function(e) {
-                                    for (var t = []; e;) Mt(t, ha(e)), e = $e(e);
+                                } : vu,
+                                ma = vt ? function(e) {
+                                    for (var t = []; e;) Mt(t, pa(e)), e = He(e);
                                     return t
-                                } : gu,
-                                ma = Cr;
+                                } : vu,
+                                _a = kr;
 
-                            function _a(e, t, n) {
-                                for (var r = -1, i = (t = yi(t, e)).length, a = !1; ++r < i;) {
-                                    var o = Ua(t[r]);
+                            function ga(e, t, n) {
+                                for (var r = -1, i = (t = wi(t, e)).length, a = !1; ++r < i;) {
+                                    var o = ja(t[r]);
                                     if (!(a = null != e && n(e, o))) break;
                                     e = e[o]
                                 }
-                                return a || ++r != i ? a : !!(i = null == e ? 0 : e.length) && ts(i) && ba(o, i) && (zo(e) || Yo(e))
-                            }
-
-                            function ga(e) {
-                                return "function" != typeof e.constructor || Sa(e) ? {} : Vn($e(e))
+                                return a || ++r != i ? a : !!(i = null == e ? 0 : e.length) && ns(i) && ya(o, i) && (Ho(e) || zo(e))
                             }
 
                             function va(e) {
-                                return zo(e) || Yo(e) || !!(et && e && e[et])
+                                return "function" != typeof e.constructor || Ta(e) ? {} : qn(He(e))
                             }
 
-                            function ba(e, t) {
+                            function ba(e) {
+                                return Ho(e) || zo(e) || !!(Xe && e && e[Xe])
+                            }
+
+                            function ya(e, t) {
                                 var n = typeof e;
                                 return !!(t = null == t ? p : t) && ("number" == n || "symbol" != n && ye.test(e)) && e > -1 && e % 1 == 0 && e < t
                             }
 
-                            function ya(e, t, n) {
-                                if (!ns(n)) return !1;
+                            function wa(e, t, n) {
+                                if (!rs(n)) return !1;
                                 var r = typeof t;
-                                return !!("number" == r ? $o(n) && ba(t, n.length) : "string" == r && t in n) && Vo(n[t], e)
+                                return !!("number" == r ? Ko(n) && ya(t, n.length) : "string" == r && t in n) && qo(n[t], e)
                             }
 
-                            function wa(e, t) {
-                                if (zo(e)) return !1;
+                            function Ea(e, t) {
+                                if (Ho(e)) return !1;
                                 var n = typeof e;
-                                return !("number" != n && "symbol" != n && "boolean" != n && null != e && !ls(e)) || (ne.test(e) || !te.test(e) || null != t && e in Oe(t))
+                                return !("number" != n && "symbol" != n && "boolean" != n && null != e && !ds(e)) || (ne.test(e) || !te.test(e) || null != t && e in ke(t))
                             }
 
-                            function Ea(e) {
-                                var t = sa(e),
-                                    n = Bn[t];
-                                if ("function" != typeof n || !(t in Yn.prototype)) return !1;
+                            function Aa(e) {
+                                var t = ua(e),
+                                    n = Vn[t];
+                                if ("function" != typeof n || !(t in zn.prototype)) return !1;
                                 if (e === n) return !0;
-                                var r = oa(n);
+                                var r = sa(n);
                                 return !!r && e === r[0]
-                            }(Tn && ma(new Tn(new ArrayBuffer(1))) != R || Cn && ma(new Cn) != T || kn && ma(kn.resolve()) != O || On && ma(new On) != D || xn && ma(new xn) != I) && (ma = function(e) {
-                                var t = Cr(e),
+                            }(Cn && _a(new Cn(new ArrayBuffer(1))) != R || kn && _a(new kn) != T || On && _a(On.resolve()) != O || xn && _a(new xn) != D || Dn && _a(new Dn) != I) && (_a = function(e) {
+                                var t = kr(e),
                                     n = t == k ? e.constructor : i,
-                                    r = n ? ja(n) : "";
+                                    r = n ? Fa(n) : "";
                                 if (r) switch (r) {
-                                    case In:
-                                        return R;
                                     case Mn:
-                                        return T;
+                                        return R;
                                     case Rn:
-                                        return O;
+                                        return T;
                                     case Pn:
-                                        return D;
+                                        return O;
                                     case Wn:
+                                        return D;
+                                    case Un:
                                         return I
                                 }
                                 return t
                             });
-                            var Aa = Re ? Qo : vu;
-
-                            function Sa(e) {
-                                var t = e && e.constructor;
-                                return e === ("function" == typeof t && t.prototype || Me)
-                            }
+                            var Sa = Me ? es : bu;
 
                             function Ta(e) {
-                                return e == e && !ns(e)
+                                var t = e && e.constructor;
+                                return e === ("function" == typeof t && t.prototype || Ie)
                             }
 
-                            function Ca(e, t) {
+                            function Ca(e) {
+                                return e == e && !rs(e)
+                            }
+
+                            function ka(e, t) {
                                 return function(n) {
-                                    return null != n && (n[e] === t && (t !== i || e in Oe(n)))
+                                    return null != n && (n[e] === t && (t !== i || e in ke(n)))
                                 }
                             }
 
-                            function ka(e, t, n) {
-                                return t = bn(t === i ? e.length - 1 : t, 0),
+                            function Oa(e, t, n) {
+                                return t = yn(t === i ? e.length - 1 : t, 0),
                                     function() {
-                                        for (var i = arguments, a = -1, o = bn(i.length - t, 0), s = r(o); ++a < o;) s[a] = i[t + a];
+                                        for (var i = arguments, a = -1, o = yn(i.length - t, 0), s = r(o); ++a < o;) s[a] = i[t + a];
                                         a = -1;
                                         for (var u = r(t + 1); ++a < t;) u[a] = i[a];
                                         return u[t] = n(s), Tt(e, this, u)
                                     }
                             }
 
-                            function Oa(e, t) {
-                                return t.length < 2 ? e : Sr(e, ii(t, 0, -1))
+                            function xa(e, t) {
+                                return t.length < 2 ? e : Tr(e, ai(t, 0, -1))
                             }
 
-                            function xa(e, t) {
-                                for (var n = e.length, r = yn(t.length, n), a = Di(e); r--;) {
+                            function Da(e, t) {
+                                for (var n = e.length, r = wn(t.length, n), a = Ni(e); r--;) {
                                     var o = t[r];
-                                    e[r] = ba(o, n) ? a[o] : i
+                                    e[r] = ya(o, n) ? a[o] : i
                                 }
                                 return e
                             }
 
-                            function Da(e, t) {
+                            function Na(e, t) {
                                 if (("constructor" !== t || "function" != typeof e[t]) && "__proto__" != t) return e[t]
                             }
-                            var Na = Ra(ti),
-                                La = mt || function(e, t) {
+                            var La = Pa(ni),
+                                Ia = pt || function(e, t) {
                                     return ht.setTimeout(e, t)
                                 },
-                                Ia = Ra(ni);
+                                Ma = Pa(ri);
 
-                            function Ma(e, t, n) {
+                            function Ra(e, t, n) {
                                 var r = t + "";
-                                return Ia(e, function(e, t) {
+                                return Ma(e, function(e, t) {
                                     var n = t.length;
                                     if (!n) return e;
                                     var r = n - 1;
-                                    return t[r] = (n > 1 ? "& " : "") + t[r], t = t.join(n > 2 ? ", " : " "), e.replace(ce, "{\n/* [wrapped with " + t + "] */\n")
+                                    return t[r] = (n > 1 ? "& " : "") + t[r], t = t.join(n > 2 ? ", " : " "), e.replace(ue, "{\n/* [wrapped with " + t + "] */\n")
                                 }(r, function(e, t) {
                                     return kt(g, (function(n) {
                                         var r = "_." + n[0];
                                         t & n[1] && !Nt(e, r) && e.push(r)
                                     })), e.sort()
                                 }(function(e) {
-                                    var t = e.match(le);
-                                    return t ? t[1].split(de) : []
+                                    var t = e.match(ce);
+                                    return t ? t[1].split(le) : []
                                 }(r), n)))
                             }
 
-                            function Ra(e) {
+                            function Pa(e) {
                                 var t = 0,
                                     n = 0;
                                 return function() {
-                                    var r = wn(),
+                                    var r = En(),
                                         a = 16 - (r - n);
                                     if (n = r, a > 0) {
                                         if (++t >= 800) return arguments[0]
@@ -7268,19 +7277,19 @@
                                 }
                             }
 
-                            function Pa(e, t) {
+                            function Wa(e, t) {
                                 var n = -1,
                                     r = e.length,
                                     a = r - 1;
                                 for (t = t === i ? r : t; ++n < t;) {
-                                    var o = Kr(n, a),
+                                    var o = Zr(n, a),
                                         s = e[o];
                                     e[o] = e[n], e[n] = s
                                 }
                                 return e.length = t, e
                             }
-                            var Wa = function(e) {
-                                var t = Po(e, (function(e) {
+                            var Ua = function(e) {
+                                var t = Wo(e, (function(e) {
                                         return 500 === n.size && n.clear(), e
                                     })),
                                     n = t.cache;
@@ -7292,16 +7301,16 @@
                                 })), t
                             }));
 
-                            function Ua(e) {
-                                if ("string" == typeof e || ls(e)) return e;
+                            function ja(e) {
+                                if ("string" == typeof e || ds(e)) return e;
                                 var t = e + "";
                                 return "0" == t && 1 / e == -1 / 0 ? "-0" : t
                             }
 
-                            function ja(e) {
+                            function Fa(e) {
                                 if (null != e) {
                                     try {
-                                        return Pe.call(e)
+                                        return Re.call(e)
                                     } catch (e) {}
                                     try {
                                         return e + ""
@@ -7310,184 +7319,184 @@
                                 return ""
                             }
 
-                            function Fa(e) {
-                                if (e instanceof Yn) return e.clone();
-                                var t = new Gn(e.__wrapped__, e.__chain__);
-                                return t.__actions__ = Di(e.__actions__), t.__index__ = e.__index__, t.__values__ = e.__values__, t
+                            function Ba(e) {
+                                if (e instanceof zn) return e.clone();
+                                var t = new Yn(e.__wrapped__, e.__chain__);
+                                return t.__actions__ = Ni(e.__actions__), t.__index__ = e.__index__, t.__values__ = e.__values__, t
                             }
-                            var Ba = Xr((function(e, t) {
-                                    return Ko(e) ? fr(e, vr(t, 1, Ko, !0)) : []
+                            var Va = Jr((function(e, t) {
+                                    return Zo(e) ? hr(e, br(t, 1, Zo, !0)) : []
                                 })),
-                                Va = Xr((function(e, t) {
-                                    var n = Xa(t);
-                                    return Ko(n) && (n = i), Ko(e) ? fr(e, vr(t, 1, Ko, !0), ca(n, 2)) : []
+                                qa = Jr((function(e, t) {
+                                    var n = Ja(t);
+                                    return Zo(n) && (n = i), Zo(e) ? hr(e, br(t, 1, Zo, !0), la(n, 2)) : []
                                 })),
-                                qa = Xr((function(e, t) {
-                                    var n = Xa(t);
-                                    return Ko(n) && (n = i), Ko(e) ? fr(e, vr(t, 1, Ko, !0), i, n) : []
+                                Ga = Jr((function(e, t) {
+                                    var n = Ja(t);
+                                    return Zo(n) && (n = i), Zo(e) ? hr(e, br(t, 1, Zo, !0), i, n) : []
                                 }));
-
-                            function Ga(e, t, n) {
-                                var r = null == e ? 0 : e.length;
-                                if (!r) return -1;
-                                var i = null == n ? 0 : _s(n);
-                                return i < 0 && (i = bn(r + i, 0)), Ft(e, ca(t, 3), i)
-                            }
 
                             function Ya(e, t, n) {
                                 var r = null == e ? 0 : e.length;
                                 if (!r) return -1;
-                                var a = r - 1;
-                                return n !== i && (a = _s(n), a = n < 0 ? bn(r + a, 0) : yn(a, r - 1)), Ft(e, ca(t, 3), a, !0)
+                                var i = null == n ? 0 : gs(n);
+                                return i < 0 && (i = yn(r + i, 0)), Ft(e, la(t, 3), i)
                             }
 
-                            function za(e) {
-                                return (null == e ? 0 : e.length) ? vr(e, 1) : []
+                            function za(e, t, n) {
+                                var r = null == e ? 0 : e.length;
+                                if (!r) return -1;
+                                var a = r - 1;
+                                return n !== i && (a = gs(n), a = n < 0 ? yn(r + a, 0) : wn(a, r - 1)), Ft(e, la(t, 3), a, !0)
                             }
 
                             function Ha(e) {
+                                return (null == e ? 0 : e.length) ? br(e, 1) : []
+                            }
+
+                            function $a(e) {
                                 return e && e.length ? e[0] : i
                             }
-                            var $a = Xr((function(e) {
-                                    var t = It(e, vi);
-                                    return t.length && t[0] === e[0] ? Dr(t) : []
+                            var Ka = Jr((function(e) {
+                                    var t = It(e, bi);
+                                    return t.length && t[0] === e[0] ? Nr(t) : []
                                 })),
-                                Ka = Xr((function(e) {
-                                    var t = Xa(e),
-                                        n = It(e, vi);
-                                    return t === Xa(n) ? t = i : n.pop(), n.length && n[0] === e[0] ? Dr(n, ca(t, 2)) : []
+                                Za = Jr((function(e) {
+                                    var t = Ja(e),
+                                        n = It(e, bi);
+                                    return t === Ja(n) ? t = i : n.pop(), n.length && n[0] === e[0] ? Nr(n, la(t, 2)) : []
                                 })),
-                                Za = Xr((function(e) {
-                                    var t = Xa(e),
-                                        n = It(e, vi);
-                                    return (t = "function" == typeof t ? t : i) && n.pop(), n.length && n[0] === e[0] ? Dr(n, i, t) : []
+                                Xa = Jr((function(e) {
+                                    var t = Ja(e),
+                                        n = It(e, bi);
+                                    return (t = "function" == typeof t ? t : i) && n.pop(), n.length && n[0] === e[0] ? Nr(n, i, t) : []
                                 }));
 
-                            function Xa(e) {
+                            function Ja(e) {
                                 var t = null == e ? 0 : e.length;
                                 return t ? e[t - 1] : i
                             }
-                            var Ja = Xr(Qa);
+                            var Qa = Jr(eo);
 
-                            function Qa(e, t) {
-                                return e && e.length && t && t.length ? Hr(e, t) : e
+                            function eo(e, t) {
+                                return e && e.length && t && t.length ? $r(e, t) : e
                             }
-                            var eo = ra((function(e, t) {
+                            var to = ia((function(e, t) {
                                 var n = null == e ? 0 : e.length,
-                                    r = sr(e, t);
-                                return $r(e, It(t, (function(e) {
-                                    return ba(e, n) ? +e : e
-                                })).sort(ki)), r
+                                    r = ur(e, t);
+                                return Kr(e, It(t, (function(e) {
+                                    return ya(e, n) ? +e : e
+                                })).sort(Oi)), r
                             }));
 
-                            function to(e) {
-                                return null == e ? e : Sn.call(e)
+                            function no(e) {
+                                return null == e ? e : Tn.call(e)
                             }
-                            var no = Xr((function(e) {
-                                    return di(vr(e, 1, Ko, !0))
+                            var ro = Jr((function(e) {
+                                    return fi(br(e, 1, Zo, !0))
                                 })),
-                                ro = Xr((function(e) {
-                                    var t = Xa(e);
-                                    return Ko(t) && (t = i), di(vr(e, 1, Ko, !0), ca(t, 2))
+                                io = Jr((function(e) {
+                                    var t = Ja(e);
+                                    return Zo(t) && (t = i), fi(br(e, 1, Zo, !0), la(t, 2))
                                 })),
-                                io = Xr((function(e) {
-                                    var t = Xa(e);
-                                    return t = "function" == typeof t ? t : i, di(vr(e, 1, Ko, !0), i, t)
+                                ao = Jr((function(e) {
+                                    var t = Ja(e);
+                                    return t = "function" == typeof t ? t : i, fi(br(e, 1, Zo, !0), i, t)
                                 }));
 
-                            function ao(e) {
+                            function oo(e) {
                                 if (!e || !e.length) return [];
                                 var t = 0;
                                 return e = Dt(e, (function(e) {
-                                    if (Ko(e)) return t = bn(e.length, t), !0
+                                    if (Zo(e)) return t = yn(e.length, t), !0
                                 })), Kt(t, (function(t) {
                                     return It(e, Yt(t))
                                 }))
                             }
 
-                            function oo(e, t) {
+                            function so(e, t) {
                                 if (!e || !e.length) return [];
-                                var n = ao(e);
+                                var n = oo(e);
                                 return null == t ? n : It(n, (function(e) {
                                     return Tt(t, i, e)
                                 }))
                             }
-                            var so = Xr((function(e, t) {
-                                    return Ko(e) ? fr(e, t) : []
+                            var uo = Jr((function(e, t) {
+                                    return Zo(e) ? hr(e, t) : []
                                 })),
-                                uo = Xr((function(e) {
-                                    return _i(Dt(e, Ko))
+                                co = Jr((function(e) {
+                                    return gi(Dt(e, Zo))
                                 })),
-                                co = Xr((function(e) {
-                                    var t = Xa(e);
-                                    return Ko(t) && (t = i), _i(Dt(e, Ko), ca(t, 2))
+                                lo = Jr((function(e) {
+                                    var t = Ja(e);
+                                    return Zo(t) && (t = i), gi(Dt(e, Zo), la(t, 2))
                                 })),
-                                lo = Xr((function(e) {
-                                    var t = Xa(e);
-                                    return t = "function" == typeof t ? t : i, _i(Dt(e, Ko), i, t)
+                                fo = Jr((function(e) {
+                                    var t = Ja(e);
+                                    return t = "function" == typeof t ? t : i, gi(Dt(e, Zo), i, t)
                                 })),
-                                fo = Xr(ao);
-                            var ho = Xr((function(e) {
+                                ho = Jr(oo);
+                            var po = Jr((function(e) {
                                 var t = e.length,
                                     n = t > 1 ? e[t - 1] : i;
-                                return n = "function" == typeof n ? (e.pop(), n) : i, oo(e, n)
+                                return n = "function" == typeof n ? (e.pop(), n) : i, so(e, n)
                             }));
 
-                            function po(e) {
-                                var t = Bn(e);
+                            function mo(e) {
+                                var t = Vn(e);
                                 return t.__chain__ = !0, t
                             }
 
-                            function mo(e, t) {
+                            function _o(e, t) {
                                 return t(e)
                             }
-                            var _o = ra((function(e) {
+                            var go = ia((function(e) {
                                 var t = e.length,
                                     n = t ? e[0] : 0,
                                     r = this.__wrapped__,
                                     a = function(t) {
-                                        return sr(t, e)
+                                        return ur(t, e)
                                     };
-                                return !(t > 1 || this.__actions__.length) && r instanceof Yn && ba(n) ? ((r = r.slice(n, +n + (t ? 1 : 0))).__actions__.push({
-                                    func: mo,
+                                return !(t > 1 || this.__actions__.length) && r instanceof zn && ya(n) ? ((r = r.slice(n, +n + (t ? 1 : 0))).__actions__.push({
+                                    func: _o,
                                     args: [a],
                                     thisArg: i
-                                }), new Gn(r, this.__chain__).thru((function(e) {
+                                }), new Yn(r, this.__chain__).thru((function(e) {
                                     return t && !e.length && e.push(i), e
                                 }))) : this.thru(a)
                             }));
-                            var go = Li((function(e, t, n) {
-                                We.call(e, n) ? ++e[n] : or(e, n, 1)
+                            var vo = Ii((function(e, t, n) {
+                                Pe.call(e, n) ? ++e[n] : sr(e, n, 1)
                             }));
-                            var vo = ji(Ga),
-                                bo = ji(Ya);
-
-                            function yo(e, t) {
-                                return (zo(e) ? kt : hr)(e, ca(t, 3))
-                            }
+                            var bo = Fi(Ya),
+                                yo = Fi(za);
 
                             function wo(e, t) {
-                                return (zo(e) ? Ot : pr)(e, ca(t, 3))
+                                return (Ho(e) ? kt : pr)(e, la(t, 3))
                             }
-                            var Eo = Li((function(e, t, n) {
-                                We.call(e, n) ? e[n].push(t) : or(e, n, [t])
+
+                            function Eo(e, t) {
+                                return (Ho(e) ? Ot : mr)(e, la(t, 3))
+                            }
+                            var Ao = Ii((function(e, t, n) {
+                                Pe.call(e, n) ? e[n].push(t) : sr(e, n, [t])
                             }));
-                            var Ao = Xr((function(e, t, n) {
+                            var So = Jr((function(e, t, n) {
                                     var i = -1,
                                         a = "function" == typeof t,
-                                        o = $o(e) ? r(e.length) : [];
-                                    return hr(e, (function(e) {
-                                        o[++i] = a ? Tt(t, e, n) : Nr(e, t, n)
+                                        o = Ko(e) ? r(e.length) : [];
+                                    return pr(e, (function(e) {
+                                        o[++i] = a ? Tt(t, e, n) : Lr(e, t, n)
                                     })), o
                                 })),
-                                So = Li((function(e, t, n) {
-                                    or(e, n, t)
+                                To = Ii((function(e, t, n) {
+                                    sr(e, n, t)
                                 }));
 
-                            function To(e, t) {
-                                return (zo(e) ? It : Fr)(e, ca(t, 3))
+                            function Co(e, t) {
+                                return (Ho(e) ? It : Br)(e, la(t, 3))
                             }
-                            var Co = Li((function(e, t, n) {
+                            var ko = Ii((function(e, t, n) {
                                 e[n ? 0 : 1].push(t)
                             }), (function() {
                                 return [
@@ -7495,50 +7504,50 @@
                                     []
                                 ]
                             }));
-                            var ko = Xr((function(e, t) {
+                            var Oo = Jr((function(e, t) {
                                     if (null == e) return [];
                                     var n = t.length;
-                                    return n > 1 && ya(e, t[0], t[1]) ? t = [] : n > 2 && ya(t[0], t[1], t[2]) && (t = [t[0]]), Yr(e, vr(t, 1), [])
+                                    return n > 1 && wa(e, t[0], t[1]) ? t = [] : n > 2 && wa(t[0], t[1], t[2]) && (t = [t[0]]), zr(e, br(t, 1), [])
                                 })),
-                                Oo = pt || function() {
+                                xo = ft || function() {
                                     return ht.Date.now()
                                 };
 
-                            function xo(e, t, n) {
-                                return t = n ? i : t, t = e && null == t ? e.length : t, Ji(e, d, i, i, i, i, t)
+                            function Do(e, t, n) {
+                                return t = n ? i : t, t = e && null == t ? e.length : t, Qi(e, d, i, i, i, i, t)
                             }
 
-                            function Do(e, t) {
+                            function No(e, t) {
                                 var n;
-                                if ("function" != typeof t) throw new Ne(a);
-                                return e = _s(e),
+                                if ("function" != typeof t) throw new De(a);
+                                return e = gs(e),
                                     function() {
                                         return --e > 0 && (n = t.apply(this, arguments)), e <= 1 && (t = i), n
                                     }
                             }
-                            var No = Xr((function(e, t, n) {
+                            var Lo = Jr((function(e, t, n) {
                                     var r = 1;
                                     if (n.length) {
-                                        var i = cn(n, ua(No));
+                                        var i = ln(n, ca(Lo));
                                         r |= c
                                     }
-                                    return Ji(e, r, t, n, i)
+                                    return Qi(e, r, t, n, i)
                                 })),
-                                Lo = Xr((function(e, t, n) {
+                                Io = Jr((function(e, t, n) {
                                     var r = 3;
                                     if (n.length) {
-                                        var i = cn(n, ua(Lo));
+                                        var i = ln(n, ca(Io));
                                         r |= c
                                     }
-                                    return Ji(t, r, e, n, i)
+                                    return Qi(t, r, e, n, i)
                                 }));
 
-                            function Io(e, t, n) {
+                            function Mo(e, t, n) {
                                 var r, o, s, u, c, l, d = 0,
                                     f = !1,
                                     h = !1,
                                     p = !0;
-                                if ("function" != typeof e) throw new Ne(a);
+                                if ("function" != typeof e) throw new De(a);
 
                                 function m(t) {
                                     var n = r,
@@ -7547,7 +7556,7 @@
                                 }
 
                                 function _(e) {
-                                    return d = e, c = La(v, t), f ? m(e) : u
+                                    return d = e, c = Ia(v, t), f ? m(e) : u
                                 }
 
                                 function g(e) {
@@ -7556,11 +7565,11 @@
                                 }
 
                                 function v() {
-                                    var e = Oo();
+                                    var e = xo();
                                     if (g(e)) return b(e);
-                                    c = La(v, function(e) {
+                                    c = Ia(v, function(e) {
                                         var n = t - (e - l);
-                                        return h ? yn(n, s - (e - d)) : n
+                                        return h ? wn(n, s - (e - d)) : n
                                     }(e))
                                 }
 
@@ -7569,29 +7578,29 @@
                                 }
 
                                 function y() {
-                                    var e = Oo(),
+                                    var e = xo(),
                                         n = g(e);
                                     if (r = arguments, o = this, l = e, n) {
                                         if (c === i) return _(l);
-                                        if (h) return Ai(c), c = La(v, t), m(l)
+                                        if (h) return Si(c), c = Ia(v, t), m(l)
                                     }
-                                    return c === i && (c = La(v, t)), u
+                                    return c === i && (c = Ia(v, t)), u
                                 }
-                                return t = vs(t) || 0, ns(n) && (f = !!n.leading, s = (h = "maxWait" in n) ? bn(vs(n.maxWait) || 0, t) : s, p = "trailing" in n ? !!n.trailing : p), y.cancel = function() {
-                                    c !== i && Ai(c), d = 0, r = l = o = c = i
+                                return t = bs(t) || 0, rs(n) && (f = !!n.leading, s = (h = "maxWait" in n) ? yn(bs(n.maxWait) || 0, t) : s, p = "trailing" in n ? !!n.trailing : p), y.cancel = function() {
+                                    c !== i && Si(c), d = 0, r = l = o = c = i
                                 }, y.flush = function() {
-                                    return c === i ? u : b(Oo())
+                                    return c === i ? u : b(xo())
                                 }, y
                             }
-                            var Mo = Xr((function(e, t) {
-                                    return dr(e, 1, t)
+                            var Ro = Jr((function(e, t) {
+                                    return fr(e, 1, t)
                                 })),
-                                Ro = Xr((function(e, t, n) {
-                                    return dr(e, vs(t) || 0, n)
+                                Po = Jr((function(e, t, n) {
+                                    return fr(e, bs(t) || 0, n)
                                 }));
 
-                            function Po(e, t) {
-                                if ("function" != typeof e || null != t && "function" != typeof t) throw new Ne(a);
+                            function Wo(e, t) {
+                                if ("function" != typeof e || null != t && "function" != typeof t) throw new De(a);
                                 var n = function() {
                                     var r = arguments,
                                         i = t ? t.apply(this, r) : r[0],
@@ -7600,11 +7609,11 @@
                                     var o = e.apply(this, r);
                                     return n.cache = a.set(i, o) || a, o
                                 };
-                                return n.cache = new(Po.Cache || $n), n
+                                return n.cache = new(Wo.Cache || Kn), n
                             }
 
-                            function Wo(e) {
-                                if ("function" != typeof e) throw new Ne(a);
+                            function Uo(e) {
+                                if ("function" != typeof e) throw new De(a);
                                 return function() {
                                     var t = arguments;
                                     switch (t.length) {
@@ -7620,349 +7629,349 @@
                                     return !e.apply(this, t)
                                 }
                             }
-                            Po.Cache = $n;
-                            var Uo = wi((function(e, t) {
-                                    var n = (t = 1 == t.length && zo(t[0]) ? It(t[0], Zt(ca())) : It(vr(t, 1), Zt(ca()))).length;
-                                    return Xr((function(r) {
-                                        for (var i = -1, a = yn(r.length, n); ++i < a;) r[i] = t[i].call(this, r[i]);
+                            Wo.Cache = Kn;
+                            var jo = Ei((function(e, t) {
+                                    var n = (t = 1 == t.length && Ho(t[0]) ? It(t[0], Xt(la())) : It(br(t, 1), Xt(la()))).length;
+                                    return Jr((function(r) {
+                                        for (var i = -1, a = wn(r.length, n); ++i < a;) r[i] = t[i].call(this, r[i]);
                                         return Tt(e, this, r)
                                     }))
                                 })),
-                                jo = Xr((function(e, t) {
-                                    var n = cn(t, ua(jo));
-                                    return Ji(e, c, i, t, n)
+                                Fo = Jr((function(e, t) {
+                                    var n = ln(t, ca(Fo));
+                                    return Qi(e, c, i, t, n)
                                 })),
-                                Fo = Xr((function(e, t) {
-                                    var n = cn(t, ua(Fo));
-                                    return Ji(e, l, i, t, n)
+                                Bo = Jr((function(e, t) {
+                                    var n = ln(t, ca(Bo));
+                                    return Qi(e, l, i, t, n)
                                 })),
-                                Bo = ra((function(e, t) {
-                                    return Ji(e, f, i, i, i, t)
+                                Vo = ia((function(e, t) {
+                                    return Qi(e, f, i, i, i, t)
                                 }));
 
-                            function Vo(e, t) {
+                            function qo(e, t) {
                                 return e === t || e != e && t != t
                             }
-                            var qo = Hi(kr),
-                                Go = Hi((function(e, t) {
+                            var Go = $i(Or),
+                                Yo = $i((function(e, t) {
                                     return e >= t
                                 })),
-                                Yo = Lr(function() {
+                                zo = Ir(function() {
                                     return arguments
-                                }()) ? Lr : function(e) {
-                                    return rs(e) && We.call(e, "callee") && !Ze.call(e, "callee")
+                                }()) ? Ir : function(e) {
+                                    return is(e) && Pe.call(e, "callee") && !Ke.call(e, "callee")
                                 },
-                                zo = r.isArray,
-                                Ho = bt ? Zt(bt) : function(e) {
-                                    return rs(e) && Cr(e) == M
+                                Ho = r.isArray,
+                                $o = bt ? Xt(bt) : function(e) {
+                                    return is(e) && kr(e) == M
                                 };
-
-                            function $o(e) {
-                                return null != e && ts(e.length) && !Qo(e)
-                            }
 
                             function Ko(e) {
-                                return rs(e) && $o(e)
+                                return null != e && ns(e.length) && !es(e)
                             }
-                            var Zo = zt || vu,
-                                Xo = yt ? Zt(yt) : function(e) {
-                                    return rs(e) && Cr(e) == w
+
+                            function Zo(e) {
+                                return is(e) && Ko(e)
+                            }
+                            var Xo = Ut || bu,
+                                Jo = yt ? Xt(yt) : function(e) {
+                                    return is(e) && kr(e) == w
                                 };
 
-                            function Jo(e) {
-                                if (!rs(e)) return !1;
-                                var t = Cr(e);
-                                return t == E || "[object DOMException]" == t || "string" == typeof e.message && "string" == typeof e.name && !os(e)
-                            }
-
                             function Qo(e) {
-                                if (!ns(e)) return !1;
-                                var t = Cr(e);
-                                return t == A || t == S || "[object AsyncFunction]" == t || "[object Proxy]" == t
+                                if (!is(e)) return !1;
+                                var t = kr(e);
+                                return t == E || "[object DOMException]" == t || "string" == typeof e.message && "string" == typeof e.name && !ss(e)
                             }
 
                             function es(e) {
-                                return "number" == typeof e && e == _s(e)
+                                if (!rs(e)) return !1;
+                                var t = kr(e);
+                                return t == A || t == S || "[object AsyncFunction]" == t || "[object Proxy]" == t
                             }
 
                             function ts(e) {
-                                return "number" == typeof e && e > -1 && e % 1 == 0 && e <= p
+                                return "number" == typeof e && e == gs(e)
                             }
 
                             function ns(e) {
+                                return "number" == typeof e && e > -1 && e % 1 == 0 && e <= p
+                            }
+
+                            function rs(e) {
                                 var t = typeof e;
                                 return null != e && ("object" == t || "function" == t)
                             }
 
-                            function rs(e) {
+                            function is(e) {
                                 return null != e && "object" == typeof e
                             }
-                            var is = wt ? Zt(wt) : function(e) {
-                                return rs(e) && ma(e) == T
+                            var as = wt ? Xt(wt) : function(e) {
+                                return is(e) && _a(e) == T
                             };
-
-                            function as(e) {
-                                return "number" == typeof e || rs(e) && Cr(e) == C
-                            }
 
                             function os(e) {
-                                if (!rs(e) || Cr(e) != k) return !1;
-                                var t = $e(e);
-                                if (null === t) return !0;
-                                var n = We.call(t, "constructor") && t.constructor;
-                                return "function" == typeof n && n instanceof n && Pe.call(n) == Be
+                                return "number" == typeof e || is(e) && kr(e) == C
                             }
-                            var ss = Et ? Zt(Et) : function(e) {
-                                return rs(e) && Cr(e) == x
-                            };
-                            var us = At ? Zt(At) : function(e) {
-                                return rs(e) && ma(e) == D
-                            };
 
-                            function cs(e) {
-                                return "string" == typeof e || !zo(e) && rs(e) && Cr(e) == N
+                            function ss(e) {
+                                if (!is(e) || kr(e) != k) return !1;
+                                var t = He(e);
+                                if (null === t) return !0;
+                                var n = Pe.call(t, "constructor") && t.constructor;
+                                return "function" == typeof n && n instanceof n && Re.call(n) == Fe
                             }
+                            var us = Et ? Xt(Et) : function(e) {
+                                return is(e) && kr(e) == x
+                            };
+                            var cs = At ? Xt(At) : function(e) {
+                                return is(e) && _a(e) == D
+                            };
 
                             function ls(e) {
-                                return "symbol" == typeof e || rs(e) && Cr(e) == L
+                                return "string" == typeof e || !Ho(e) && is(e) && kr(e) == N
                             }
-                            var ds = St ? Zt(St) : function(e) {
-                                return rs(e) && ts(e.length) && !!ot[Cr(e)]
+
+                            function ds(e) {
+                                return "symbol" == typeof e || is(e) && kr(e) == L
+                            }
+                            var fs = St ? Xt(St) : function(e) {
+                                return is(e) && ns(e.length) && !!ot[kr(e)]
                             };
-                            var fs = Hi(jr),
-                                hs = Hi((function(e, t) {
+                            var hs = $i(Fr),
+                                ps = $i((function(e, t) {
                                     return e <= t
                                 }));
 
-                            function ps(e) {
+                            function ms(e) {
                                 if (!e) return [];
-                                if ($o(e)) return cs(e) ? hn(e) : Di(e);
-                                if (nt && e[nt]) return function(e) {
+                                if (Ko(e)) return ls(e) ? pn(e) : Ni(e);
+                                if (et && e[et]) return function(e) {
                                     for (var t, n = []; !(t = e.next()).done;) n.push(t.value);
                                     return n
-                                }(e[nt]());
-                                var t = ma(e);
-                                return (t == T ? sn : t == D ? ln : Vs)(e)
-                            }
-
-                            function ms(e) {
-                                return e ? (e = vs(e)) === h || e === -1 / 0 ? 17976931348623157e292 * (e < 0 ? -1 : 1) : e == e ? e : 0 : 0 === e ? e : 0
+                                }(e[et]());
+                                var t = _a(e);
+                                return (t == T ? un : t == D ? dn : qs)(e)
                             }
 
                             function _s(e) {
-                                var t = ms(e),
+                                return e ? (e = bs(e)) === h || e === -1 / 0 ? 17976931348623157e292 * (e < 0 ? -1 : 1) : e == e ? e : 0 : 0 === e ? e : 0
+                            }
+
+                            function gs(e) {
+                                var t = _s(e),
                                     n = t % 1;
                                 return t == t ? n ? t - n : t : 0
                             }
 
-                            function gs(e) {
-                                return e ? ur(_s(e), 0, _) : 0
+                            function vs(e) {
+                                return e ? cr(gs(e), 0, _) : 0
                             }
 
-                            function vs(e) {
+                            function bs(e) {
                                 if ("number" == typeof e) return e;
-                                if (ls(e)) return m;
-                                if (ns(e)) {
+                                if (ds(e)) return m;
+                                if (rs(e)) {
                                     var t = "function" == typeof e.valueOf ? e.valueOf() : e;
-                                    e = ns(t) ? t + "" : t
+                                    e = rs(t) ? t + "" : t
                                 }
                                 if ("string" != typeof e) return 0 === e ? e : +e;
-                                e = e.replace(oe, "");
+                                e = Zt(e);
                                 var n = ge.test(e);
                                 return n || be.test(e) ? lt(e.slice(2), n ? 2 : 8) : _e.test(e) ? m : +e
                             }
 
-                            function bs(e) {
-                                return Ni(e, Ms(e))
+                            function ys(e) {
+                                return Li(e, Rs(e))
                             }
 
-                            function ys(e) {
-                                return null == e ? "" : li(e)
+                            function ws(e) {
+                                return null == e ? "" : di(e)
                             }
-                            var ws = Ii((function(e, t) {
-                                    if (Sa(t) || $o(t)) Ni(t, Is(t), e);
+                            var Es = Mi((function(e, t) {
+                                    if (Ta(t) || Ko(t)) Li(t, Ms(t), e);
                                     else
-                                        for (var n in t) We.call(t, n) && nr(e, n, t[n])
+                                        for (var n in t) Pe.call(t, n) && rr(e, n, t[n])
                                 })),
-                                Es = Ii((function(e, t) {
-                                    Ni(t, Ms(t), e)
+                                As = Mi((function(e, t) {
+                                    Li(t, Rs(t), e)
                                 })),
-                                As = Ii((function(e, t, n, r) {
-                                    Ni(t, Ms(t), e, r)
+                                Ss = Mi((function(e, t, n, r) {
+                                    Li(t, Rs(t), e, r)
                                 })),
-                                Ss = Ii((function(e, t, n, r) {
-                                    Ni(t, Is(t), e, r)
+                                Ts = Mi((function(e, t, n, r) {
+                                    Li(t, Ms(t), e, r)
                                 })),
-                                Ts = ra(sr);
-                            var Cs = Xr((function(e, t) {
-                                    e = Oe(e);
+                                Cs = ia(ur);
+                            var ks = Jr((function(e, t) {
+                                    e = ke(e);
                                     var n = -1,
                                         r = t.length,
                                         a = r > 2 ? t[2] : i;
-                                    for (a && ya(t[0], t[1], a) && (r = 1); ++n < r;)
-                                        for (var o = t[n], s = Ms(o), u = -1, c = s.length; ++u < c;) {
+                                    for (a && wa(t[0], t[1], a) && (r = 1); ++n < r;)
+                                        for (var o = t[n], s = Rs(o), u = -1, c = s.length; ++u < c;) {
                                             var l = s[u],
                                                 d = e[l];
-                                            (d === i || Vo(d, Me[l]) && !We.call(e, l)) && (e[l] = o[l])
+                                            (d === i || qo(d, Ie[l]) && !Pe.call(e, l)) && (e[l] = o[l])
                                         }
                                     return e
                                 })),
-                                ks = Xr((function(e) {
-                                    return e.push(i, ea), Tt(Ps, i, e)
+                                Os = Jr((function(e) {
+                                    return e.push(i, ta), Tt(Ws, i, e)
                                 }));
 
-                            function Os(e, t, n) {
-                                var r = null == e ? i : Sr(e, t);
+                            function xs(e, t, n) {
+                                var r = null == e ? i : Tr(e, t);
                                 return r === i ? n : r
                             }
 
-                            function xs(e, t) {
-                                return null != e && _a(e, t, xr)
+                            function Ds(e, t) {
+                                return null != e && ga(e, t, Dr)
                             }
-                            var Ds = Vi((function(e, t, n) {
-                                    null != t && "function" != typeof t.toString && (t = Fe.call(t)), e[t] = n
-                                }), nu(au)),
-                                Ns = Vi((function(e, t, n) {
-                                    null != t && "function" != typeof t.toString && (t = Fe.call(t)), We.call(e, t) ? e[t].push(n) : e[t] = [n]
-                                }), ca),
-                                Ls = Xr(Nr);
-
-                            function Is(e) {
-                                return $o(e) ? Xn(e) : Wr(e)
-                            }
+                            var Ns = qi((function(e, t, n) {
+                                    null != t && "function" != typeof t.toString && (t = je.call(t)), e[t] = n
+                                }), ru(ou)),
+                                Ls = qi((function(e, t, n) {
+                                    null != t && "function" != typeof t.toString && (t = je.call(t)), Pe.call(e, t) ? e[t].push(n) : e[t] = [n]
+                                }), la),
+                                Is = Jr(Lr);
 
                             function Ms(e) {
-                                return $o(e) ? Xn(e, !0) : Ur(e)
+                                return Ko(e) ? Jn(e) : Ur(e)
                             }
-                            var Rs = Ii((function(e, t, n) {
-                                    qr(e, t, n)
+
+                            function Rs(e) {
+                                return Ko(e) ? Jn(e, !0) : jr(e)
+                            }
+                            var Ps = Mi((function(e, t, n) {
+                                    Gr(e, t, n)
                                 })),
-                                Ps = Ii((function(e, t, n, r) {
-                                    qr(e, t, n, r)
+                                Ws = Mi((function(e, t, n, r) {
+                                    Gr(e, t, n, r)
                                 })),
-                                Ws = ra((function(e, t) {
+                                Us = ia((function(e, t) {
                                     var n = {};
                                     if (null == e) return n;
                                     var r = !1;
                                     t = It(t, (function(t) {
-                                        return t = yi(t, e), r || (r = t.length > 1), t
-                                    })), Ni(e, aa(e), n), r && (n = cr(n, 7, ta));
-                                    for (var i = t.length; i--;) fi(n, t[i]);
+                                        return t = wi(t, e), r || (r = t.length > 1), t
+                                    })), Li(e, oa(e), n), r && (n = lr(n, 7, na));
+                                    for (var i = t.length; i--;) hi(n, t[i]);
                                     return n
                                 }));
-                            var Us = ra((function(e, t) {
+                            var js = ia((function(e, t) {
                                 return null == e ? {} : function(e, t) {
-                                    return zr(e, t, (function(t, n) {
-                                        return xs(e, n)
+                                    return Hr(e, t, (function(t, n) {
+                                        return Ds(e, n)
                                     }))
                                 }(e, t)
                             }));
 
-                            function js(e, t) {
+                            function Fs(e, t) {
                                 if (null == e) return {};
-                                var n = It(aa(e), (function(e) {
+                                var n = It(oa(e), (function(e) {
                                     return [e]
                                 }));
-                                return t = ca(t), zr(e, n, (function(e, n) {
+                                return t = la(t), Hr(e, n, (function(e, n) {
                                     return t(e, n[0])
                                 }))
                             }
-                            var Fs = Xi(Is),
-                                Bs = Xi(Ms);
+                            var Bs = Ji(Ms),
+                                Vs = Ji(Rs);
 
-                            function Vs(e) {
-                                return null == e ? [] : Xt(e, Is(e))
+                            function qs(e) {
+                                return null == e ? [] : Jt(e, Ms(e))
                             }
-                            var qs = Wi((function(e, t, n) {
-                                return t = t.toLowerCase(), e + (n ? Gs(t) : t)
+                            var Gs = Ui((function(e, t, n) {
+                                return t = t.toLowerCase(), e + (n ? Ys(t) : t)
                             }));
-
-                            function Gs(e) {
-                                return Js(ys(e).toLowerCase())
-                            }
 
                             function Ys(e) {
-                                return (e = ys(e)) && e.replace(we, nn).replace(Qe, "")
+                                return Qs(ws(e).toLowerCase())
                             }
-                            var zs = Wi((function(e, t, n) {
+
+                            function zs(e) {
+                                return (e = ws(e)) && e.replace(we, rn).replace(Qe, "")
+                            }
+                            var Hs = Ui((function(e, t, n) {
                                     return e + (n ? "-" : "") + t.toLowerCase()
                                 })),
-                                Hs = Wi((function(e, t, n) {
+                                $s = Ui((function(e, t, n) {
                                     return e + (n ? " " : "") + t.toLowerCase()
                                 })),
-                                $s = Pi("toLowerCase");
-                            var Ks = Wi((function(e, t, n) {
+                                Ks = Wi("toLowerCase");
+                            var Zs = Ui((function(e, t, n) {
                                 return e + (n ? "_" : "") + t.toLowerCase()
                             }));
-                            var Zs = Wi((function(e, t, n) {
-                                return e + (n ? " " : "") + Js(t)
+                            var Xs = Ui((function(e, t, n) {
+                                return e + (n ? " " : "") + Qs(t)
                             }));
-                            var Xs = Wi((function(e, t, n) {
+                            var Js = Ui((function(e, t, n) {
                                     return e + (n ? " " : "") + t.toUpperCase()
                                 })),
-                                Js = Pi("toUpperCase");
+                                Qs = Wi("toUpperCase");
 
-                            function Qs(e, t, n) {
-                                return e = ys(e), (t = n ? i : t) === i ? function(e) {
+                            function eu(e, t, n) {
+                                return e = ws(e), (t = n ? i : t) === i ? function(e) {
                                     return rt.test(e)
                                 }(e) ? function(e) {
                                     return e.match(tt) || []
                                 }(e) : function(e) {
-                                    return e.match(fe) || []
+                                    return e.match(de) || []
                                 }(e) : e.match(t) || []
                             }
-                            var eu = Xr((function(e, t) {
+                            var tu = Jr((function(e, t) {
                                     try {
                                         return Tt(e, i, t)
                                     } catch (e) {
-                                        return Jo(e) ? e : new Te(e)
+                                        return Qo(e) ? e : new Se(e)
                                     }
                                 })),
-                                tu = ra((function(e, t) {
+                                nu = ia((function(e, t) {
                                     return kt(t, (function(t) {
-                                        t = Ua(t), or(e, t, No(e[t], e))
+                                        t = ja(t), sr(e, t, Lo(e[t], e))
                                     })), e
                                 }));
 
-                            function nu(e) {
+                            function ru(e) {
                                 return function() {
                                     return e
                                 }
                             }
-                            var ru = Fi(),
-                                iu = Fi(!0);
+                            var iu = Bi(),
+                                au = Bi(!0);
 
-                            function au(e) {
+                            function ou(e) {
                                 return e
                             }
 
-                            function ou(e) {
-                                return Pr("function" == typeof e ? e : cr(e, 1))
+                            function su(e) {
+                                return Wr("function" == typeof e ? e : lr(e, 1))
                             }
-                            var su = Xr((function(e, t) {
+                            var uu = Jr((function(e, t) {
                                     return function(n) {
-                                        return Nr(n, e, t)
+                                        return Lr(n, e, t)
                                     }
                                 })),
-                                uu = Xr((function(e, t) {
+                                cu = Jr((function(e, t) {
                                     return function(n) {
-                                        return Nr(e, n, t)
+                                        return Lr(e, n, t)
                                     }
                                 }));
 
-                            function cu(e, t, n) {
-                                var r = Is(t),
-                                    i = Ar(t, r);
-                                null != n || ns(t) && (i.length || !r.length) || (n = t, t = e, e = this, i = Ar(t, Is(t)));
-                                var a = !(ns(n) && "chain" in n && !n.chain),
-                                    o = Qo(e);
+                            function lu(e, t, n) {
+                                var r = Ms(t),
+                                    i = Sr(t, r);
+                                null != n || rs(t) && (i.length || !r.length) || (n = t, t = e, e = this, i = Sr(t, Ms(t)));
+                                var a = !(rs(n) && "chain" in n && !n.chain),
+                                    o = es(e);
                                 return kt(i, (function(n) {
                                     var r = t[n];
                                     e[n] = r, o && (e.prototype[n] = function() {
                                         var t = this.__chain__;
                                         if (a || t) {
                                             var n = e(this.__wrapped__),
-                                                i = n.__actions__ = Di(this.__actions__);
+                                                i = n.__actions__ = Ni(this.__actions__);
                                             return i.push({
                                                 func: r,
                                                 args: arguments,
@@ -7974,636 +7983,639 @@
                                 })), e
                             }
 
-                            function lu() {}
-                            var du = Gi(It),
-                                fu = Gi(xt),
-                                hu = Gi(Wt);
+                            function du() {}
+                            var fu = Yi(It),
+                                hu = Yi(xt),
+                                pu = Yi(Wt);
 
-                            function pu(e) {
-                                return wa(e) ? Yt(Ua(e)) : function(e) {
+                            function mu(e) {
+                                return Ea(e) ? Yt(ja(e)) : function(e) {
                                     return function(t) {
-                                        return Sr(t, e)
+                                        return Tr(t, e)
                                     }
                                 }(e)
                             }
-                            var mu = zi(),
-                                _u = zi(!0);
+                            var _u = Hi(),
+                                gu = Hi(!0);
 
-                            function gu() {
+                            function vu() {
                                 return []
                             }
 
-                            function vu() {
+                            function bu() {
                                 return !1
                             }
-                            var bu = qi((function(e, t) {
+                            var yu = Gi((function(e, t) {
                                     return e + t
                                 }), 0),
-                                yu = Ki("ceil"),
-                                wu = qi((function(e, t) {
+                                wu = Zi("ceil"),
+                                Eu = Gi((function(e, t) {
                                     return e / t
                                 }), 1),
-                                Eu = Ki("floor");
-                            var Au, Su = qi((function(e, t) {
+                                Au = Zi("floor");
+                            var Su, Tu = Gi((function(e, t) {
                                     return e * t
                                 }), 1),
-                                Tu = Ki("round"),
-                                Cu = qi((function(e, t) {
+                                Cu = Zi("round"),
+                                ku = Gi((function(e, t) {
                                     return e - t
                                 }), 0);
-                            return Bn.after = function(e, t) {
-                                if ("function" != typeof t) throw new Ne(a);
-                                return e = _s(e),
+                            return Vn.after = function(e, t) {
+                                if ("function" != typeof t) throw new De(a);
+                                return e = gs(e),
                                     function() {
                                         if (--e < 1) return t.apply(this, arguments)
                                     }
-                            }, Bn.ary = xo, Bn.assign = ws, Bn.assignIn = Es, Bn.assignInWith = As, Bn.assignWith = Ss, Bn.at = Ts, Bn.before = Do, Bn.bind = No, Bn.bindAll = tu, Bn.bindKey = Lo, Bn.castArray = function() {
+                            }, Vn.ary = Do, Vn.assign = Es, Vn.assignIn = As, Vn.assignInWith = Ss, Vn.assignWith = Ts, Vn.at = Cs, Vn.before = No, Vn.bind = Lo, Vn.bindAll = nu, Vn.bindKey = Io, Vn.castArray = function() {
                                 if (!arguments.length) return [];
                                 var e = arguments[0];
-                                return zo(e) ? e : [e]
-                            }, Bn.chain = po, Bn.chunk = function(e, t, n) {
-                                t = (n ? ya(e, t, n) : t === i) ? 1 : bn(_s(t), 0);
+                                return Ho(e) ? e : [e]
+                            }, Vn.chain = mo, Vn.chunk = function(e, t, n) {
+                                t = (n ? wa(e, t, n) : t === i) ? 1 : yn(gs(t), 0);
                                 var a = null == e ? 0 : e.length;
                                 if (!a || t < 1) return [];
-                                for (var o = 0, s = 0, u = r(gt(a / t)); o < a;) u[s++] = ii(e, o, o += t);
+                                for (var o = 0, s = 0, u = r(mt(a / t)); o < a;) u[s++] = ai(e, o, o += t);
                                 return u
-                            }, Bn.compact = function(e) {
+                            }, Vn.compact = function(e) {
                                 for (var t = -1, n = null == e ? 0 : e.length, r = 0, i = []; ++t < n;) {
                                     var a = e[t];
                                     a && (i[r++] = a)
                                 }
                                 return i
-                            }, Bn.concat = function() {
+                            }, Vn.concat = function() {
                                 var e = arguments.length;
                                 if (!e) return [];
                                 for (var t = r(e - 1), n = arguments[0], i = e; i--;) t[i - 1] = arguments[i];
-                                return Mt(zo(n) ? Di(n) : [n], vr(t, 1))
-                            }, Bn.cond = function(e) {
+                                return Mt(Ho(n) ? Ni(n) : [n], br(t, 1))
+                            }, Vn.cond = function(e) {
                                 var t = null == e ? 0 : e.length,
-                                    n = ca();
+                                    n = la();
                                 return e = t ? It(e, (function(e) {
-                                    if ("function" != typeof e[1]) throw new Ne(a);
+                                    if ("function" != typeof e[1]) throw new De(a);
                                     return [n(e[0]), e[1]]
-                                })) : [], Xr((function(n) {
+                                })) : [], Jr((function(n) {
                                     for (var r = -1; ++r < t;) {
                                         var i = e[r];
                                         if (Tt(i[0], this, n)) return Tt(i[1], this, n)
                                     }
                                 }))
-                            }, Bn.conforms = function(e) {
+                            }, Vn.conforms = function(e) {
                                 return function(e) {
-                                    var t = Is(e);
+                                    var t = Ms(e);
                                     return function(n) {
-                                        return lr(n, e, t)
+                                        return dr(n, e, t)
                                     }
-                                }(cr(e, 1))
-                            }, Bn.constant = nu, Bn.countBy = go, Bn.create = function(e, t) {
-                                var n = Vn(e);
-                                return null == t ? n : ar(n, t)
-                            }, Bn.curry = function e(t, n, r) {
-                                var a = Ji(t, 8, i, i, i, i, i, n = r ? i : n);
+                                }(lr(e, 1))
+                            }, Vn.constant = ru, Vn.countBy = vo, Vn.create = function(e, t) {
+                                var n = qn(e);
+                                return null == t ? n : or(n, t)
+                            }, Vn.curry = function e(t, n, r) {
+                                var a = Qi(t, 8, i, i, i, i, i, n = r ? i : n);
                                 return a.placeholder = e.placeholder, a
-                            }, Bn.curryRight = function e(t, n, r) {
-                                var a = Ji(t, u, i, i, i, i, i, n = r ? i : n);
+                            }, Vn.curryRight = function e(t, n, r) {
+                                var a = Qi(t, u, i, i, i, i, i, n = r ? i : n);
                                 return a.placeholder = e.placeholder, a
-                            }, Bn.debounce = Io, Bn.defaults = Cs, Bn.defaultsDeep = ks, Bn.defer = Mo, Bn.delay = Ro, Bn.difference = Ba, Bn.differenceBy = Va, Bn.differenceWith = qa, Bn.drop = function(e, t, n) {
+                            }, Vn.debounce = Mo, Vn.defaults = ks, Vn.defaultsDeep = Os, Vn.defer = Ro, Vn.delay = Po, Vn.difference = Va, Vn.differenceBy = qa, Vn.differenceWith = Ga, Vn.drop = function(e, t, n) {
                                 var r = null == e ? 0 : e.length;
-                                return r ? ii(e, (t = n || t === i ? 1 : _s(t)) < 0 ? 0 : t, r) : []
-                            }, Bn.dropRight = function(e, t, n) {
+                                return r ? ai(e, (t = n || t === i ? 1 : gs(t)) < 0 ? 0 : t, r) : []
+                            }, Vn.dropRight = function(e, t, n) {
                                 var r = null == e ? 0 : e.length;
-                                return r ? ii(e, 0, (t = r - (t = n || t === i ? 1 : _s(t))) < 0 ? 0 : t) : []
-                            }, Bn.dropRightWhile = function(e, t) {
-                                return e && e.length ? pi(e, ca(t, 3), !0, !0) : []
-                            }, Bn.dropWhile = function(e, t) {
-                                return e && e.length ? pi(e, ca(t, 3), !0) : []
-                            }, Bn.fill = function(e, t, n, r) {
+                                return r ? ai(e, 0, (t = r - (t = n || t === i ? 1 : gs(t))) < 0 ? 0 : t) : []
+                            }, Vn.dropRightWhile = function(e, t) {
+                                return e && e.length ? mi(e, la(t, 3), !0, !0) : []
+                            }, Vn.dropWhile = function(e, t) {
+                                return e && e.length ? mi(e, la(t, 3), !0) : []
+                            }, Vn.fill = function(e, t, n, r) {
                                 var a = null == e ? 0 : e.length;
-                                return a ? (n && "number" != typeof n && ya(e, t, n) && (n = 0, r = a), function(e, t, n, r) {
+                                return a ? (n && "number" != typeof n && wa(e, t, n) && (n = 0, r = a), function(e, t, n, r) {
                                     var a = e.length;
-                                    for ((n = _s(n)) < 0 && (n = -n > a ? 0 : a + n), (r = r === i || r > a ? a : _s(r)) < 0 && (r += a), r = n > r ? 0 : gs(r); n < r;) e[n++] = t;
+                                    for ((n = gs(n)) < 0 && (n = -n > a ? 0 : a + n), (r = r === i || r > a ? a : gs(r)) < 0 && (r += a), r = n > r ? 0 : vs(r); n < r;) e[n++] = t;
                                     return e
                                 }(e, t, n, r)) : []
-                            }, Bn.filter = function(e, t) {
-                                return (zo(e) ? Dt : gr)(e, ca(t, 3))
-                            }, Bn.flatMap = function(e, t) {
-                                return vr(To(e, t), 1)
-                            }, Bn.flatMapDeep = function(e, t) {
-                                return vr(To(e, t), h)
-                            }, Bn.flatMapDepth = function(e, t, n) {
-                                return n = n === i ? 1 : _s(n), vr(To(e, t), n)
-                            }, Bn.flatten = za, Bn.flattenDeep = function(e) {
-                                return (null == e ? 0 : e.length) ? vr(e, h) : []
-                            }, Bn.flattenDepth = function(e, t) {
-                                return (null == e ? 0 : e.length) ? vr(e, t = t === i ? 1 : _s(t)) : []
-                            }, Bn.flip = function(e) {
-                                return Ji(e, 512)
-                            }, Bn.flow = ru, Bn.flowRight = iu, Bn.fromPairs = function(e) {
+                            }, Vn.filter = function(e, t) {
+                                return (Ho(e) ? Dt : vr)(e, la(t, 3))
+                            }, Vn.flatMap = function(e, t) {
+                                return br(Co(e, t), 1)
+                            }, Vn.flatMapDeep = function(e, t) {
+                                return br(Co(e, t), h)
+                            }, Vn.flatMapDepth = function(e, t, n) {
+                                return n = n === i ? 1 : gs(n), br(Co(e, t), n)
+                            }, Vn.flatten = Ha, Vn.flattenDeep = function(e) {
+                                return (null == e ? 0 : e.length) ? br(e, h) : []
+                            }, Vn.flattenDepth = function(e, t) {
+                                return (null == e ? 0 : e.length) ? br(e, t = t === i ? 1 : gs(t)) : []
+                            }, Vn.flip = function(e) {
+                                return Qi(e, 512)
+                            }, Vn.flow = iu, Vn.flowRight = au, Vn.fromPairs = function(e) {
                                 for (var t = -1, n = null == e ? 0 : e.length, r = {}; ++t < n;) {
                                     var i = e[t];
                                     r[i[0]] = i[1]
                                 }
                                 return r
-                            }, Bn.functions = function(e) {
-                                return null == e ? [] : Ar(e, Is(e))
-                            }, Bn.functionsIn = function(e) {
-                                return null == e ? [] : Ar(e, Ms(e))
-                            }, Bn.groupBy = Eo, Bn.initial = function(e) {
-                                return (null == e ? 0 : e.length) ? ii(e, 0, -1) : []
-                            }, Bn.intersection = $a, Bn.intersectionBy = Ka, Bn.intersectionWith = Za, Bn.invert = Ds, Bn.invertBy = Ns, Bn.invokeMap = Ao, Bn.iteratee = ou, Bn.keyBy = So, Bn.keys = Is, Bn.keysIn = Ms, Bn.map = To, Bn.mapKeys = function(e, t) {
+                            }, Vn.functions = function(e) {
+                                return null == e ? [] : Sr(e, Ms(e))
+                            }, Vn.functionsIn = function(e) {
+                                return null == e ? [] : Sr(e, Rs(e))
+                            }, Vn.groupBy = Ao, Vn.initial = function(e) {
+                                return (null == e ? 0 : e.length) ? ai(e, 0, -1) : []
+                            }, Vn.intersection = Ka, Vn.intersectionBy = Za, Vn.intersectionWith = Xa, Vn.invert = Ns, Vn.invertBy = Ls, Vn.invokeMap = So, Vn.iteratee = su, Vn.keyBy = To, Vn.keys = Ms, Vn.keysIn = Rs, Vn.map = Co, Vn.mapKeys = function(e, t) {
                                 var n = {};
-                                return t = ca(t, 3), wr(e, (function(e, r, i) {
-                                    or(n, t(e, r, i), e)
+                                return t = la(t, 3), Er(e, (function(e, r, i) {
+                                    sr(n, t(e, r, i), e)
                                 })), n
-                            }, Bn.mapValues = function(e, t) {
+                            }, Vn.mapValues = function(e, t) {
                                 var n = {};
-                                return t = ca(t, 3), wr(e, (function(e, r, i) {
-                                    or(n, r, t(e, r, i))
+                                return t = la(t, 3), Er(e, (function(e, r, i) {
+                                    sr(n, r, t(e, r, i))
                                 })), n
-                            }, Bn.matches = function(e) {
-                                return Br(cr(e, 1))
-                            }, Bn.matchesProperty = function(e, t) {
-                                return Vr(e, cr(t, 1))
-                            }, Bn.memoize = Po, Bn.merge = Rs, Bn.mergeWith = Ps, Bn.method = su, Bn.methodOf = uu, Bn.mixin = cu, Bn.negate = Wo, Bn.nthArg = function(e) {
-                                return e = _s(e), Xr((function(t) {
-                                    return Gr(t, e)
+                            }, Vn.matches = function(e) {
+                                return Vr(lr(e, 1))
+                            }, Vn.matchesProperty = function(e, t) {
+                                return qr(e, lr(t, 1))
+                            }, Vn.memoize = Wo, Vn.merge = Ps, Vn.mergeWith = Ws, Vn.method = uu, Vn.methodOf = cu, Vn.mixin = lu, Vn.negate = Uo, Vn.nthArg = function(e) {
+                                return e = gs(e), Jr((function(t) {
+                                    return Yr(t, e)
                                 }))
-                            }, Bn.omit = Ws, Bn.omitBy = function(e, t) {
-                                return js(e, Wo(ca(t)))
-                            }, Bn.once = function(e) {
-                                return Do(2, e)
-                            }, Bn.orderBy = function(e, t, n, r) {
-                                return null == e ? [] : (zo(t) || (t = null == t ? [] : [t]), zo(n = r ? i : n) || (n = null == n ? [] : [n]), Yr(e, t, n))
-                            }, Bn.over = du, Bn.overArgs = Uo, Bn.overEvery = fu, Bn.overSome = hu, Bn.partial = jo, Bn.partialRight = Fo, Bn.partition = Co, Bn.pick = Us, Bn.pickBy = js, Bn.property = pu, Bn.propertyOf = function(e) {
+                            }, Vn.omit = Us, Vn.omitBy = function(e, t) {
+                                return Fs(e, Uo(la(t)))
+                            }, Vn.once = function(e) {
+                                return No(2, e)
+                            }, Vn.orderBy = function(e, t, n, r) {
+                                return null == e ? [] : (Ho(t) || (t = null == t ? [] : [t]), Ho(n = r ? i : n) || (n = null == n ? [] : [n]), zr(e, t, n))
+                            }, Vn.over = fu, Vn.overArgs = jo, Vn.overEvery = hu, Vn.overSome = pu, Vn.partial = Fo, Vn.partialRight = Bo, Vn.partition = ko, Vn.pick = js, Vn.pickBy = Fs, Vn.property = mu, Vn.propertyOf = function(e) {
                                 return function(t) {
-                                    return null == e ? i : Sr(e, t)
+                                    return null == e ? i : Tr(e, t)
                                 }
-                            }, Bn.pull = Ja, Bn.pullAll = Qa, Bn.pullAllBy = function(e, t, n) {
-                                return e && e.length && t && t.length ? Hr(e, t, ca(n, 2)) : e
-                            }, Bn.pullAllWith = function(e, t, n) {
-                                return e && e.length && t && t.length ? Hr(e, t, i, n) : e
-                            }, Bn.pullAt = eo, Bn.range = mu, Bn.rangeRight = _u, Bn.rearg = Bo, Bn.reject = function(e, t) {
-                                return (zo(e) ? Dt : gr)(e, Wo(ca(t, 3)))
-                            }, Bn.remove = function(e, t) {
+                            }, Vn.pull = Qa, Vn.pullAll = eo, Vn.pullAllBy = function(e, t, n) {
+                                return e && e.length && t && t.length ? $r(e, t, la(n, 2)) : e
+                            }, Vn.pullAllWith = function(e, t, n) {
+                                return e && e.length && t && t.length ? $r(e, t, i, n) : e
+                            }, Vn.pullAt = to, Vn.range = _u, Vn.rangeRight = gu, Vn.rearg = Vo, Vn.reject = function(e, t) {
+                                return (Ho(e) ? Dt : vr)(e, Uo(la(t, 3)))
+                            }, Vn.remove = function(e, t) {
                                 var n = [];
                                 if (!e || !e.length) return n;
                                 var r = -1,
                                     i = [],
                                     a = e.length;
-                                for (t = ca(t, 3); ++r < a;) {
+                                for (t = la(t, 3); ++r < a;) {
                                     var o = e[r];
                                     t(o, r, e) && (n.push(o), i.push(r))
                                 }
-                                return $r(e, i), n
-                            }, Bn.rest = function(e, t) {
-                                if ("function" != typeof e) throw new Ne(a);
-                                return Xr(e, t = t === i ? t : _s(t))
-                            }, Bn.reverse = to, Bn.sampleSize = function(e, t, n) {
-                                return t = (n ? ya(e, t, n) : t === i) ? 1 : _s(t), (zo(e) ? Qn : Qr)(e, t)
-                            }, Bn.set = function(e, t, n) {
-                                return null == e ? e : ei(e, t, n)
-                            }, Bn.setWith = function(e, t, n, r) {
-                                return r = "function" == typeof r ? r : i, null == e ? e : ei(e, t, n, r)
-                            }, Bn.shuffle = function(e) {
-                                return (zo(e) ? er : ri)(e)
-                            }, Bn.slice = function(e, t, n) {
+                                return Kr(e, i), n
+                            }, Vn.rest = function(e, t) {
+                                if ("function" != typeof e) throw new De(a);
+                                return Jr(e, t = t === i ? t : gs(t))
+                            }, Vn.reverse = no, Vn.sampleSize = function(e, t, n) {
+                                return t = (n ? wa(e, t, n) : t === i) ? 1 : gs(t), (Ho(e) ? er : ei)(e, t)
+                            }, Vn.set = function(e, t, n) {
+                                return null == e ? e : ti(e, t, n)
+                            }, Vn.setWith = function(e, t, n, r) {
+                                return r = "function" == typeof r ? r : i, null == e ? e : ti(e, t, n, r)
+                            }, Vn.shuffle = function(e) {
+                                return (Ho(e) ? tr : ii)(e)
+                            }, Vn.slice = function(e, t, n) {
                                 var r = null == e ? 0 : e.length;
-                                return r ? (n && "number" != typeof n && ya(e, t, n) ? (t = 0, n = r) : (t = null == t ? 0 : _s(t), n = n === i ? r : _s(n)), ii(e, t, n)) : []
-                            }, Bn.sortBy = ko, Bn.sortedUniq = function(e) {
-                                return e && e.length ? ui(e) : []
-                            }, Bn.sortedUniqBy = function(e, t) {
-                                return e && e.length ? ui(e, ca(t, 2)) : []
-                            }, Bn.split = function(e, t, n) {
-                                return n && "number" != typeof n && ya(e, t, n) && (t = n = i), (n = n === i ? _ : n >>> 0) ? (e = ys(e)) && ("string" == typeof t || null != t && !ss(t)) && !(t = li(t)) && on(e) ? Ei(hn(e), 0, n) : e.split(t, n) : []
-                            }, Bn.spread = function(e, t) {
-                                if ("function" != typeof e) throw new Ne(a);
-                                return t = null == t ? 0 : bn(_s(t), 0), Xr((function(n) {
+                                return r ? (n && "number" != typeof n && wa(e, t, n) ? (t = 0, n = r) : (t = null == t ? 0 : gs(t), n = n === i ? r : gs(n)), ai(e, t, n)) : []
+                            }, Vn.sortBy = Oo, Vn.sortedUniq = function(e) {
+                                return e && e.length ? ci(e) : []
+                            }, Vn.sortedUniqBy = function(e, t) {
+                                return e && e.length ? ci(e, la(t, 2)) : []
+                            }, Vn.split = function(e, t, n) {
+                                return n && "number" != typeof n && wa(e, t, n) && (t = n = i), (n = n === i ? _ : n >>> 0) ? (e = ws(e)) && ("string" == typeof t || null != t && !us(t)) && !(t = di(t)) && sn(e) ? Ai(pn(e), 0, n) : e.split(t, n) : []
+                            }, Vn.spread = function(e, t) {
+                                if ("function" != typeof e) throw new De(a);
+                                return t = null == t ? 0 : yn(gs(t), 0), Jr((function(n) {
                                     var r = n[t],
-                                        i = Ei(n, 0, t);
+                                        i = Ai(n, 0, t);
                                     return r && Mt(i, r), Tt(e, this, i)
                                 }))
-                            }, Bn.tail = function(e) {
+                            }, Vn.tail = function(e) {
                                 var t = null == e ? 0 : e.length;
-                                return t ? ii(e, 1, t) : []
-                            }, Bn.take = function(e, t, n) {
-                                return e && e.length ? ii(e, 0, (t = n || t === i ? 1 : _s(t)) < 0 ? 0 : t) : []
-                            }, Bn.takeRight = function(e, t, n) {
+                                return t ? ai(e, 1, t) : []
+                            }, Vn.take = function(e, t, n) {
+                                return e && e.length ? ai(e, 0, (t = n || t === i ? 1 : gs(t)) < 0 ? 0 : t) : []
+                            }, Vn.takeRight = function(e, t, n) {
                                 var r = null == e ? 0 : e.length;
-                                return r ? ii(e, (t = r - (t = n || t === i ? 1 : _s(t))) < 0 ? 0 : t, r) : []
-                            }, Bn.takeRightWhile = function(e, t) {
-                                return e && e.length ? pi(e, ca(t, 3), !1, !0) : []
-                            }, Bn.takeWhile = function(e, t) {
-                                return e && e.length ? pi(e, ca(t, 3)) : []
-                            }, Bn.tap = function(e, t) {
+                                return r ? ai(e, (t = r - (t = n || t === i ? 1 : gs(t))) < 0 ? 0 : t, r) : []
+                            }, Vn.takeRightWhile = function(e, t) {
+                                return e && e.length ? mi(e, la(t, 3), !1, !0) : []
+                            }, Vn.takeWhile = function(e, t) {
+                                return e && e.length ? mi(e, la(t, 3)) : []
+                            }, Vn.tap = function(e, t) {
                                 return t(e), e
-                            }, Bn.throttle = function(e, t, n) {
+                            }, Vn.throttle = function(e, t, n) {
                                 var r = !0,
                                     i = !0;
-                                if ("function" != typeof e) throw new Ne(a);
-                                return ns(n) && (r = "leading" in n ? !!n.leading : r, i = "trailing" in n ? !!n.trailing : i), Io(e, t, {
+                                if ("function" != typeof e) throw new De(a);
+                                return rs(n) && (r = "leading" in n ? !!n.leading : r, i = "trailing" in n ? !!n.trailing : i), Mo(e, t, {
                                     leading: r,
                                     maxWait: t,
                                     trailing: i
                                 })
-                            }, Bn.thru = mo, Bn.toArray = ps, Bn.toPairs = Fs, Bn.toPairsIn = Bs, Bn.toPath = function(e) {
-                                return zo(e) ? It(e, Ua) : ls(e) ? [e] : Di(Wa(ys(e)))
-                            }, Bn.toPlainObject = bs, Bn.transform = function(e, t, n) {
-                                var r = zo(e),
-                                    i = r || Zo(e) || ds(e);
-                                if (t = ca(t, 4), null == n) {
+                            }, Vn.thru = _o, Vn.toArray = ms, Vn.toPairs = Bs, Vn.toPairsIn = Vs, Vn.toPath = function(e) {
+                                return Ho(e) ? It(e, ja) : ds(e) ? [e] : Ni(Ua(ws(e)))
+                            }, Vn.toPlainObject = ys, Vn.transform = function(e, t, n) {
+                                var r = Ho(e),
+                                    i = r || Xo(e) || fs(e);
+                                if (t = la(t, 4), null == n) {
                                     var a = e && e.constructor;
-                                    n = i ? r ? new a : [] : ns(e) && Qo(a) ? Vn($e(e)) : {}
+                                    n = i ? r ? new a : [] : rs(e) && es(a) ? qn(He(e)) : {}
                                 }
-                                return (i ? kt : wr)(e, (function(e, r, i) {
+                                return (i ? kt : Er)(e, (function(e, r, i) {
                                     return t(n, e, r, i)
                                 })), n
-                            }, Bn.unary = function(e) {
-                                return xo(e, 1)
-                            }, Bn.union = no, Bn.unionBy = ro, Bn.unionWith = io, Bn.uniq = function(e) {
-                                return e && e.length ? di(e) : []
-                            }, Bn.uniqBy = function(e, t) {
-                                return e && e.length ? di(e, ca(t, 2)) : []
-                            }, Bn.uniqWith = function(e, t) {
-                                return t = "function" == typeof t ? t : i, e && e.length ? di(e, i, t) : []
-                            }, Bn.unset = function(e, t) {
-                                return null == e || fi(e, t)
-                            }, Bn.unzip = ao, Bn.unzipWith = oo, Bn.update = function(e, t, n) {
-                                return null == e ? e : hi(e, t, bi(n))
-                            }, Bn.updateWith = function(e, t, n, r) {
-                                return r = "function" == typeof r ? r : i, null == e ? e : hi(e, t, bi(n), r)
-                            }, Bn.values = Vs, Bn.valuesIn = function(e) {
-                                return null == e ? [] : Xt(e, Ms(e))
-                            }, Bn.without = so, Bn.words = Qs, Bn.wrap = function(e, t) {
-                                return jo(bi(t), e)
-                            }, Bn.xor = uo, Bn.xorBy = co, Bn.xorWith = lo, Bn.zip = fo, Bn.zipObject = function(e, t) {
-                                return gi(e || [], t || [], nr)
-                            }, Bn.zipObjectDeep = function(e, t) {
-                                return gi(e || [], t || [], ei)
-                            }, Bn.zipWith = ho, Bn.entries = Fs, Bn.entriesIn = Bs, Bn.extend = Es, Bn.extendWith = As, cu(Bn, Bn), Bn.add = bu, Bn.attempt = eu, Bn.camelCase = qs, Bn.capitalize = Gs, Bn.ceil = yu, Bn.clamp = function(e, t, n) {
-                                return n === i && (n = t, t = i), n !== i && (n = (n = vs(n)) == n ? n : 0), t !== i && (t = (t = vs(t)) == t ? t : 0), ur(vs(e), t, n)
-                            }, Bn.clone = function(e) {
-                                return cr(e, 4)
-                            }, Bn.cloneDeep = function(e) {
-                                return cr(e, 5)
-                            }, Bn.cloneDeepWith = function(e, t) {
-                                return cr(e, 5, t = "function" == typeof t ? t : i)
-                            }, Bn.cloneWith = function(e, t) {
-                                return cr(e, 4, t = "function" == typeof t ? t : i)
-                            }, Bn.conformsTo = function(e, t) {
-                                return null == t || lr(e, t, Is(t))
-                            }, Bn.deburr = Ys, Bn.defaultTo = function(e, t) {
+                            }, Vn.unary = function(e) {
+                                return Do(e, 1)
+                            }, Vn.union = ro, Vn.unionBy = io, Vn.unionWith = ao, Vn.uniq = function(e) {
+                                return e && e.length ? fi(e) : []
+                            }, Vn.uniqBy = function(e, t) {
+                                return e && e.length ? fi(e, la(t, 2)) : []
+                            }, Vn.uniqWith = function(e, t) {
+                                return t = "function" == typeof t ? t : i, e && e.length ? fi(e, i, t) : []
+                            }, Vn.unset = function(e, t) {
+                                return null == e || hi(e, t)
+                            }, Vn.unzip = oo, Vn.unzipWith = so, Vn.update = function(e, t, n) {
+                                return null == e ? e : pi(e, t, yi(n))
+                            }, Vn.updateWith = function(e, t, n, r) {
+                                return r = "function" == typeof r ? r : i, null == e ? e : pi(e, t, yi(n), r)
+                            }, Vn.values = qs, Vn.valuesIn = function(e) {
+                                return null == e ? [] : Jt(e, Rs(e))
+                            }, Vn.without = uo, Vn.words = eu, Vn.wrap = function(e, t) {
+                                return Fo(yi(t), e)
+                            }, Vn.xor = co, Vn.xorBy = lo, Vn.xorWith = fo, Vn.zip = ho, Vn.zipObject = function(e, t) {
+                                return vi(e || [], t || [], rr)
+                            }, Vn.zipObjectDeep = function(e, t) {
+                                return vi(e || [], t || [], ti)
+                            }, Vn.zipWith = po, Vn.entries = Bs, Vn.entriesIn = Vs, Vn.extend = As, Vn.extendWith = Ss, lu(Vn, Vn), Vn.add = yu, Vn.attempt = tu, Vn.camelCase = Gs, Vn.capitalize = Ys, Vn.ceil = wu, Vn.clamp = function(e, t, n) {
+                                return n === i && (n = t, t = i), n !== i && (n = (n = bs(n)) == n ? n : 0), t !== i && (t = (t = bs(t)) == t ? t : 0), cr(bs(e), t, n)
+                            }, Vn.clone = function(e) {
+                                return lr(e, 4)
+                            }, Vn.cloneDeep = function(e) {
+                                return lr(e, 5)
+                            }, Vn.cloneDeepWith = function(e, t) {
+                                return lr(e, 5, t = "function" == typeof t ? t : i)
+                            }, Vn.cloneWith = function(e, t) {
+                                return lr(e, 4, t = "function" == typeof t ? t : i)
+                            }, Vn.conformsTo = function(e, t) {
+                                return null == t || dr(e, t, Ms(t))
+                            }, Vn.deburr = zs, Vn.defaultTo = function(e, t) {
                                 return null == e || e != e ? t : e
-                            }, Bn.divide = wu, Bn.endsWith = function(e, t, n) {
-                                e = ys(e), t = li(t);
+                            }, Vn.divide = Eu, Vn.endsWith = function(e, t, n) {
+                                e = ws(e), t = di(t);
                                 var r = e.length,
-                                    a = n = n === i ? r : ur(_s(n), 0, r);
+                                    a = n = n === i ? r : cr(gs(n), 0, r);
                                 return (n -= t.length) >= 0 && e.slice(n, a) == t
-                            }, Bn.eq = Vo, Bn.escape = function(e) {
-                                return (e = ys(e)) && X.test(e) ? e.replace(K, rn) : e
-                            }, Bn.escapeRegExp = function(e) {
-                                return (e = ys(e)) && ae.test(e) ? e.replace(ie, "\\$&") : e
-                            }, Bn.every = function(e, t, n) {
-                                var r = zo(e) ? xt : mr;
-                                return n && ya(e, t, n) && (t = i), r(e, ca(t, 3))
-                            }, Bn.find = vo, Bn.findIndex = Ga, Bn.findKey = function(e, t) {
-                                return jt(e, ca(t, 3), wr)
-                            }, Bn.findLast = bo, Bn.findLastIndex = Ya, Bn.findLastKey = function(e, t) {
-                                return jt(e, ca(t, 3), Er)
-                            }, Bn.floor = Eu, Bn.forEach = yo, Bn.forEachRight = wo, Bn.forIn = function(e, t) {
-                                return null == e ? e : br(e, ca(t, 3), Ms)
-                            }, Bn.forInRight = function(e, t) {
-                                return null == e ? e : yr(e, ca(t, 3), Ms)
-                            }, Bn.forOwn = function(e, t) {
-                                return e && wr(e, ca(t, 3))
-                            }, Bn.forOwnRight = function(e, t) {
-                                return e && Er(e, ca(t, 3))
-                            }, Bn.get = Os, Bn.gt = qo, Bn.gte = Go, Bn.has = function(e, t) {
-                                return null != e && _a(e, t, Or)
-                            }, Bn.hasIn = xs, Bn.head = Ha, Bn.identity = au, Bn.includes = function(e, t, n, r) {
-                                e = $o(e) ? e : Vs(e), n = n && !r ? _s(n) : 0;
+                            }, Vn.eq = qo, Vn.escape = function(e) {
+                                return (e = ws(e)) && X.test(e) ? e.replace(K, an) : e
+                            }, Vn.escapeRegExp = function(e) {
+                                return (e = ws(e)) && ae.test(e) ? e.replace(ie, "\\$&") : e
+                            }, Vn.every = function(e, t, n) {
+                                var r = Ho(e) ? xt : _r;
+                                return n && wa(e, t, n) && (t = i), r(e, la(t, 3))
+                            }, Vn.find = bo, Vn.findIndex = Ya, Vn.findKey = function(e, t) {
+                                return jt(e, la(t, 3), Er)
+                            }, Vn.findLast = yo, Vn.findLastIndex = za, Vn.findLastKey = function(e, t) {
+                                return jt(e, la(t, 3), Ar)
+                            }, Vn.floor = Au, Vn.forEach = wo, Vn.forEachRight = Eo, Vn.forIn = function(e, t) {
+                                return null == e ? e : yr(e, la(t, 3), Rs)
+                            }, Vn.forInRight = function(e, t) {
+                                return null == e ? e : wr(e, la(t, 3), Rs)
+                            }, Vn.forOwn = function(e, t) {
+                                return e && Er(e, la(t, 3))
+                            }, Vn.forOwnRight = function(e, t) {
+                                return e && Ar(e, la(t, 3))
+                            }, Vn.get = xs, Vn.gt = Go, Vn.gte = Yo, Vn.has = function(e, t) {
+                                return null != e && ga(e, t, xr)
+                            }, Vn.hasIn = Ds, Vn.head = $a, Vn.identity = ou, Vn.includes = function(e, t, n, r) {
+                                e = Ko(e) ? e : qs(e), n = n && !r ? gs(n) : 0;
                                 var i = e.length;
-                                return n < 0 && (n = bn(i + n, 0)), cs(e) ? n <= i && e.indexOf(t, n) > -1 : !!i && Bt(e, t, n) > -1
-                            }, Bn.indexOf = function(e, t, n) {
+                                return n < 0 && (n = yn(i + n, 0)), ls(e) ? n <= i && e.indexOf(t, n) > -1 : !!i && Bt(e, t, n) > -1
+                            }, Vn.indexOf = function(e, t, n) {
                                 var r = null == e ? 0 : e.length;
                                 if (!r) return -1;
-                                var i = null == n ? 0 : _s(n);
-                                return i < 0 && (i = bn(r + i, 0)), Bt(e, t, i)
-                            }, Bn.inRange = function(e, t, n) {
-                                return t = ms(t), n === i ? (n = t, t = 0) : n = ms(n),
+                                var i = null == n ? 0 : gs(n);
+                                return i < 0 && (i = yn(r + i, 0)), Bt(e, t, i)
+                            }, Vn.inRange = function(e, t, n) {
+                                return t = _s(t), n === i ? (n = t, t = 0) : n = _s(n),
                                     function(e, t, n) {
-                                        return e >= yn(t, n) && e < bn(t, n)
-                                    }(e = vs(e), t, n)
-                            }, Bn.invoke = Ls, Bn.isArguments = Yo, Bn.isArray = zo, Bn.isArrayBuffer = Ho, Bn.isArrayLike = $o, Bn.isArrayLikeObject = Ko, Bn.isBoolean = function(e) {
-                                return !0 === e || !1 === e || rs(e) && Cr(e) == y
-                            }, Bn.isBuffer = Zo, Bn.isDate = Xo, Bn.isElement = function(e) {
-                                return rs(e) && 1 === e.nodeType && !os(e)
-                            }, Bn.isEmpty = function(e) {
+                                        return e >= wn(t, n) && e < yn(t, n)
+                                    }(e = bs(e), t, n)
+                            }, Vn.invoke = Is, Vn.isArguments = zo, Vn.isArray = Ho, Vn.isArrayBuffer = $o, Vn.isArrayLike = Ko, Vn.isArrayLikeObject = Zo, Vn.isBoolean = function(e) {
+                                return !0 === e || !1 === e || is(e) && kr(e) == y
+                            }, Vn.isBuffer = Xo, Vn.isDate = Jo, Vn.isElement = function(e) {
+                                return is(e) && 1 === e.nodeType && !ss(e)
+                            }, Vn.isEmpty = function(e) {
                                 if (null == e) return !0;
-                                if ($o(e) && (zo(e) || "string" == typeof e || "function" == typeof e.splice || Zo(e) || ds(e) || Yo(e))) return !e.length;
-                                var t = ma(e);
+                                if (Ko(e) && (Ho(e) || "string" == typeof e || "function" == typeof e.splice || Xo(e) || fs(e) || zo(e))) return !e.length;
+                                var t = _a(e);
                                 if (t == T || t == D) return !e.size;
-                                if (Sa(e)) return !Wr(e).length;
+                                if (Ta(e)) return !Ur(e).length;
                                 for (var n in e)
-                                    if (We.call(e, n)) return !1;
+                                    if (Pe.call(e, n)) return !1;
                                 return !0
-                            }, Bn.isEqual = function(e, t) {
-                                return Ir(e, t)
-                            }, Bn.isEqualWith = function(e, t, n) {
+                            }, Vn.isEqual = function(e, t) {
+                                return Mr(e, t)
+                            }, Vn.isEqualWith = function(e, t, n) {
                                 var r = (n = "function" == typeof n ? n : i) ? n(e, t) : i;
-                                return r === i ? Ir(e, t, i, n) : !!r
-                            }, Bn.isError = Jo, Bn.isFinite = function(e) {
-                                return "number" == typeof e && _n(e)
-                            }, Bn.isFunction = Qo, Bn.isInteger = es, Bn.isLength = ts, Bn.isMap = is, Bn.isMatch = function(e, t) {
-                                return e === t || Mr(e, t, da(t))
-                            }, Bn.isMatchWith = function(e, t, n) {
-                                return n = "function" == typeof n ? n : i, Mr(e, t, da(t), n)
-                            }, Bn.isNaN = function(e) {
-                                return as(e) && e != +e
-                            }, Bn.isNative = function(e) {
-                                if (Aa(e)) throw new Te("Unsupported core-js use. Try https://npms.io/search?q=ponyfill.");
-                                return Rr(e)
-                            }, Bn.isNil = function(e) {
+                                return r === i ? Mr(e, t, i, n) : !!r
+                            }, Vn.isError = Qo, Vn.isFinite = function(e) {
+                                return "number" == typeof e && zt(e)
+                            }, Vn.isFunction = es, Vn.isInteger = ts, Vn.isLength = ns, Vn.isMap = as, Vn.isMatch = function(e, t) {
+                                return e === t || Rr(e, t, fa(t))
+                            }, Vn.isMatchWith = function(e, t, n) {
+                                return n = "function" == typeof n ? n : i, Rr(e, t, fa(t), n)
+                            }, Vn.isNaN = function(e) {
+                                return os(e) && e != +e
+                            }, Vn.isNative = function(e) {
+                                if (Sa(e)) throw new Se("Unsupported core-js use. Try https://npms.io/search?q=ponyfill.");
+                                return Pr(e)
+                            }, Vn.isNil = function(e) {
                                 return null == e
-                            }, Bn.isNull = function(e) {
+                            }, Vn.isNull = function(e) {
                                 return null === e
-                            }, Bn.isNumber = as, Bn.isObject = ns, Bn.isObjectLike = rs, Bn.isPlainObject = os, Bn.isRegExp = ss, Bn.isSafeInteger = function(e) {
-                                return es(e) && e >= -9007199254740991 && e <= p
-                            }, Bn.isSet = us, Bn.isString = cs, Bn.isSymbol = ls, Bn.isTypedArray = ds, Bn.isUndefined = function(e) {
+                            }, Vn.isNumber = os, Vn.isObject = rs, Vn.isObjectLike = is, Vn.isPlainObject = ss, Vn.isRegExp = us, Vn.isSafeInteger = function(e) {
+                                return ts(e) && e >= -9007199254740991 && e <= p
+                            }, Vn.isSet = cs, Vn.isString = ls, Vn.isSymbol = ds, Vn.isTypedArray = fs, Vn.isUndefined = function(e) {
                                 return e === i
-                            }, Bn.isWeakMap = function(e) {
-                                return rs(e) && ma(e) == I
-                            }, Bn.isWeakSet = function(e) {
-                                return rs(e) && "[object WeakSet]" == Cr(e)
-                            }, Bn.join = function(e, t) {
-                                return null == e ? "" : gn.call(e, t)
-                            }, Bn.kebabCase = zs, Bn.last = Xa, Bn.lastIndexOf = function(e, t, n) {
+                            }, Vn.isWeakMap = function(e) {
+                                return is(e) && _a(e) == I
+                            }, Vn.isWeakSet = function(e) {
+                                return is(e) && "[object WeakSet]" == kr(e)
+                            }, Vn.join = function(e, t) {
+                                return null == e ? "" : vn.call(e, t)
+                            }, Vn.kebabCase = Hs, Vn.last = Ja, Vn.lastIndexOf = function(e, t, n) {
                                 var r = null == e ? 0 : e.length;
                                 if (!r) return -1;
                                 var a = r;
-                                return n !== i && (a = (a = _s(n)) < 0 ? bn(r + a, 0) : yn(a, r - 1)), t == t ? function(e, t, n) {
+                                return n !== i && (a = (a = gs(n)) < 0 ? yn(r + a, 0) : wn(a, r - 1)), t == t ? function(e, t, n) {
                                     for (var r = n + 1; r--;)
                                         if (e[r] === t) return r;
                                     return r
                                 }(e, t, a) : Ft(e, qt, a, !0)
-                            }, Bn.lowerCase = Hs, Bn.lowerFirst = $s, Bn.lt = fs, Bn.lte = hs, Bn.max = function(e) {
-                                return e && e.length ? _r(e, au, kr) : i
-                            }, Bn.maxBy = function(e, t) {
-                                return e && e.length ? _r(e, ca(t, 2), kr) : i
-                            }, Bn.mean = function(e) {
-                                return Gt(e, au)
-                            }, Bn.meanBy = function(e, t) {
-                                return Gt(e, ca(t, 2))
-                            }, Bn.min = function(e) {
-                                return e && e.length ? _r(e, au, jr) : i
-                            }, Bn.minBy = function(e, t) {
-                                return e && e.length ? _r(e, ca(t, 2), jr) : i
-                            }, Bn.stubArray = gu, Bn.stubFalse = vu, Bn.stubObject = function() {
+                            }, Vn.lowerCase = $s, Vn.lowerFirst = Ks, Vn.lt = hs, Vn.lte = ps, Vn.max = function(e) {
+                                return e && e.length ? gr(e, ou, Or) : i
+                            }, Vn.maxBy = function(e, t) {
+                                return e && e.length ? gr(e, la(t, 2), Or) : i
+                            }, Vn.mean = function(e) {
+                                return Gt(e, ou)
+                            }, Vn.meanBy = function(e, t) {
+                                return Gt(e, la(t, 2))
+                            }, Vn.min = function(e) {
+                                return e && e.length ? gr(e, ou, Fr) : i
+                            }, Vn.minBy = function(e, t) {
+                                return e && e.length ? gr(e, la(t, 2), Fr) : i
+                            }, Vn.stubArray = vu, Vn.stubFalse = bu, Vn.stubObject = function() {
                                 return {}
-                            }, Bn.stubString = function() {
+                            }, Vn.stubString = function() {
                                 return ""
-                            }, Bn.stubTrue = function() {
+                            }, Vn.stubTrue = function() {
                                 return !0
-                            }, Bn.multiply = Su, Bn.nth = function(e, t) {
-                                return e && e.length ? Gr(e, _s(t)) : i
-                            }, Bn.noConflict = function() {
-                                return ht._ === this && (ht._ = Ve), this
-                            }, Bn.noop = lu, Bn.now = Oo, Bn.pad = function(e, t, n) {
-                                e = ys(e);
-                                var r = (t = _s(t)) ? fn(e) : 0;
+                            }, Vn.multiply = Tu, Vn.nth = function(e, t) {
+                                return e && e.length ? Yr(e, gs(t)) : i
+                            }, Vn.noConflict = function() {
+                                return ht._ === this && (ht._ = Be), this
+                            }, Vn.noop = du, Vn.now = xo, Vn.pad = function(e, t, n) {
+                                e = ws(e);
+                                var r = (t = gs(t)) ? hn(e) : 0;
                                 if (!t || r >= t) return e;
                                 var i = (t - r) / 2;
-                                return Yi(vt(i), n) + e + Yi(gt(i), n)
-                            }, Bn.padEnd = function(e, t, n) {
-                                e = ys(e);
-                                var r = (t = _s(t)) ? fn(e) : 0;
-                                return t && r < t ? e + Yi(t - r, n) : e
-                            }, Bn.padStart = function(e, t, n) {
-                                e = ys(e);
-                                var r = (t = _s(t)) ? fn(e) : 0;
-                                return t && r < t ? Yi(t - r, n) + e : e
-                            }, Bn.parseInt = function(e, t, n) {
-                                return n || null == t ? t = 0 : t && (t = +t), En(ys(e).replace(se, ""), t || 0)
-                            }, Bn.random = function(e, t, n) {
-                                if (n && "boolean" != typeof n && ya(e, t, n) && (t = n = i), n === i && ("boolean" == typeof t ? (n = t, t = i) : "boolean" == typeof e && (n = e, e = i)), e === i && t === i ? (e = 0, t = 1) : (e = ms(e), t === i ? (t = e, e = 0) : t = ms(t)), e > t) {
+                                return zi(gt(i), n) + e + zi(mt(i), n)
+                            }, Vn.padEnd = function(e, t, n) {
+                                e = ws(e);
+                                var r = (t = gs(t)) ? hn(e) : 0;
+                                return t && r < t ? e + zi(t - r, n) : e
+                            }, Vn.padStart = function(e, t, n) {
+                                e = ws(e);
+                                var r = (t = gs(t)) ? hn(e) : 0;
+                                return t && r < t ? zi(t - r, n) + e : e
+                            }, Vn.parseInt = function(e, t, n) {
+                                return n || null == t ? t = 0 : t && (t = +t), An(ws(e).replace(oe, ""), t || 0)
+                            }, Vn.random = function(e, t, n) {
+                                if (n && "boolean" != typeof n && wa(e, t, n) && (t = n = i), n === i && ("boolean" == typeof t ? (n = t, t = i) : "boolean" == typeof e && (n = e, e = i)), e === i && t === i ? (e = 0, t = 1) : (e = _s(e), t === i ? (t = e, e = 0) : t = _s(t)), e > t) {
                                     var r = e;
                                     e = t, t = r
                                 }
                                 if (n || e % 1 || t % 1) {
-                                    var a = An();
-                                    return yn(e + a * (t - e + ct("1e-" + ((a + "").length - 1))), t)
+                                    var a = Sn();
+                                    return wn(e + a * (t - e + ct("1e-" + ((a + "").length - 1))), t)
                                 }
-                                return Kr(e, t)
-                            }, Bn.reduce = function(e, t, n) {
-                                var r = zo(e) ? Rt : Ht,
+                                return Zr(e, t)
+                            }, Vn.reduce = function(e, t, n) {
+                                var r = Ho(e) ? Rt : Ht,
                                     i = arguments.length < 3;
-                                return r(e, ca(t, 4), n, i, hr)
-                            }, Bn.reduceRight = function(e, t, n) {
-                                var r = zo(e) ? Pt : Ht,
+                                return r(e, la(t, 4), n, i, pr)
+                            }, Vn.reduceRight = function(e, t, n) {
+                                var r = Ho(e) ? Pt : Ht,
                                     i = arguments.length < 3;
-                                return r(e, ca(t, 4), n, i, pr)
-                            }, Bn.repeat = function(e, t, n) {
-                                return t = (n ? ya(e, t, n) : t === i) ? 1 : _s(t), Zr(ys(e), t)
-                            }, Bn.replace = function() {
+                                return r(e, la(t, 4), n, i, mr)
+                            }, Vn.repeat = function(e, t, n) {
+                                return t = (n ? wa(e, t, n) : t === i) ? 1 : gs(t), Xr(ws(e), t)
+                            }, Vn.replace = function() {
                                 var e = arguments,
-                                    t = ys(e[0]);
+                                    t = ws(e[0]);
                                 return e.length < 3 ? t : t.replace(e[1], e[2])
-                            }, Bn.result = function(e, t, n) {
+                            }, Vn.result = function(e, t, n) {
                                 var r = -1,
-                                    a = (t = yi(t, e)).length;
+                                    a = (t = wi(t, e)).length;
                                 for (a || (a = 1, e = i); ++r < a;) {
-                                    var o = null == e ? i : e[Ua(t[r])];
-                                    o === i && (r = a, o = n), e = Qo(o) ? o.call(e) : o
+                                    var o = null == e ? i : e[ja(t[r])];
+                                    o === i && (r = a, o = n), e = es(o) ? o.call(e) : o
                                 }
                                 return e
-                            }, Bn.round = Tu, Bn.runInContext = e, Bn.sample = function(e) {
-                                return (zo(e) ? Jn : Jr)(e)
-                            }, Bn.size = function(e) {
+                            }, Vn.round = Cu, Vn.runInContext = e, Vn.sample = function(e) {
+                                return (Ho(e) ? Qn : Qr)(e)
+                            }, Vn.size = function(e) {
                                 if (null == e) return 0;
-                                if ($o(e)) return cs(e) ? fn(e) : e.length;
-                                var t = ma(e);
-                                return t == T || t == D ? e.size : Wr(e).length
-                            }, Bn.snakeCase = Ks, Bn.some = function(e, t, n) {
-                                var r = zo(e) ? Wt : ai;
-                                return n && ya(e, t, n) && (t = i), r(e, ca(t, 3))
-                            }, Bn.sortedIndex = function(e, t) {
-                                return oi(e, t)
-                            }, Bn.sortedIndexBy = function(e, t, n) {
-                                return si(e, t, ca(n, 2))
-                            }, Bn.sortedIndexOf = function(e, t) {
+                                if (Ko(e)) return ls(e) ? hn(e) : e.length;
+                                var t = _a(e);
+                                return t == T || t == D ? e.size : Ur(e).length
+                            }, Vn.snakeCase = Zs, Vn.some = function(e, t, n) {
+                                var r = Ho(e) ? Wt : oi;
+                                return n && wa(e, t, n) && (t = i), r(e, la(t, 3))
+                            }, Vn.sortedIndex = function(e, t) {
+                                return si(e, t)
+                            }, Vn.sortedIndexBy = function(e, t, n) {
+                                return ui(e, t, la(n, 2))
+                            }, Vn.sortedIndexOf = function(e, t) {
                                 var n = null == e ? 0 : e.length;
                                 if (n) {
-                                    var r = oi(e, t);
-                                    if (r < n && Vo(e[r], t)) return r
+                                    var r = si(e, t);
+                                    if (r < n && qo(e[r], t)) return r
                                 }
                                 return -1
-                            }, Bn.sortedLastIndex = function(e, t) {
-                                return oi(e, t, !0)
-                            }, Bn.sortedLastIndexBy = function(e, t, n) {
-                                return si(e, t, ca(n, 2), !0)
-                            }, Bn.sortedLastIndexOf = function(e, t) {
+                            }, Vn.sortedLastIndex = function(e, t) {
+                                return si(e, t, !0)
+                            }, Vn.sortedLastIndexBy = function(e, t, n) {
+                                return ui(e, t, la(n, 2), !0)
+                            }, Vn.sortedLastIndexOf = function(e, t) {
                                 if (null == e ? 0 : e.length) {
-                                    var n = oi(e, t, !0) - 1;
-                                    if (Vo(e[n], t)) return n
+                                    var n = si(e, t, !0) - 1;
+                                    if (qo(e[n], t)) return n
                                 }
                                 return -1
-                            }, Bn.startCase = Zs, Bn.startsWith = function(e, t, n) {
-                                return e = ys(e), n = null == n ? 0 : ur(_s(n), 0, e.length), t = li(t), e.slice(n, n + t.length) == t
-                            }, Bn.subtract = Cu, Bn.sum = function(e) {
-                                return e && e.length ? $t(e, au) : 0
-                            }, Bn.sumBy = function(e, t) {
-                                return e && e.length ? $t(e, ca(t, 2)) : 0
-                            }, Bn.template = function(e, t, n) {
-                                var r = Bn.templateSettings;
-                                n && ya(e, t, n) && (t = i), e = ys(e), t = As({}, t, r, Qi);
-                                var a, o, s = As({}, t.imports, r.imports, Qi),
-                                    u = Is(s),
-                                    c = Xt(s, u),
+                            }, Vn.startCase = Xs, Vn.startsWith = function(e, t, n) {
+                                return e = ws(e), n = null == n ? 0 : cr(gs(n), 0, e.length), t = di(t), e.slice(n, n + t.length) == t
+                            }, Vn.subtract = ku, Vn.sum = function(e) {
+                                return e && e.length ? $t(e, ou) : 0
+                            }, Vn.sumBy = function(e, t) {
+                                return e && e.length ? $t(e, la(t, 2)) : 0
+                            }, Vn.template = function(e, t, n) {
+                                var r = Vn.templateSettings;
+                                n && wa(e, t, n) && (t = i), e = ws(e), t = Ss({}, t, r, ea);
+                                var a, o, s = Ss({}, t.imports, r.imports, ea),
+                                    u = Ms(s),
+                                    c = Jt(s, u),
                                     l = 0,
                                     d = t.interpolate || Ee,
                                     f = "__p += '",
-                                    h = xe((t.escape || Ee).source + "|" + d.source + "|" + (d === ee ? pe : Ee).source + "|" + (t.evaluate || Ee).source + "|$", "g"),
-                                    p = "//# sourceURL=" + (We.call(t, "sourceURL") ? (t.sourceURL + "").replace(/\s/g, " ") : "lodash.templateSources[" + ++at + "]") + "\n";
+                                    h = Oe((t.escape || Ee).source + "|" + d.source + "|" + (d === ee ? pe : Ee).source + "|" + (t.evaluate || Ee).source + "|$", "g"),
+                                    p = "//# sourceURL=" + (Pe.call(t, "sourceURL") ? (t.sourceURL + "").replace(/\s/g, " ") : "lodash.templateSources[" + ++at + "]") + "\n";
                                 e.replace(h, (function(t, n, r, i, s, u) {
-                                    return r || (r = i), f += e.slice(l, u).replace(Ae, an), n && (a = !0, f += "' +\n__e(" + n + ") +\n'"), s && (o = !0, f += "';\n" + s + ";\n__p += '"), r && (f += "' +\n((__t = (" + r + ")) == null ? '' : __t) +\n'"), l = u + t.length, t
+                                    return r || (r = i), f += e.slice(l, u).replace(Ae, on), n && (a = !0, f += "' +\n__e(" + n + ") +\n'"), s && (o = !0, f += "';\n" + s + ";\n__p += '"), r && (f += "' +\n((__t = (" + r + ")) == null ? '' : __t) +\n'"), l = u + t.length, t
                                 })), f += "';\n";
-                                var m = We.call(t, "variable") && t.variable;
-                                m || (f = "with (obj) {\n" + f + "\n}\n"), f = (o ? f.replace(Y, "") : f).replace(z, "$1").replace(H, "$1;"), f = "function(" + (m || "obj") + ") {\n" + (m ? "" : "obj || (obj = {});\n") + "var __t, __p = ''" + (a ? ", __e = _.escape" : "") + (o ? ", __j = Array.prototype.join;\nfunction print() { __p += __j.call(arguments, '') }\n" : ";\n") + f + "return __p\n}";
-                                var _ = eu((function() {
-                                    return Ce(u, p + "return " + f).apply(i, c)
+                                var m = Pe.call(t, "variable") && t.variable;
+                                if (m) {
+                                    if (fe.test(m)) throw new Se("Invalid `variable` option passed into `_.template`")
+                                } else f = "with (obj) {\n" + f + "\n}\n";
+                                f = (o ? f.replace(Y, "") : f).replace(z, "$1").replace(H, "$1;"), f = "function(" + (m || "obj") + ") {\n" + (m ? "" : "obj || (obj = {});\n") + "var __t, __p = ''" + (a ? ", __e = _.escape" : "") + (o ? ", __j = Array.prototype.join;\nfunction print() { __p += __j.call(arguments, '') }\n" : ";\n") + f + "return __p\n}";
+                                var _ = tu((function() {
+                                    return Te(u, p + "return " + f).apply(i, c)
                                 }));
-                                if (_.source = f, Jo(_)) throw _;
+                                if (_.source = f, Qo(_)) throw _;
                                 return _
-                            }, Bn.times = function(e, t) {
-                                if ((e = _s(e)) < 1 || e > p) return [];
+                            }, Vn.times = function(e, t) {
+                                if ((e = gs(e)) < 1 || e > p) return [];
                                 var n = _,
-                                    r = yn(e, _);
-                                t = ca(t), e -= _;
+                                    r = wn(e, _);
+                                t = la(t), e -= _;
                                 for (var i = Kt(r, t); ++n < e;) t(n);
                                 return i
-                            }, Bn.toFinite = ms, Bn.toInteger = _s, Bn.toLength = gs, Bn.toLower = function(e) {
-                                return ys(e).toLowerCase()
-                            }, Bn.toNumber = vs, Bn.toSafeInteger = function(e) {
-                                return e ? ur(_s(e), -9007199254740991, p) : 0 === e ? e : 0
-                            }, Bn.toString = ys, Bn.toUpper = function(e) {
-                                return ys(e).toUpperCase()
-                            }, Bn.trim = function(e, t, n) {
-                                if ((e = ys(e)) && (n || t === i)) return e.replace(oe, "");
-                                if (!e || !(t = li(t))) return e;
-                                var r = hn(e),
-                                    a = hn(t);
-                                return Ei(r, Qt(r, a), en(r, a) + 1).join("")
-                            }, Bn.trimEnd = function(e, t, n) {
-                                if ((e = ys(e)) && (n || t === i)) return e.replace(ue, "");
-                                if (!e || !(t = li(t))) return e;
-                                var r = hn(e);
-                                return Ei(r, 0, en(r, hn(t)) + 1).join("")
-                            }, Bn.trimStart = function(e, t, n) {
-                                if ((e = ys(e)) && (n || t === i)) return e.replace(se, "");
-                                if (!e || !(t = li(t))) return e;
-                                var r = hn(e);
-                                return Ei(r, Qt(r, hn(t))).join("")
-                            }, Bn.truncate = function(e, t) {
+                            }, Vn.toFinite = _s, Vn.toInteger = gs, Vn.toLength = vs, Vn.toLower = function(e) {
+                                return ws(e).toLowerCase()
+                            }, Vn.toNumber = bs, Vn.toSafeInteger = function(e) {
+                                return e ? cr(gs(e), -9007199254740991, p) : 0 === e ? e : 0
+                            }, Vn.toString = ws, Vn.toUpper = function(e) {
+                                return ws(e).toUpperCase()
+                            }, Vn.trim = function(e, t, n) {
+                                if ((e = ws(e)) && (n || t === i)) return Zt(e);
+                                if (!e || !(t = di(t))) return e;
+                                var r = pn(e),
+                                    a = pn(t);
+                                return Ai(r, en(r, a), tn(r, a) + 1).join("")
+                            }, Vn.trimEnd = function(e, t, n) {
+                                if ((e = ws(e)) && (n || t === i)) return e.slice(0, mn(e) + 1);
+                                if (!e || !(t = di(t))) return e;
+                                var r = pn(e);
+                                return Ai(r, 0, tn(r, pn(t)) + 1).join("")
+                            }, Vn.trimStart = function(e, t, n) {
+                                if ((e = ws(e)) && (n || t === i)) return e.replace(oe, "");
+                                if (!e || !(t = di(t))) return e;
+                                var r = pn(e);
+                                return Ai(r, en(r, pn(t))).join("")
+                            }, Vn.truncate = function(e, t) {
                                 var n = 30,
                                     r = "...";
-                                if (ns(t)) {
+                                if (rs(t)) {
                                     var a = "separator" in t ? t.separator : a;
-                                    n = "length" in t ? _s(t.length) : n, r = "omission" in t ? li(t.omission) : r
+                                    n = "length" in t ? gs(t.length) : n, r = "omission" in t ? di(t.omission) : r
                                 }
-                                var o = (e = ys(e)).length;
-                                if (on(e)) {
-                                    var s = hn(e);
+                                var o = (e = ws(e)).length;
+                                if (sn(e)) {
+                                    var s = pn(e);
                                     o = s.length
                                 }
                                 if (n >= o) return e;
-                                var u = n - fn(r);
+                                var u = n - hn(r);
                                 if (u < 1) return r;
-                                var c = s ? Ei(s, 0, u).join("") : e.slice(0, u);
+                                var c = s ? Ai(s, 0, u).join("") : e.slice(0, u);
                                 if (a === i) return c + r;
-                                if (s && (u += c.length - u), ss(a)) {
+                                if (s && (u += c.length - u), us(a)) {
                                     if (e.slice(u).search(a)) {
                                         var l, d = c;
-                                        for (a.global || (a = xe(a.source, ys(me.exec(a)) + "g")), a.lastIndex = 0; l = a.exec(d);) var f = l.index;
+                                        for (a.global || (a = Oe(a.source, ws(me.exec(a)) + "g")), a.lastIndex = 0; l = a.exec(d);) var f = l.index;
                                         c = c.slice(0, f === i ? u : f)
                                     }
-                                } else if (e.indexOf(li(a), u) != u) {
+                                } else if (e.indexOf(di(a), u) != u) {
                                     var h = c.lastIndexOf(a);
                                     h > -1 && (c = c.slice(0, h))
                                 }
                                 return c + r
-                            }, Bn.unescape = function(e) {
-                                return (e = ys(e)) && Z.test(e) ? e.replace($, pn) : e
-                            }, Bn.uniqueId = function(e) {
-                                var t = ++Ue;
-                                return ys(e) + t
-                            }, Bn.upperCase = Xs, Bn.upperFirst = Js, Bn.each = yo, Bn.eachRight = wo, Bn.first = Ha, cu(Bn, (Au = {}, wr(Bn, (function(e, t) {
-                                We.call(Bn.prototype, t) || (Au[t] = e)
-                            })), Au), {
+                            }, Vn.unescape = function(e) {
+                                return (e = ws(e)) && Z.test(e) ? e.replace($, _n) : e
+                            }, Vn.uniqueId = function(e) {
+                                var t = ++We;
+                                return ws(e) + t
+                            }, Vn.upperCase = Js, Vn.upperFirst = Qs, Vn.each = wo, Vn.eachRight = Eo, Vn.first = $a, lu(Vn, (Su = {}, Er(Vn, (function(e, t) {
+                                Pe.call(Vn.prototype, t) || (Su[t] = e)
+                            })), Su), {
                                 chain: !1
-                            }), Bn.VERSION = "4.17.20", kt(["bind", "bindKey", "curry", "curryRight", "partial", "partialRight"], (function(e) {
-                                Bn[e].placeholder = Bn
+                            }), Vn.VERSION = "4.17.21", kt(["bind", "bindKey", "curry", "curryRight", "partial", "partialRight"], (function(e) {
+                                Vn[e].placeholder = Vn
                             })), kt(["drop", "take"], (function(e, t) {
-                                Yn.prototype[e] = function(n) {
-                                    n = n === i ? 1 : bn(_s(n), 0);
-                                    var r = this.__filtered__ && !t ? new Yn(this) : this.clone();
-                                    return r.__filtered__ ? r.__takeCount__ = yn(n, r.__takeCount__) : r.__views__.push({
-                                        size: yn(n, _),
+                                zn.prototype[e] = function(n) {
+                                    n = n === i ? 1 : yn(gs(n), 0);
+                                    var r = this.__filtered__ && !t ? new zn(this) : this.clone();
+                                    return r.__filtered__ ? r.__takeCount__ = wn(n, r.__takeCount__) : r.__views__.push({
+                                        size: wn(n, _),
                                         type: e + (r.__dir__ < 0 ? "Right" : "")
                                     }), r
-                                }, Yn.prototype[e + "Right"] = function(t) {
+                                }, zn.prototype[e + "Right"] = function(t) {
                                     return this.reverse()[e](t).reverse()
                                 }
                             })), kt(["filter", "map", "takeWhile"], (function(e, t) {
                                 var n = t + 1,
                                     r = 1 == n || 3 == n;
-                                Yn.prototype[e] = function(e) {
+                                zn.prototype[e] = function(e) {
                                     var t = this.clone();
                                     return t.__iteratees__.push({
-                                        iteratee: ca(e, 3),
+                                        iteratee: la(e, 3),
                                         type: n
                                     }), t.__filtered__ = t.__filtered__ || r, t
                                 }
                             })), kt(["head", "last"], (function(e, t) {
                                 var n = "take" + (t ? "Right" : "");
-                                Yn.prototype[e] = function() {
+                                zn.prototype[e] = function() {
                                     return this[n](1).value()[0]
                                 }
                             })), kt(["initial", "tail"], (function(e, t) {
                                 var n = "drop" + (t ? "" : "Right");
-                                Yn.prototype[e] = function() {
-                                    return this.__filtered__ ? new Yn(this) : this[n](1)
+                                zn.prototype[e] = function() {
+                                    return this.__filtered__ ? new zn(this) : this[n](1)
                                 }
-                            })), Yn.prototype.compact = function() {
-                                return this.filter(au)
-                            }, Yn.prototype.find = function(e) {
+                            })), zn.prototype.compact = function() {
+                                return this.filter(ou)
+                            }, zn.prototype.find = function(e) {
                                 return this.filter(e).head()
-                            }, Yn.prototype.findLast = function(e) {
+                            }, zn.prototype.findLast = function(e) {
                                 return this.reverse().find(e)
-                            }, Yn.prototype.invokeMap = Xr((function(e, t) {
-                                return "function" == typeof e ? new Yn(this) : this.map((function(n) {
-                                    return Nr(n, e, t)
+                            }, zn.prototype.invokeMap = Jr((function(e, t) {
+                                return "function" == typeof e ? new zn(this) : this.map((function(n) {
+                                    return Lr(n, e, t)
                                 }))
-                            })), Yn.prototype.reject = function(e) {
-                                return this.filter(Wo(ca(e)))
-                            }, Yn.prototype.slice = function(e, t) {
-                                e = _s(e);
+                            })), zn.prototype.reject = function(e) {
+                                return this.filter(Uo(la(e)))
+                            }, zn.prototype.slice = function(e, t) {
+                                e = gs(e);
                                 var n = this;
-                                return n.__filtered__ && (e > 0 || t < 0) ? new Yn(n) : (e < 0 ? n = n.takeRight(-e) : e && (n = n.drop(e)), t !== i && (n = (t = _s(t)) < 0 ? n.dropRight(-t) : n.take(t - e)), n)
-                            }, Yn.prototype.takeRightWhile = function(e) {
+                                return n.__filtered__ && (e > 0 || t < 0) ? new zn(n) : (e < 0 ? n = n.takeRight(-e) : e && (n = n.drop(e)), t !== i && (n = (t = gs(t)) < 0 ? n.dropRight(-t) : n.take(t - e)), n)
+                            }, zn.prototype.takeRightWhile = function(e) {
                                 return this.reverse().takeWhile(e).reverse()
-                            }, Yn.prototype.toArray = function() {
+                            }, zn.prototype.toArray = function() {
                                 return this.take(_)
-                            }, wr(Yn.prototype, (function(e, t) {
+                            }, Er(zn.prototype, (function(e, t) {
                                 var n = /^(?:filter|find|map|reject)|While$/.test(t),
                                     r = /^(?:head|last)$/.test(t),
-                                    a = Bn[r ? "take" + ("last" == t ? "Right" : "") : t],
+                                    a = Vn[r ? "take" + ("last" == t ? "Right" : "") : t],
                                     o = r || /^find/.test(t);
-                                a && (Bn.prototype[t] = function() {
+                                a && (Vn.prototype[t] = function() {
                                     var t = this.__wrapped__,
                                         s = r ? [1] : arguments,
-                                        u = t instanceof Yn,
+                                        u = t instanceof zn,
                                         c = s[0],
-                                        l = u || zo(t),
+                                        l = u || Ho(t),
                                         d = function(e) {
-                                            var t = a.apply(Bn, Mt([e], s));
+                                            var t = a.apply(Vn, Mt([e], s));
                                             return r && f ? t[0] : t
                                         };
                                     l && n && "function" == typeof c && 1 != c.length && (u = l = !1);
@@ -8612,55 +8624,55 @@
                                         p = o && !f,
                                         m = u && !h;
                                     if (!o && l) {
-                                        t = m ? t : new Yn(this);
+                                        t = m ? t : new zn(this);
                                         var _ = e.apply(t, s);
                                         return _.__actions__.push({
-                                            func: mo,
+                                            func: _o,
                                             args: [d],
                                             thisArg: i
-                                        }), new Gn(_, f)
+                                        }), new Yn(_, f)
                                     }
                                     return p && m ? e.apply(this, s) : (_ = this.thru(d), p ? r ? _.value()[0] : _.value() : _)
                                 })
                             })), kt(["pop", "push", "shift", "sort", "splice", "unshift"], (function(e) {
-                                var t = Le[e],
+                                var t = Ne[e],
                                     n = /^(?:push|sort|unshift)$/.test(e) ? "tap" : "thru",
                                     r = /^(?:pop|shift)$/.test(e);
-                                Bn.prototype[e] = function() {
+                                Vn.prototype[e] = function() {
                                     var e = arguments;
                                     if (r && !this.__chain__) {
                                         var i = this.value();
-                                        return t.apply(zo(i) ? i : [], e)
+                                        return t.apply(Ho(i) ? i : [], e)
                                     }
                                     return this[n]((function(n) {
-                                        return t.apply(zo(n) ? n : [], e)
+                                        return t.apply(Ho(n) ? n : [], e)
                                     }))
                                 }
-                            })), wr(Yn.prototype, (function(e, t) {
-                                var n = Bn[t];
+                            })), Er(zn.prototype, (function(e, t) {
+                                var n = Vn[t];
                                 if (n) {
                                     var r = n.name + "";
-                                    We.call(Ln, r) || (Ln[r] = []), Ln[r].push({
+                                    Pe.call(In, r) || (In[r] = []), In[r].push({
                                         name: t,
                                         func: n
                                     })
                                 }
-                            })), Ln[Bi(i, 2).name] = [{
+                            })), In[Vi(i, 2).name] = [{
                                 name: "wrapper",
                                 func: i
-                            }], Yn.prototype.clone = function() {
-                                var e = new Yn(this.__wrapped__);
-                                return e.__actions__ = Di(this.__actions__), e.__dir__ = this.__dir__, e.__filtered__ = this.__filtered__, e.__iteratees__ = Di(this.__iteratees__), e.__takeCount__ = this.__takeCount__, e.__views__ = Di(this.__views__), e
-                            }, Yn.prototype.reverse = function() {
+                            }], zn.prototype.clone = function() {
+                                var e = new zn(this.__wrapped__);
+                                return e.__actions__ = Ni(this.__actions__), e.__dir__ = this.__dir__, e.__filtered__ = this.__filtered__, e.__iteratees__ = Ni(this.__iteratees__), e.__takeCount__ = this.__takeCount__, e.__views__ = Ni(this.__views__), e
+                            }, zn.prototype.reverse = function() {
                                 if (this.__filtered__) {
-                                    var e = new Yn(this);
+                                    var e = new zn(this);
                                     e.__dir__ = -1, e.__filtered__ = !0
                                 } else(e = this.clone()).__dir__ *= -1;
                                 return e
-                            }, Yn.prototype.value = function() {
+                            }, zn.prototype.value = function() {
                                 var e = this.__wrapped__.value(),
                                     t = this.__dir__,
-                                    n = zo(e),
+                                    n = Ho(e),
                                     r = t < 0,
                                     i = n ? e.length : 0,
                                     a = function(e, t, n) {
@@ -8677,10 +8689,10 @@
                                                     t -= o;
                                                     break;
                                                 case "take":
-                                                    t = yn(t, e + o);
+                                                    t = wn(t, e + o);
                                                     break;
                                                 case "takeRight":
-                                                    e = bn(e, t - o)
+                                                    e = yn(e, t - o)
                                             }
                                         }
                                         return {
@@ -8695,8 +8707,8 @@
                                     l = this.__iteratees__,
                                     d = l.length,
                                     f = 0,
-                                    h = yn(u, this.__takeCount__);
-                                if (!n || !r && i == u && h == u) return mi(e, this.__actions__);
+                                    h = wn(u, this.__takeCount__);
+                                if (!n || !r && i == u && h == u) return _i(e, this.__actions__);
                                 var p = [];
                                 e: for (; u-- && f < h;) {
                                     for (var m = -1, _ = e[c += t]; ++m < d;) {
@@ -8713,44 +8725,44 @@
                                     p[f++] = _
                                 }
                                 return p
-                            }, Bn.prototype.at = _o, Bn.prototype.chain = function() {
-                                return po(this)
-                            }, Bn.prototype.commit = function() {
-                                return new Gn(this.value(), this.__chain__)
-                            }, Bn.prototype.next = function() {
-                                this.__values__ === i && (this.__values__ = ps(this.value()));
+                            }, Vn.prototype.at = go, Vn.prototype.chain = function() {
+                                return mo(this)
+                            }, Vn.prototype.commit = function() {
+                                return new Yn(this.value(), this.__chain__)
+                            }, Vn.prototype.next = function() {
+                                this.__values__ === i && (this.__values__ = ms(this.value()));
                                 var e = this.__index__ >= this.__values__.length;
                                 return {
                                     done: e,
                                     value: e ? i : this.__values__[this.__index__++]
                                 }
-                            }, Bn.prototype.plant = function(e) {
-                                for (var t, n = this; n instanceof qn;) {
-                                    var r = Fa(n);
+                            }, Vn.prototype.plant = function(e) {
+                                for (var t, n = this; n instanceof Gn;) {
+                                    var r = Ba(n);
                                     r.__index__ = 0, r.__values__ = i, t ? a.__wrapped__ = r : t = r;
                                     var a = r;
                                     n = n.__wrapped__
                                 }
                                 return a.__wrapped__ = e, t
-                            }, Bn.prototype.reverse = function() {
+                            }, Vn.prototype.reverse = function() {
                                 var e = this.__wrapped__;
-                                if (e instanceof Yn) {
+                                if (e instanceof zn) {
                                     var t = e;
-                                    return this.__actions__.length && (t = new Yn(this)), (t = t.reverse()).__actions__.push({
-                                        func: mo,
-                                        args: [to],
+                                    return this.__actions__.length && (t = new zn(this)), (t = t.reverse()).__actions__.push({
+                                        func: _o,
+                                        args: [no],
                                         thisArg: i
-                                    }), new Gn(t, this.__chain__)
+                                    }), new Yn(t, this.__chain__)
                                 }
-                                return this.thru(to)
-                            }, Bn.prototype.toJSON = Bn.prototype.valueOf = Bn.prototype.value = function() {
-                                return mi(this.__wrapped__, this.__actions__)
-                            }, Bn.prototype.first = Bn.prototype.head, nt && (Bn.prototype[nt] = function() {
+                                return this.thru(no)
+                            }, Vn.prototype.toJSON = Vn.prototype.valueOf = Vn.prototype.value = function() {
+                                return _i(this.__wrapped__, this.__actions__)
+                            }, Vn.prototype.first = Vn.prototype.head, et && (Vn.prototype[et] = function() {
                                 return this
-                            }), Bn
+                            }), Vn
                         }();
-                        ht._ = mn, (r = function() {
-                            return mn
+                        ht._ = gn, (r = function() {
+                            return gn
                         }.call(t, n, t, e)) === i || (e.exports = r)
                     }.call(this)
             },
@@ -20740,177 +20752,185 @@
                     default: () => r
                 });
                 const r = [
-                    ["", "Add additional hours", "Add product", "Chat list", "Close panel", "Open the chat context menu", "This is a disappearing message", "Full screen", "Exit full screen", "Mute", "Pause", "Play", "Unmute", "Message list. Press right arrow key on a message to open message context menu.", "Message list. Press left arrow key on a message to open message context menu.", "__author__:", "You:", "Delivered", "Pending", "Read", "Sent", "Voice message", "Muted chat", "Open emojis panel", "Open gif panel", "Open sticker panel", "Cancel", "Voice message", "Send", "Stop", "Result: __name__", "Search results.", "Starred", "Sticker with: __emojis__", "Sticker with no label", "Unselect category", "View once info", "Turn off view once", "Turn on view once", "Changing __count__ label", "The label could not be updated", "__count__ label changed", "Adding new label: __labelName__", "Archived chats will unarchive when you receive a new message.", "Couldn't change archive setting.", "Changing archive setting", "Archived chats will remain archived when you receive a new message.", "Couldn't block __participant__", "__participant__ blocked", "Blocking __participant__", "Couldn't delete broadcast list.", "Broadcast list deleted", "Broadcast list deleted from this device", "Deleting broadcast list", "Group setting could not be changed", "Couldn't archive chat.", "Chat archived", "Archiving chat", "Couldn't clear chat.", "Chat cleared", "Chat cleared from this device", "Clearing chat", "Couldn't delete chat.", "Chat deleted", "Chat deleted from this device", "Deleting chat", "Couldn't dismiss change number notification.", "Change number notification dismissed.", "Dismissing change number notification.", "Couldn't mark chat as read.", "Couldn't mark chat as unread.", "Marked as read", "Marked as unread", "Marking as read", "Marking as unread", "Couldn't mute chat.", "Chat muted", "Muting chat", "Couldn't pin chat", "You can only pin up to 3 chats.", "Chat pinned", "Pinning chat", "Couldn't unarchive chat.", "Chat unarchived", "Unarchiving chat", "Unmute", "Couldn't unmute chat.", "Chat unmuted", "Unmuting chat", "Couldn't unpin chat", "Chat unpinned", "Unpinning chat", "Deleting label: __labelName__ failed", "Deleted label: __labelName__", "Deleting label: __labelName__", "Couldn't create group.", "Please enter a shorter subject.", "You've created too many groups too quickly. Try again later.", "Can't add more than __max__ participants", "Created group", "Creating group", "Couldn't delete group.", "Group deleted", "Group deleted from this device", "Deleting group", "Changing group description", "Group description change failed", "Group description changed", "Couldn't exit group.", "Exited group", "Exiting group", "You're not a participant.", "This group has ended.", "You've added too many contacts to groups too quickly. Try again later.", "Couldn't remove group icon.", "Group icon removed", "Removing group icon", "Group icon set", "Couldn't set group icon.", "Setting group icon", "Couldn't mute group.", "Group muted", "Muting group", "Couldn't rename group.", "Group renamed to __subject__", "Renaming group", "Group subject can't be empty", "Couldn't unmute group.", "Group unmuted", "Unmuting group", "Updating label color", "Label color update failed", "Label color updated", "Updating label name", "Label name update failed", "Label name updated", "Couldn't stop sharing live location", "Stop sharing live location with __name__?", "Stop sharing live location with __name__?", "Stopped sharing live location", "Stopping live location sharing", "Marking as not spam", "Couldn't mark as not spam", "Marked as not spam", "Couldn't delete message because the message may have expired", "Couldn't delete message", "__count__ message deleted", "Deleting message", "Couldn't star message because the message may have expired", "Couldn't star message", "__count__ message starred", "Starring message", "Couldn't unstar all messages", "Couldn't unstar message because the message may have expired", "Couldn't unstar message", "__count__ message unstarred", "All messages unstarred", "Unstarring message", "Unstarring all messages", "Failed to add label: __labelName__", "Label: __labelName__ added successfully", "Couldn't add __participantNames__.", "Couldn't add some participants.", "You added __participantNames__.", "Adding __participantNames__.", "Removing __participantNames__ as an admin failed.", "You can't dismiss __participant__ as admin because they created this group.", "Couldn't remove some participants as an admin.", "__participantNames__ is no longer a group admin.", "Removing __participantNames__ as a group admin.", "They are no longer in this group.", "You can't add this participant because they left the group recently.", "This group is full.", "Please try again.", "Couldn't make __participantNames__ an admin.", "Couldn't make some participants admin.", "__participantNames__ is now a group admin.", "Making __participantNames__ a group admin.", "Couldn't remove __participantNames__.", "Couldn't remove some participants.", "You can't remove __participant__ because they created this group.", "You removed __participantNames__.", "Removing __participantNames__.", "Couldn't remove profile photo.", "Profile photo removed", "Removing profile photo", "Profile photo set", "Couldn't set profile photo.", "Setting profile photo", "Your name can't be empty", "Your name changed", "Couldn't change your name.", "That emoji isn't allowed in your name", "Changing your name", "Reporting spam", "Couldn't report spam", "Reported spam", "About can't be empty", "About changed", "Couldn't change About.", "Changing About…", "Try again.", "Couldn't unblock __participant__", "__participant__ unblocked", "Unblocking __participant__", "Undo", "Add a caption…", "The contact you have selected is blocked. Would you like to unblock them and add them to the group?", "Blocked contacts will no longer be able to call you or send you messages", "Add blocked contact", "Add catalog", "Add to a group", "Add file", "Add group description", "Add group icon", "Add participant", "Add group participants", "Label name already exists", "NEW LABEL", "New label", "Add new label", "Add profile photo", "Add set of hours", "Add to catalog", "Drag the image to adjust", "All chats are archived", "Already added to group", "Only admins can send messages", "Only __admins__ can send messages", "admins", "Archive chat", "Archived", "Archived Chats", "To reduce interruptions, archived chats will stay here with notifications turned off. To change this experience, go to Settings > Archived Chats.", "Archived chats will stay archived", "Archive settings", "No archived chats", "Archived chats", "Archived", "Archived chats are muted", "Camera", "Attach Desktop Client Logs", "Document", "__count__ Page", "Photos & Videos", "Catalog", "Contact", "__number__ audio file you tried adding has no content.", "Your browser doesn’t support audio playback.", "1.5×", "1×", "2×", "__number__ audio you tried adding is larger than the __maxSize__ limit.", "Media Auto-Download", "Archived chats will remain archived when you receive a new message", "Keep chats archived", "Using __deviceName__ as your __deviceType__ for your WhatsApp calls", "BETA", "You're using the multi-device beta", "This chat is with a business account. Click for more info.", '"__businessName__" registered as a business account, but WhatsApp hasn’t verified their name yet.', 'This chat is with the official business account of "__businessName__". Click for more info.', 'WhatsApp has verified that this is the official business account of "__businessName__".', 'WhatsApp has verified that this is the official business account of "__businessName__". This account is saved with a different name in your address book.', "This business account has now registered as a standard account. Click for more info.", "This account was previously a business account but has now registered as a standard account and may no longer belong to the business.", 'This official business account changed its name to "__businessName__". Click for more info.', 'WhatsApp has verified that this official business account changed its name and now uses the name "__businessName__".', "__businessName__ used other companies to store and manage this message.", "__businessName__ used Facebook and other companies to store and manage this message.", "This message was delivered directly from __businessName__.", "This message was delivered directly to __businessName__.", "__businessName__ used Facebook to store and manage this message.", "This chat is with a business account. Click for more info.", '"__businessName__" registered as a business account, but WhatsApp hasn’t verified their name yet.', 'This chat is with the official business account of "__businessName__". Click for more info.', 'WhatsApp has verified that this is the official business account of "__businessName__".', 'WhatsApp has verified that this is the official business account of "__businessName__". This account is saved with a different name in your address book.', 'This chat is now with the official business account of "__businessName__". Click for more info.', 'WhatsApp has verified that this is the official business account of "__businessName__".', 'This chat is no longer with the official business account of "__businessName__". Click for more info.', 'WhatsApp is no longer able to verify that this is the official business account of "__businessName__".', "Block", "Block __contact__? Blocked contacts will no longer be able to call you or send you messages.", "Block Contact", "List of contacts that you have blocked", "No blocked contacts yet", "Blocked contacts", "WhatsApp secures messages while they're being delivered to and from the companies that store and manage this chat for __businessName__. Contact __businessName__ for more information on their privacy practices.", "This chat is with a business account.", "WhatsApp secures messages while they're being delivered to and from Facebook, where this chat is stored and managed for __businessName__. Contact __businessName__ for more information on their privacy practices.", "WhatsApp secures messages while they're being delivered to and from Facebook, where this chat is stored and managed for __businessName__.", "__businessName__ is registered as a business account.", "__businessName__ is registered as an official business account.", "__businessName__ is registered as an official business account. The business is saved as a different name in your contacts.", "This chat is with the official business account of __businessName__.", "This chat is with the official business account of __businessName__. The business is saved as a different name in your contacts.", "__businessName__ is now registered as a business account, instead of an official business account.", "__businessName__ no longer uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ now only uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ no longer uses Facebook or other companies to manage its WhatsApp conversations.", "This chat is with a business account that uses Facebook and other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is now registered as an official business account. This business no longer uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business no longer uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account that only uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business only uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account. This business no longer uses Facebook or other companies to manage its WhatsApp conversations. Click to learn more.", "This chat is with the official business account of __businessName__. This business uses Facebook and other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official business account of __businessName__, but it's saved as a different name in your contacts. This business uses Facebook and other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is no longer an official business account and it no longer uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it now only uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it no longer uses Facebook or other companies to manage its WhatsApp conversations. Click to learn more.", "__businessName__ no longer uses other companies to manage its WhatsApp conversations.", "This chat is with a business account that uses other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is now registered as an official business account. This business no longer uses other companies to manage its WhatsApp conversations. Click to learn more.", "This chat is with the official business account of __businessName__. This business uses other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official business account of __businessName__, but it's saved as a different name in your contacts. This business uses other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is no longer an official business account and it no longer uses other companies to manage its WhatsApp conversations. Click to learn more.", "__businessName__ is now registered as a business account that uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as a business account that uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as a business account that uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as a business account. Click to learn more.", "__businessName__ now uses other companies instead of Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ no longer uses Facebook to manage its WhatsApp conversations.", "This chat is with a business account that uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is now registered as an official business account. This business now uses other companies instead of Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business now uses other companies instead of Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account. This business no longer uses Facebook to manage its WhatsApp conversations. Click to learn more.", "This chat is with the official business account of __businessName__. This business uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official business account of __businessName__, but it's saved as a different name in your contacts. This business uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official account of __businessName__, but it's saved as a different name in your contacts. This account uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official account of __businessName__. This account uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is no longer an official business account. This business uses other companies instead of Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it no longer uses Facebook to manage its WhatsApp conversations. Click to learn more.", "__businessName__ now uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "This chat is with a business account. Click to learn more.", "This chat is with the official business account of __businessName__. Click to learn more.", "__businessName__ now uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer registered as a business account.", "__businessName__ now uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account that uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account that uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account that uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account. Click to learn more.", "__businessName__ is no longer an official business account. This business now uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it now uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it now uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer registered as an official business account. Click to learn more.", "Broadcast list deleted", "Broadcast list info", "Browser not supported", "and", "By appointment only", "Closed", "Closed now", "__closed__, opens at __time__", "Closed today", "Always Open", "By Appointment", "Edit Business Hours", "End Time", "Selected Hours", "Start Time", "Open", "Open 24 hours", "__open__ 24 hours", "__open__ by appointment only", "Open by appointment only", "Open now", "__open__ until __time__", "__open__ until __time__, __additionalOpenTime__ - __additionalCloseTime__", "Business Info", "This is your business name. It will be visible to your WhatsApp customers.", "This verified business is not in your contact list.", "__streetAddress__, __city__", "__streetAddress__, __city__ __zipCode__", "Business account", "Something went wrong.", 'You cannot select categories when you have selected "Not a Business"', "Choose up to three categories", "Confirmed as __businessName__", "Confirmed business", "About and Phone Number", "Add another website", "Business Address", "Business Hours", "Categories", "Business Description", "Email Address", "End Time", "Edit map on mobile", "This name will be visible to your WhatsApp customers and can only be editable from the app on your mobile device.", "Your phone number can only be editable from the app on your mobile device.", "Something went wrong", "An error occurred while saving.  Please try again.", "Business Information", "Website", "This name will be visible to your WhatsApp customers and can only be editable from the app on your mobile device.", "No categories found", "Official business account", "Search categories", "This is a business account.", "Verified", "__verified__ as __businessName__", "Verified business", "Use Here", "WhatsApp needs a camera for video calls and taking photos. Allow access in your computer's settings.", "Allow WhatsApp to access your camera?", "Calls are not supported on WhatsApp Web. Open WhatsApp on your phone to call this business.", "__count__ message couldn't be forwarded because __contact__ is on a version of WhatsApp that doesn't support it.", "No messages could be forwarded because __contact__ is on a version of WhatsApp that doesn't support them.", "__count__ message couldn't be forwarded because the file is missing.", "__count__ message couldn't be forwarded because the file is missing or __contact__ is on a version of WhatsApp that doesn't support it.", "No messages could be forwarded because the file is missing or __contact__ is on a version of WhatsApp that doesn't support them.", "No messages could be forwarded because the file is missing.", "Can't Load WhatsApp", "The caption you’re pasting is too long. Try shortening it or sending it as a separate message.", "Caption Too Long", "Your cart", "Add items to your cart", "Collect all the items you're interested in here and then send them to the business. Use your cart to ask about buying, customizing, delivery, or anything you want.", "Ask for price", "Qty __quantity__", "One or more items in your cart have been updated", "You can't add any more of this item", "Add a message", "The message you’re pasting is too long. Try shortening it or sending it as a separate message.", "Message Too Long", "Received cart", "Your sent cart", "Send a cart", "Something went wrong", "Add Images", "Add items to your catalog so customers can see what you're offering", "Add new item", "Failed to send review request.", "Add Items", "New collection", "Failed to delete collection", "When you delete this collection, items in the collection will not be deleted.", "Delete", "Delete Collection", "Edit", "__updated__ Item Updated", "Name required", "New collection", "New collection", "This collection won’t be visible to customers until you add at least 1 item", "Update Items", "Collections", "You already have a collection with this group of items. Add or delete items to make a different group.", "Failed to save collection", "Are you sure you want to delete this item from your catalog?", "Delete Item", "Failed to delete product", "Catalog disabled", "Your catalog is temporarily disabled because WhatsApp is a sales channel for your Facebook shop. To restore your catalog, go to Commerce Manager and set the shop’s visibility to “hidden”, or remove WhatsApp from the Business Manager account.", "By using this feature, you're using a __fb_product_link__ and agree that the __fb_commerce_link__ and __wa_commerce_policy_link__ apply.", "If you feel this is not correct, you can __request_review_link__.", "Your appeal was submitted. If it’s approved, your item will be added to your catalog. If it’s not approved, you’ll be notified.", "We reviewed this item again and found it didn't follow product or service guidelines. __learn_more_link__.", "We will review the item and if it meets our guidelines, it will be added to your catalog.", "When you hide an item, customers won’t see it in your catalog.", "Hide item", "Hide item in your catalog?", "This item wasn't approved because it doesn't follow our product or service guidelines. __learn_more_link__.", "request another review", "Changes saved", "Add to cart", "Delete", "Hide item", "Share", "Show item", "Show item in your catalog?", "This item is being reviewed. If it’s been approved, your customers will be able to see it on your profile. __learn_more_link__.", "This item is being reviewed. You hid it, so customers won’t see it in your catalog when it’s approved. __learn_more_link__.", "Catalog link", "Failed to save changes", "Add to cart", "Turn this on to let customers add items to a cart when shopping in your catalog. Turning this off won't affect carts you've already received. __learn_more_link__", "Failed to load catalog settings.", "Settings", "Off", "On", "Learn more about their products & services", "View __catalogOwnerName__'s Catalog on WhatsApp", "__productName__ from __catalogOwnerName__ on WhatsApp.", "Anyone with WhatsApp can follow this link to browse catalog", "Add new item", "Edit item", "View all", "Change group icon", "Message new number", "__name__ changed their phone number. You're currently chatting with their new number.", "__name__ changed their phone number to a new number.", "__name__ changed their phone number to a new number. Click to message the new number.", "Change profile photo", "You allowed all participants to send messages to this group", "You allowed only admins to send messages to this group", "You turned off disappearing messages in this chat", "You turned on disappearing messages in this chat", "You allowed participants to send messages that have been forwarded many times to this group", "You blocked participants from sending messages that have been forwarded many times to this group", "You allowed all participants to change this group's info", "You allowed only admins to change this group's info", "Allowing all participants to send messages to this group", "Allowing only admins to send messages to this group", "Turning off disappearing messages in this chat", "Turning on disappearing messages in this chat", "Allowing participants to send messages that have been forwarded many times to this group", "Blocking participants from sending messages that have been forwarded many times to this group", "Allowing all participants to change this group's info", "Allowing only admins to change this group's info", "Charge your phone to keep using WhatsApp", "Archived", "You are not an admin", "Search for messages within __chatName__.", "Starred Messages", "No Internet connection", "Group invite message. Open WhatsApp on your phone to view.", "Sharing live location. Open WhatsApp on your phone to view.", "Payment message. Open WhatsApp on your phone to view.", "Choose a phone number", "Clear this chat?", "Clear messages", "Clear chat", "Clear this chat?", "Delete file from your phone", "Clear this chat?", "click here for group info", "click here for contact info", "Update WhatsApp", "Click to reload QR code", "Click to save, ESC to cancel", "Click to update WhatsApp", "Close chat", "All Items", "__count__ item", "rejected", "See all", "This collection is currently under review. Once it’s been approved, your customers will be able to see it on your profile.", "Collections", "This collection wasn’t approved because it doesn’t follow our guidelines.", "Rename", "Commerce Manager", "Your computer is connected to a network that prevents WhatsApp from working correctly", "Computer not connected", "Add __participant__ to “__subject__” group?", "Add __participants__ to “__subject__” group?", "Confirm", "You are closing WhatsApp.", "Some messages can’t be forwarded, do you want to forward rest of the messages?", "Can't forward all messages", "Forward to __chat__?", "Log out?", "Make __participant__ an admin for “__subject__” group?", "Remove __participant__ from “__subject__” group?", "Send __count__ contact to “__chat__”?", "Send __count__ contact to “__chat__”?", "Send __count__ contact to “__chat__”?", "Unblock __chat__ and forward messages?", "Blocked. Click to unblock", "Unblock __contact__", "Unmute this chat?", "Enable sounds and notifications?", "Unmute this group?", "Connecting…", "Connecting to WhatsApp", "Connecting", "Contact", "Contact Card", "About and phone number", "Contact is blocked", "Hey there! I am using WhatsApp.", "Loading About…", "View contact", "__number__ contact that you tried to add has no content.", "The contact that you tried to add is larger than the __maxSize__ limit.", "Use WhatsApp on your phone to see the complete message history.", "Older documents may be available", "Older files may be available", "Older links may be available", "Older media may be available", "Older messages may be available", "Older products may be available", "Use WhatsApp on your phone to search messages from before __date__.", "Use WhatsApp on your phone to see the complete chat history.", "Older chat history is available", "Additional messages for this chat are being synced", "Search for messages with __chatName__.", "Copy link", "Decrease speed of selected voice message", "WhatsApp message", "WhatsApp group message", "Default", "Delete all", "Delete broadcast list?", "Delete for me", "Delete chat", "Delete chat", "Delete this chat?", "Delete group", "Delete this group?", "Delete Item", "Deleting a label removes it from all messages, contacts, and from the list of labels. Are you sure you want to delete this label?", "Delete message", "Delete message?", "Tell us about your issue", "Update", "Please Update WhatsApp", "New version available", "Go To Settings", "Please update WhatsApp from the Mac App Store", "Desktop Settings", "Update", "To continue using WhatsApp, click Update and install the latest version.", "Couldn't Update Automatically", "Downloading an update to WhatsApp. This may take several minutes. WhatsApp will automatically update and restart when the download finishes.", "Updating WhatsApp", "Please update WhatsApp from the Windows App Store", "Dismiss", "Dismiss as admin", "Docs", "__count__ Doc", "“__name__” downloaded.", "__number__ document you tried adding has no content.", "__number__ document you tried adding is larger than the __maxSize__ limit.", "Download all", "This contact can't be displayed in WhatsApp Web. Download it to open it with another app on your computer?", "Download contact?", "Download failed", "open", "Downloading…", "Download completed", "This file can't be opened in WhatsApp Web. Download it to open it with another app on your computer?", "Download Unsupported File?", "Drag file here", "End-to-end encrypted", "Edit", "Choose who can change this group’s subject, icon, description and disappearing messages setting.", "Add text to your image…", "Edit label", "Did you know? You can type : and a word to search emoji", "smile", "Activity", "Animals & Nature", "Flags", "Food & Drink", "Objects", "Smileys & People", "Symbols", "Travel & Places", "Turn on desktop notifications", "& ", " • ", ", ", "Only admins can change this setting.", "Disappearing messages were turned off.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ day.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ hour.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ minute.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ second.", "You turned off disappearing messages.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ day.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ hour.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ minute.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ second.", "__name__ turned off disappearing messages.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ day.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ hour.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ minute.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ second.", "", "Disappearing messages were turned off. Click to change.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ day. Click to change.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ hour. Click to change.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ minute. Click to change.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ second. Click to change.", "You turned off disappearing messages. Click to change.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ day. Click to change.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ hour. Click to change.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ minute. Click to change.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ second. Click to change.", "__name__ turned off disappearing messages. Click to change.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ day. Click to change.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ hour. Click to change.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ minute. Click to change.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ second. Click to change.", "Turning on this setting will make new messages disappear from this chat after 7 days. Recipients can still save these messages elsewhere.", "Turning on this setting will make new messages disappear from this chat after a selected amount of time. Recipients can still save these messages elsewhere.", "New messages will disappear from this chat after __number__ day.", "New messages will disappear from this chat after __number__ hour.", "New messages will disappear from this chat after __number__ minute.", "New messages will disappear from this chat after __number__ second.", "Anyone in this chat can change this setting.", "Group admins control who can change this setting.", "This message was sent while disappearing messages were turned off.", "This message will disappear from this chat after __number__ day.", "This message will disappear from this chat after __number__ hour.", "This message will disappear from this chat after __number__ minute.", "This message will disappear from this chat after __number__ second.", "Messages will disappear after 7 days if they’re sent to a chat that has disappearing messages turned on.", "Messages will disappear after a selected amount of time if they’re sent to a chat that has disappearing messages turned on.", "While this setting is on, new messages will disappear from this chat after 7 days.", "While this setting is on, new messages will disappear from this chat after a selected amount of time.", "Media and messages won’t disappear from outside the chat or from any devices they’re saved on.", "There are still ways for recipients to save messages, like forwarding them or taking a screenshot.", "Get Started With Disappearing Messages", "Disappearing Messages Were Turned On", "You can't change this setting because you're not connected to the Internet. Check your Internet and try again.", "Off", "On", "__number__ day", "__number__ hour", "__number__ minute", "__number__ second", "You can't turn off disappearing messages for this chat unless you unblock this contact.", "You can't turn on disappearing messages for this chat unless you unblock this contact.", "Catalog already created.", "Two or more images are the same. Delete any duplicates and try again.", "Item code must be unique.", "Incorrect email address format", "Add at least one image", "Add a title", "Enter a valid price", "Wait until the message finishes sending and displays a checkmark before forwarding.", "Wait until this message is fully delivered before forwarding.", "Unable to forward unsent message.", "Can’t Forward", "URL is incorrect", "Exit group", "Exit this group?", "Facebook shop", "Facebook Commercial Terms", "Facebook Product", "__number__ file you tried adding has no content.", "__count__ file failed to be downloaded because it's no longer on your phone.", "__number__ file could not be added.", "__number__ file you tried adding is not supported.", "__number__ file you tried adding is larger than the __maxSize__ limit.", "B", "GB", "kB", "MB", "Forward", "Forward all", "You can only share with up to __count__ chat", "Forwarded many times. You can only share with up to __count__ chat.", "Messages forwarded many times can only be shared with up to __count__ chat at a time.", "Forward message", "Forward message to", "Forwarded", "Forwarded __count__ time", "Can't send messages that have been forwarded many times", "Forwarded many times", "One or more messages will be marked as forwarded many times.", "This message will be marked as forwarded many times.", "Found a contact card for this number. View contact card?", "Older results may be available", "Gallery", "Get directions", "Microsoft Edge", "Google Chrome", "Mozilla Firefox", "Get notified of new messages", "Opera", "Safari (macOS 11+ Only)", "Get support via email", "Custom GIF animations are currently not supported. Please use provided GIF selection feature.", "Favorites", "Haha", "Love", "Reactions", "Sad", "Sports", "Trending", "TV", "Alerts and sounds off", "Alerts and sounds off for 1 day", "Alerts and sounds off for 1 hour", "Alerts and sounds off for 1 week", "Alerts and sounds off for 8 hours", "Alerts and sounds off. Click to restore.", "Notifications enabled", "Go to message", "Messages are now end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Click to learn more.", "Failed to load Google Maps", "GOT IT", "Group", "You were added by someone who's not in your contacts", "Group deleted", "Description", "You can't join this group because you were removed.", "You can't join this group because it has ended.", "You can't join this group because this invite link was reset.", "You can't join this group because it is full.", "Couldn't join this group. Please try again.", "Cancel", "Checking invite link", "__count__ contact", "Reset link", "Join group", "Invite to group via link", "Anyone with WhatsApp can follow this link to join this group. Only share it with people you trust.", "__count__ participant", "You can't view this group's invite link because you're not an admin.", "You can't view this group's invite link because you're no longer a participant.", "You can't view this group's invite link because this group has ended.", "This invite link doesn't match any WhatsApp groups.", "Are you sure you want to reset the invite link for __groupName__? If you reset the link, no one will be able to use it to join this group.", "Resetting the invite link for __groupName__.", "The previous invite link is now reset and a new invite link has been created.", "Send link to", "Log in to WhatsApp Web to join this WhatsApp group", "View group", "Group muted", "Type contact name", "All participants", "Edit group info", "Disappearing Messages", "Allow", "Frequently forwarded messages", "Messages forwarded many times", "Don't allow", "Only admins", "Send messages", "Group Settings", "Follow this link to join my WhatsApp group:", "__count__ more", "Group Subject", "Invitation to join my WhatsApp group", "Invite Expired", "__number__ invited", "Couldn't add __participant__. You can invite them privately to join this group.", "WhatsApp group invite", "Invited", "View invite", "Group video call", "Group voice call", "Send invite to...", "Reset invite for __participant__? If you reset the invite, __participant__ won't be able to use it to join this group.", "To take photos, click “Allow” above to give WhatsApp access to your computer's camera.", "To take photos, click “Yes” below to give WhatsApp access to your computer's camera.", "To take photos, WhatsApp needs access to your computer's camera. Click __chrome_media_error__ in the URL bar and choose “Always allow web.whatsapp.com to access your camera.”", "To take photos, WhatsApp needs access to your computer’s camera. Refresh the page, try sending a camera image, and select “Yes” from the menu that appears.", "To take photos, WhatsApp needs access to your computer’s camera. Click __firefox_lock__ in the URL bar and set “Use the Camera” to “Allow.”", "To take photos, WhatsApp needs access to your computer’s camera. Click __opera_media__ in the URL bar and click “Clear This Setting and Reload.”", "To take photos, WhatsApp needs access to your computer’s camera. Open your browser’s Preferences → Websites and change camera setting for web.whatsapp.com to “Allow”.", "You can’t take a photo because it looks like your computer doesn’t have a camera. Try connecting one or if you have one connected, try restarting your browser.", "Camera Not Found", "Allow camera", "To record Voice Messages, click “Allow” above to give WhatsApp access to your computer's microphone.", "To record Voice Messages, click “Yes” below to give WhatsApp access to your computer's microphone.", "To record Voice Messages, WhatsApp needs access to your microphone. Click __chrome_media_error__ in the URL bar and choose “Always allow web.whatsapp.com to access your microphone.”", "To record Voice Messages, WhatsApp needs access to your computer’s microphone. Refresh the page, try sending a Voice Message, and select “Yes” from the menu that appears.", "To record Voice Messages, WhatsApp needs access to your computer’s microphone. Click __firefox_lock__ in the URL bar and set “Use the Microphone” to “Allow.”", "To record Voice Messages, WhatsApp needs access to your computer’s microphone. Click __opera_media__ in the URL bar and click “Clear This Setting and Reload.”", "To record Voice Messages, WhatsApp needs access to your computer’s microphone. Open your browser’s Preferences → Websites and change microphone setting for web.whatsapp.com to “Allow”.", "You can’t record a Voice Message because it looks like your computer doesn’t have a microphone. Try connecting one or if you have one connected, try restarting your browser.", "Microphone Not Found", "Can’t record voice messages during a WhatsApp call.", "Allow microphone", "To get notifications for new messages, click “Allow” above.", "To get notifications for new messages, click “Yes” below.", "To get notifications for new messages, select “Allow notifications” from the prompt below the URL bar.", "Allow notifications", "Help", "New Message", "Message from __author__", "__unreadCount__ New Message", "You'll be logged out after several minutes of inactivity", "Failed to load image", "__number__ image you tried adding has no content.", "Image may be subject to copyright.", "Image search failed", "Enter search term here", "No images found", "Search for images", "Image Search", "Terms of Service", "__number__ image you tried adding is larger than the __maxSize__ limit.", "Check your phone to answer", "WhatsApp group video call from __name__", "WhatsApp group voice call from __name__", "WhatsApp video call from __name__", "WhatsApp voice call from __name__", "Increase speed of selected voice message", "Send and receive messages without connecting your phone.", "Use WhatsApp on up to 4 devices at the same time.", "WhatsApp Web", "WhatsApp connects to your phone to sync messages. To reduce data usage, connect your phone to Wi-Fi.", "Make calls and send messages without connecting your phone.", "WhatsApp for Desktop", "Get it here", "WhatsApp is available for Mac. __get_it_here__.", "WhatsApp is available for Windows. __get_it_here__.", "Keep your phone connected", "Expires at __time__", "Expires in __number__ day", "Invite expired", "Keep starred messages", "Keyboard Shortcuts", "Catalog", "Catalog (temporarily disabled)", "Choose color", "__count__ item", "Label items", "Item Code (Optional)", "Description (Optional)", "Link (Optional)", "Name", "Price __currencySymbol__ (Optional)", "Enter reason for this request...", "Search in __labelName__...", "Labels", "There was an unexpected error, please click to reload the application.", "Learn more", "Licenses", "Couldn't copy to clipboard. Copy using mouse or keyboard.", "Link copied to clipboard.", "Links", "__count__ Link", "Accurate to __accuracy__ M", "__count__ people", "Live location ended", "Expired Location", "Last updated __date__ at __time__", "Last updated today at __time__", "Last updated __date__ at __time__", "Last updated yesterday at __time__", "Live until __time__", "Map view", "Satellite view", "Terrain view", "Hide traffic", "Show traffic", "Click to continue viewing live location", "__hours__h left", "__hours__h __minutes__m left", "__minutes__m left", "__sharers__ is sharing live location", "__name__ is sharing live location", "__count__ person is sharing live location", "You are sharing live location", "You and __name__ are sharing live location", "You and __count__ other person are sharing live location", "You are sharing live location", "Stop Sharing", "__name__ stopped sharing", "Live Location", "Updated __hours__h ago", "Updated __hours__h __minutes__m ago", "Updated just now", "Updated __minutes__m ago", "View Live Location", "load earlier messages…", "load recent messages…", "Loading…", "loading messages…", "Log in", "Menu __android_menu_icon__", "Click to reload QR code", "Need help to get started?", "Settings __iphone_settings_icon__", "Open WhatsApp on your phone", "Tap __android_menu__ or __iphone_settings__ and select __whatsapp_web_menu_item__", "Point your phone to this screen to capture the code", "To use WhatsApp on your computer:", "WhatsApp Web", "Linked Devices", "This business account is not in your contact list.", "Make sure your computer has an active Internet connection.", "Make sure your phone has an active Internet connection.", "Edit group admins", "Mark as read", "Mark as unread", "You've reached the maximum number of images to add.", "Downloading messages: __progress__%", "Don't close this window. Your messages are downloading.", "Media", "Voice Messages are always automatically downloaded for the best communication experience", "Add a caption", "Background", "Done", "Failed to add image", "Bryndan Write", "Norican", "Oswald", "Sans Serif", "Serif", "No preview available", "Reset", "Crop & Rotate", "Delete", "Emoji", "Paint", "Redo", "Rotate left", "Rotate right", "Sticker", "Text", "Undo", "Type something", "The item you tried adding failed to load.", "This file was changed from original.", "Media, Links and Docs", "Media, Links, Docs and Products", "Archived", "Blocked", "Desktop Settings", "Help", "Keep me signed in", "Log out", "Make group admin", "Media Auto-Download", "Notifications", "Profile", "Profile", "Remove", "Security", "Settings", "Starred", "Theme", "Chat Wallpaper", "Attach", "Menu", "Message", "Message admin", "This audio is too large. You can send audio up to __maxSize__.", "Message __author__", "This document is too large. You can send documents up to __maxSize__.", "This file is too large. You can send files up to __maxSize__.", "This image is too large. You can send images up to __maxSize__.", "Message info", "Delivered", "Delivered to", "Played", "Played by", "Read", "Read by", "__count__ remaining", "Seen", "Seen by", "Seen", "Seen by", "Opened", "Opened by", "Couldn't find message", "The message you’re pasting is too long. Try shortening it or sending it in multiple parts.", "Message Too Long", "This video is too large. You can send videos up to __maxSize__.", "Room", "Continue in Messenger", "Create a room in Messenger and send a link to group video chat with anyone, even if they don't have WhatsApp or Messenger.", "Rooms are protected by Messenger's encryption and privacy controls, but they aren't end-to-end encrypted.", "Introducing Messenger Rooms", "Continue in Messenger to create a room.", "Create a room", "WhatsApp needs a microphone for calls and voice messages. Allow access in your computer's settings.", "Allow WhatsApp to access your microphone?", "Can’t play this Voice Message because it's no longer on your phone.", "Voice Message Unavailable", "Can’t view this contact because it's no longer on your phone.", "Contact Unavailable", "Can’t download this document because it's no longer on your phone.", "Document Unavailable", "Can’t view this GIF because it's no longer on your phone.", "GIF Unavailable", "Media Message Unavailable", "Can’t view this photo because it's no longer on your phone.", "Photo Unavailable", "Can’t download this sticker because it's no longer on your phone.", "Sticker Unavailable", "Can’t play this video because it's no longer on your phone.", "Video Unavailable", "Couldn't display message info. Try again later.", "Phone number shared via url is invalid.", "Send message to", "Log in to WhatsApp Web to share", "__contactName__ and __count__ other contact", "No contacts", "__count__ contact", "You can only send up to __count__ contact", "View all", "1 Day", "1 Hour", "1 Week", "1 Year", "8 Hours", "Always", "Mute “__name__” for…", "__A__, __B__", "__A__, and __B__", "__A__, __B__", "__A__ and __B__", "Archive Chat", "Close Window", "WhatsApp needed to restart because of a problem.", "Problem Detected", "Delete Chat", "Delete Group", "Exit Group", "Log Out", "Mark as Read", "Mark as Unread", "Call", "Always On Top", "Chat", "File", "Help", "Help Center", "Terms and Privacy Policy", "Copy", "Copy Image", "Copy Link", "Cut", "Edit", "About WhatsApp", "Hide", "Hide Others", "Preferences", "Quit WhatsApp", "Services", "Show All", "Paste", "Redo", "Search", "Select All", "Undo", "View", "Enter Full Screen", "Exit Full Screen", "Zoom In", "Actual Size", "Zoom Out", "Next Chat", "Previous Chat", "Search Chat", "Add to dictionary", "Copy", "Copy Image", "Copy Link", "Cut", "Paste", "Redo", "Select All", "Undo", "Window", "Bring All to Front", "Minimize", "Zoom", "Do Not Move", "Move to Applications", "You can move WhatsApp to Applications so it's easier to find.", "Move WhatsApp to Applications?", "Mute", "New Chat", "New Group", "Pin Chat", "Profile and About", "Unarchive Chat", "Cancel Mute", "Unpin Chat", "Cancel", "End Call", "Are you sure you want to end the current call?", "This video is unavailable. Please try again.", "New chat", "New group", "Next", "You need to create a catalog on the phone first", "No chats", "No contacts", "No Docs", "No groups", "No Links", "No Media", "No Media, Links and Docs", "No Media, Links, Docs and Products", "No products", "No result found for '__labelName__'", "No results", "No starred messages", "No thanks", "No update found", "Not spam", "Notifications", "__number__ of __totalNumber__", "+__number__", 'This chat is with the official business account of "WhatsApp". Click for more info.', 'This is the official business account of "WhatsApp".', 'This is the official business account of "WhatsApp". This account is saved with a different name in your address book.', "This official business account is not in your contact list.", "OK, got it", "Only admins can edit this group's info", "Opening link in new window...", "You will now be directed to", "Audio", "Start WhatsApp at Login", "Desktop Alerts", "Documents", "Show Previews", "Display message text in desktop alerts", "Outgoing Message Tone", "Toggles the audio tone that plays when you send a message", "Photos", "Sounds", "Videos", "Ask for total", "The seller has deleted your sent cart. Contact the seller for more information.", "Order Detail", "Your Order", "__subtotal__ (estimated)", "Qty __quantity__", "__total__ (estimated total)", "No Items", "View cart", "View sent cart", "Organizing messages", "This message can't be viewed in WhatsApp Desktop. View it on your phone instead.", "This message can't be viewed in WhatsApp Web. View it on your phone instead.", "Recent", "Already blocked", "Payment", "Not Now", "Phone battery low", "WhatsApp is open on another computer or browser. Click “Use Here” to use WhatsApp in this window.", "Phone not connected", 'The version of WhatsApp on your phone is too old. Please update to the latest version, then click "LOG IN" to continue using WhatsApp.', "The video can't be played.", "Open the link", "This video is playing in picture in picture.", "Currently playing video was revoked.", "Pin chat", "Waiting for this message. This may take a while.", "Previous", "Reply privately", "Add to cart", "Item added to cart", "Catalog", "More", "Send catalog", "Follow this link to view our catalog on WhatsApp:", "Something went wrong", "Catalog", "View catalog", "This item is out of stock.", "Details", "You hid this item. Your customers can't see it in your catalog", "Product link", "View items", "Items in this message are no longer available", "Message Business", "Can not send product before media is ready", "View", "Out of Stock", "Remove from cart", "This product or service has been removed", "This is abusive, harmful or illegal", "This appears to be a knockoff or counterfeit item", "The pictures or descriptions don't match the item", "Other", "Tell us more", "This is fraud or a scam", "This is spam", "Submit", "Couldn't report product", "Thanks for your feedback", "Reporting product", "Please select a reason.", "Follow this link to view our item on WhatsApp:", "Waiting for network", "Products", "__count__ Product", "This photo is too small. Please select a photo with height and width of at least __size__ pixel.", "Couldn't send this Voice Message.", "…", "Your Name", "This is not your username or pin. This name will be visible to your WhatsApp contacts.", "Group • __groupName__", "Read more", "Reconnect", "Remove", "Remove this group's icon?", 'Remove label "__labelName__" from __count__ item', "Remove photo", "Remove your profile photo?", "Reply", "Report", "Report and block", "Report business", "Block business and clear chat", "Report this business to WhatsApp?", "Report contact", "Block contact and clear chat", "Report this contact to WhatsApp?", "Report __contactInfo__", "Report group", "Exit group and clear chat", "Report this group to WhatsApp?", "Report product", "Report Product", "We will review the product and if it does not meet our guidelines, it will be removed.", "Your report has now been submitted.", "Report this product?", "Tell Us More", "Report spam", "Most recent messages in this group will be forwarded to WhatsApp.", "Most recent messages from this user will be forwarded to WhatsApp.", "Most recent messages from this business will be forwarded to WhatsApp.", "Request review", "Click to resend", "Retake", "Retry", "Retry Now", "Upload", "Retrying…", "Retrying in __duration__…", "Retrying in __number__ second…", "Delete for everyone", "Revoke invite", "This message was deleted", "Messages you selected will be deleted for everyone on the latest version of WhatsApp in this chat.", "You deleted this message", "Save", "Search…", "Search contacts", "Search Emoji", "Search GIFs via __service__", "Search groups", "Search Messages", "No chats, contacts or messages found", "No contacts found", "No groups found", "No messages found", "No results found for '__keyword__'", "Search or start new chat", "Search Participants", "Search results not yet available. Try again later.", "Search via WhatsApp sticker store", "Search Web", "Couldn't search the web. Check your computer's internet connection and try again.", "Would you like to search this on the web? This will upload the message to Google.", "Looking for chats, contacts or messages…", "Searching for images...", "Looking for messages…", "Security code notifications are no longer available for this chat.", "Learn which chats are end to end encrypted", "Turn on this setting to receive notifications when one of your contact's security code changes.", "Turn on this setting to be notified when your security code changes for a contact in an end-to-end encrypted chat. This setting must be enabled on each device you want notifications to show.", "Show security notifications", "Show security notifications on this computer", "WhatsApp secures your conversations with end-to-end encryption. This means your messages, calls and status updates stay between you and the people you choose. Not even WhatsApp can read or listen to them.", "Messages and calls in end-to-end encrypted chats stay between you and the people or businesses you choose, so not even WhatsApp can read or listen to them.", "Security", "See __count__ archived chat", "See Location", "See more", "__count__ selected", "Send contact", "Send contacts", "Couldn't send this message.", "Send link via WhatsApp", "send", "Feedback/Question about WhatsApp", "Email address", "Confirm email address", "Please enter a valid email address", "The email addresses do not match", "Subject", "Please upload images 10 MB or smaller", "Question about WhatsApp Business for Mac", "Question about WhatsApp for Mac", "Release to add...", "Add Screenshots", "Feedback sent", "Please enter a subject.", "Contact us", "__count__ Screenshot Maximum", "Please add more to your description", "Question about WhatsApp Business for Web", "Question about WhatsApp for Web", "Question about WhatsApp Business for Windows", "Question about WhatsApp for Windows", "To verify, send a message to __name__ and try again.", "Send product", "Send products", "The sender is not in your contact list", "Settings", "Shop", "Search in Broadcast lists", "Broadcast lists", "Unread chats", "Search in Groups", "Labels", "Search in Unread chats", "Some of your messages are still sending.", "Star message", "No starred messages", "Starred messages", "Starting chat", "Status", "Camera", "HIDE", "SHOW", "Status update not found", "MUTED", "My Status", "No updates", "Click on a contact to view their status updates", "RECENT", "Sending reply…", "You received a status, but your version of WhatsApp doesn't support it.", "Update your status", "Upload", "View status", "View your updates", "VIEWED", "You don't have any stickers yet. Download sticker packs on your phone to get started.", "Angry", "Celebrate", "Greetings", "Happy", "Love", "Sad", "You haven't sent any stickers yet", "You haven't favorited any stickers yet", "Subject", "This chat has been closed", "Include device information? (optional)", "Technical details like your model and settings can help us answer your question.", "Tell us how we can help", "Your question has been sent to WhatsApp Support. We'll respond in a WhatsApp chat shortly.", "Contact us", "The support request form is not yet available for desktop. Use your phone to submit it.", "WhatsApp secures messages and calls while they’re being delivered to and from this account.", "Learn more about chats with WhatsApp Support.", "Click to learn how messages and calls are secured.", "Security", "This chat is with the official account of WhatsApp Support. Click to learn more.", "WhatsApp Support", "Suspicious link", "__count__ suspicious link", "Open link", "This link contains unusual characters. It may be trying to appear as another site.", "Take photo", "You'll be able to use WhatsApp again in __duration__", "You're temporarily banned from WhatsApp because you sent too many messages to people who don’t have __phone__ in their address books.", "You're temporarily banned from WhatsApp because too many people blocked you.", "You're temporarily banned from WhatsApp because you created too many groups with people who don’t have __phone__ in their address books.", "You're temporarily banned from WhatsApp because you sent the same message to too many people.", "You're temporarily banned from WhatsApp because you sent too many messages to a broadcast list.", "You're temporarily banned from WhatsApp because you may have violated our terms of service.", "Terms and Privacy Policy", "Dark", "Light", "Choose theme", "System default", "Maximum number of files uploaded. __number__ file has been ignored.", "Trying to reach phone", "Turn off all desktop notifications", "Turn off all desktop notifications for:", "Type a message", "Type a reply…", "Unarchive chat", "Unblock", "Unblock __contact__?", "Unblock Contact", "unknown subject", "Unpin chat", "__count__ unread message", "Unread messages", "Could not forward this message because the file is no longer on your phone.", "Unstar all", "Unstar", "Unstar all messages?", "Unstar message", "You received a message on your phone, but your version of WhatsApp Desktop doesn't support it.", "This message can't be shown on WhatsApp Desktop. Open WhatsApp on your phone to view.", "You received a message, but your version of WhatsApp doesn't support it.", "You sent a message from your phone, but your version of WhatsApp Web doesn't support it.", "You received a message on your phone, but your version of WhatsApp Web doesn't support it.", "Click here to update.", "This message can't be shown on WhatsApp Web. Open WhatsApp on your phone to view.", "Until __date__ at __time__", "Until today at __time__", "Until tomorrow at __time__", "Until __day__ at __time__", "Untitled", "Update available", "Download Microsoft Edge", "Update Google Chrome", "Update Mozilla Firefox", "Update Safari", "Updating WhatsApp", "WhatsApp is out of date. Updating now…", "Updating", "Upload photo", "__participants__ joined using your invite", "You invited __participants__", "AIM", "Birthday", "Description", "Business Name", "Mobile", "Email", "Home", "Home Fax", "ICQ", "iPhone", "Jabber", "Main", "Windows Live", "Nickname", "Pager", "Skype", "Work", "Work Fax", "Yahoo", "Version __version__", "Video call", "Switch", "__number__ video you tried adding has no content.", "Your browser doesn’t support video playback.", "__number__ video you tried adding is larger than the __maxSize__ limit.", "View business", "View Contact Card", "Expired", "For more privacy, your photo or video will disappear from the chat after the recipient opens it once. Remember, people can always take screenshots.", "Send photos and videos that can be viewed only once", "Photo", "Photo set to view once.", "For more privacy, this photo will disappear after you close it.", "This photo is set to view once", "Video set to view once.", "For more privacy, this video will disappear after you close it.", "This video is set to view once", "Video", "Opened", "View or edit catalog", "View photo", "View Shop", "Voice call", "End call", "Mute microphone", "Turn off camera", "Turn on camera", "Unmute microphone", "You can turn on your camera after __callee__ answers", "Request to switch to video call", "Calling…", "Camera not found", "camera off", "Call ended", "Call failed", "Call answered on your connected phone", "In call", "Your call will end in a few seconds because your microphone and sound output device were disconnected.", "Your call will end in a few seconds because your microphone was disconnected.", "Microphone not found", "Call not answered", "__name__'s camera and mic are off", "The other person's camera and mic are off", "__name__'s camera is off", "The other person's camera is off", "__name__'s mic is muted", "The other person's mic is muted", "Reconnecting…", "Call declined", "Your connected phone is already on a WhatsApp call", "__name__ is requesting to switch to a video call", "Requesting to switch to a video call...", "Requesting to switch to a video call...", "requesting video call...", "Ringing…", "Your call will end in a few seconds because your sound output device was disconnected.", "Your microphone is muted", "Camera", "Use System Setting", "Microphone", "Audio Device", "Default Communications Device", "You can turn off your camera after __callee__ answers", "WhatsApp didn't connect to a video or audio device. Try starting the call again. If the problem continues, you may have to restart WhatsApp or your computer.", "Call could not be started", "Please contact us with the make and model of your camera. ", "WhatsApp doesn't work with your camera yet", "You are already on a WhatsApp call", "Call cannot be placed for more than __count__ participant", "Couldn't place call: all recipients are using old versions of WhatsApp or incompatible devices.", "You can only call up to __count__ contact", "__callee__ couldn't be added to the call, because they are using an old version of WhatsApp or an incompatible device.", "__count__ others", "WhatsApp needs a camera for video calls. Connect one to your computer.", "WhatsApp could not find a connected camera", "WhatsApp needs a microphone for calls. Connect one to your computer.", "WhatsApp could not find a connected microphone", "Make sure your computer has an active Internet connection and try again.", "Computer not connected to the Internet", "Make sure your phone has an active Internet connection and try again.", "Phone not connected to the Internet", "WhatsApp needs an audio output device for calls. Connect one to your computer.", "WhatsApp could not find a connected audio device", "Call could not connect", "__callee__ is in a country where WhatsApp Calling is unavailable", "Couldn't place call: __callee__ is unable to receive WhatsApp calls.", "WhatsApp Calling is unavailable in your country.", "Couldn't place call: __callee__ is unable to receive WhatsApp calls at this time.", "Couldn't place call: __callee__ is unable to receive WhatsApp calls.", "Couldn't place call: __callee__ is not registered on WhatsApp", "Unblock this contact to call them.", "Couldn't place call: __callee__ is unable to receive WhatsApp video calls at this time.", "Your audio device is unavailable", "Your audio device or microphone is unavailable", "Your camera is unavailable or used by another app", "Allow WhatsApp to access your camera in computer's settings", "Your microphone is unavailable. Switch to another microphone or end the call and try again.", "Allow WhatsApp to access your microphone in computer's settings", "Accept", "Decline", "Ignore", "WhatsApp voice call", "WhatsApp group voice call", "WhatsApp group video call", "WhatsApp video call", "WhatsApp will use your computer's camera for video calls and taking photos. You can always change this later in your computer's settings.", "WhatsApp will use your computer's microphone for calls and voice messages. You can always change this later in your computer's settings.", "Call could not connect", "__contactName__ - WhatsApp voice call", "__contactName__ - WhatsApp video call", "Add WhatsApp Doodles", "Chat wallpaper set", "Chat wallpaper doodles added", "Chat wallpaper doodles removed", "Set Chat Wallpaper", "Wallpaper Preview", "Your security code with __contactName__ changed because there was a login on a new device of theirs.", "Your security code with __contactName__ changed because you logged into a new device.", 'Your security code with all recipients changed because there was a login on a new device of yours. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Your security code with __contactName__ changed because there was a login on a new device of yours.", 'Your security code with all participants changed because there was a login on a new device of yours. To verify a contact\'s security code, open their Contact Info page and click "Encryption"', "Your security code with __contactName__ changed because there was a login on this device.", 'Your security code with all recipients changed because there was a login on this device. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Messages are end-to-end encrypted. Click to learn more.", "Messages you send to this broadcast list are secured with end-to-end encryption. Click to learn more.", "Messages you send to this broadcast list are secured with end-to-end encryption, which means WhatsApp and third parties can't read them.", "Your security code with all recipients changed. Click to learn more.", 'WhatsApp has verified that this is the official business account of "__businessName__".', "WhatsApp has verified that this is the official business account of __businessName__. This account is saved with a different name in your contacts.", "This may be a business. WhatsApp hasn't verified their name yet.", "Download", "Add label", "Delete label", "Remove label", "Cancel", "You can't send messages to this group because you're no longer a participant.", "Can't send a message to blocked contact __contact__.", "Your security code with __contactName__ changed because there was a login or logout from one or more of their devices.", 'Your security code with all recipients changed because there was a login or logout from one or more of your devices. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Your security code with __contactName__ changed because there was a login or logout from one or more of your devices.", 'Your security code with all participants changed because there was a login or logout from one or more of your devices. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "WhatsApp secures your conversations with end-to-end encryption. This means your messages and status updates stay between you and the people you choose. Not even WhatsApp can read or listen to them.", "WhatsApp secures your conversations with end-to-end encryption. This means your messages, calls and status updates stay between you and the people you choose. Not even WhatsApp can read or listen to them.", "Muted", "Chats", "Close", "Contact info", "Messages are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Click to learn more.", "Messages to this chat are secured with end-to-end encryption. __businessName__ may use another company to store, read and respond to your messages. Click to learn more.", "Messages are end-to-end encrypted. Click to verify.", "Messages and calls are end-to-end encrypted. Click to verify.", "Contacts", "Continue", "online", "typing…", "recording audio…", "last seen __date__ at __time__", "last seen today at __time__", "last seen __date__ at __time__", "last seen yesterday at __time__", "__participant__ is typing…", "__participant__ is recording audio…", "Audio", "Contact", "__count__ page", "Document", "Photo", "Live location", "Location", "Product", "Sticker", "Video", "Voice message", "Delete", "Delete group", "Delete broadcast list", "Download “__name__”", "Encryption", "Exit", "Exit group", "Frequently Contacted", "Go", 'Your security code with all participants changed because there was a login on this device. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Group admin", "Only admins can message this group.", "__name__ changed this group's settings to allow all participants to send messages to this group.", "You changed this group's settings to allow all participants to send messages to this group.", "__name__ changed this group's settings to allow only admins to send messages to this group.", "You allowed only admins to send messages to this group", "An admin created this group", "__name__ created group “__subject__”", "__name__ created this group", "An admin created group “__subject__”", "You created group “__subject__”", "You created this group", "Created __date__ at __time__", "Created __date__ at __time__", "Created today at __time__", "Created today at __time__", "Created __day__ at __time__", "Created __day__ at __time__", "Created yesterday at __time__", "Created yesterday at __time__", "__name__ changed the group description. Click to view.", "__name__ changed the group description.", "A participant changed the group description. Click to view.", "A participant changed the group description.", "You changed the group description. Click to view.", "Group Description", "This group has ended", "Group info", "Messages are end-to-end encrypted. Click to learn more.", "Messages and calls are end-to-end encrypted. Click to learn more.", "Messages are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Click to learn more.", "Messages you send to this group are secured with end-to-end encryption, which means WhatsApp and third parties can't read them.", "Messages and calls to this group are secured with end-to-end encryption, which means WhatsApp and third parties can't read or listen to them.", "Messages and calls are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Click to learn more.", "__name__ reset this group's invite link. Click to view the new invite link.", "You reset this group's invite link. Click to view the new invite link.", "__name__ changed this group's settings to allow messages that have been forwarded many times.", "You changed this group's settings to allow messages that have been forwarded many times.", "__name__ changed this group's settings to not allow messages that have been forwarded many times.", "You changed this group's settings to not allow messages that have been forwarded many times.", "__name__ was added", "You were added", "__name__ changed their phone number to a new number.", "__name__ changed to __new_number__", "__participants__ is no longer an admin", "You're no longer an admin", "__name__ joined via an invite link", "You joined via an invite link", "__name__ left", "You left", "__participants__ is now an admin", "You're now an admin", "__name__ was removed", "You were removed", "__name__ added __participants__", "__name__ added you", "__name__ removed __participants__", "__name__ removed you", "A participant added __participants__", "A participant added you", "A participant removed __participants__", "A participant removed you", "You added __participants__", "You removed __participants__", "__name__ changed this group's settings to allow all participants to edit this group's info.", "You changed this group's settings to allow all participants to edit this group's info.", "__name__ changed this group's settings to allow only admins to edit this group's info.", "You changed this group's settings to allow only admins to edit this group's info.", "Your security code with all participants changed. Click to learn more.", "__name__ changed the subject to “__subject__”", "A participant changed the subject to “__subject__”", "You changed the subject to “__subject__”", "Invite to group", "__num__ invite sent", "Invite reset", "Groups", "Groups in common", "Messages to this chat and calls are secured with end-to-end encryption, which means that WhatsApp and third parties can’t read or listen to them. __businessName__ may use a service to store, read and respond to your messages and calls. Contact __businessName__ for information on their privacy practices.", "Learn more", "Broadcast list info", "__name__ added to the list", "__name__ removed from the list", "Logging Out", "Do not close this window", "One or more group participants are using old versions of WhatsApp that can't receive messages sent from this device. Use your phone to message them instead.", "__name__ and possibly other group participants are using an old version of WhatsApp that cannot receive messages sent from web/desktop using the multi-device beta. Use your phone to message this group.", "This message couldn’t be delivered", "__name__ is using an old version of WhatsApp that cannot receive messages sent from web/desktop using the multi-device beta. Use your phone to message them.", "Clearing or deleting entire chats will remove messages from this device only. They will not be removed from other devices.", "Changes to clearing or deleting a chat", "Messages will be removed from this device only.", "Messages will be removed from this device only.", "Your computer does not have enough space for WhatsApp to run. Please create more storage by deleting unused files from your computer, then log in again.", "The most recent messages in this group will be forwarded to WhatsApp. If you exit the group and clear the chat, it will be deleted from this device only.", "The most recent messages from this contact will be forwarded to WhatsApp. If you block this contact and clear the chat, it will be deleted from this device only.", "The most recent messages from this business will be forwarded to WhatsApp. If you block this business and clear the chat, it will be deleted from this device only.", "Pinning chats from web/desktop is not yet available on the multi-device beta", "Can't pin chat", "To verify that messages and calls with __contactName__ are end-to-end encrypted, open this screen on your phone, and follow the instructions.", "New group", "Mute notifications", "Unmute notifications", "New chat", "About", "Status", "Could not deliver message", "Messages", "Missed group video call", "Missed group video call at __time__", "Missed group voice call", "Missed group voice call at __time__", "Missed video call", "Missed video call at __time__", "Missed voice call", "Missed voice call at __time__", "No", "The business account for __businessName__ has registered as a standard user account and may no longer belong to the business.", "The business account you were chatting with is now a standard account. Click for more info.", "Messages to this chat are now secured with end-to-end encryption, which means third parties can't read or listen to them.", "Messages to this chat are now secured with end-to-end encryption. Click to learn more.", "OK", "Other contacts", "__count__ participant", "To receive a payment from __senderName__, set up your payment account on your phone.", "__contactName__ canceled their payment request for __currencyAndAmount__", "You canceled your payment request to __contactName__ for __currencyAndAmount__", "__contactName__ declined your payment request for __currencyAndAmount__.", "You declined __contactName__'s payment request for __currencyAndAmount__.", "__senderName__'s payment request for __currencyAndAmount__ to you expired.", "Your payment request to __receiverName__ for __currencyAndAmount__ expired.", "You notified __receiverName__ that you are trying to send a payment.", "You can now send __receiverName__ a payment.", "Waiting for this payment message's note. This may take a while.", "Payment message • Amount unavailable", "This payment message has a note but your version of WhatsApp doesn't support viewing it.", "Requested from __receiverName__", "Requested __amount__ from You", "__senderName__ requested __amount__ from You", "__senderName__ requested __amount__ from __receiverName__", "Sent __amount__ to You", "__senderName__ sent __amount__ to You", "__senderName__ sent __amount__ to __receiverName__", "Sent to __receiverName__", "Canceled", "Completed", "Failed", "Expired", "In Review", "Pending", "Pending (expiring)", "Pending (expires __timeSpan__)", "Pending (expires in less than 1 minute)", "Processing", "__senderName__ sent you __currencyAndAmount__. Use WhatsApp on your phone to accept this transaction.", "__senderName__'s payment __relativeTime__ is complete.", "Declined", "Your payment to __receiverName__ __relativeTime__ couldn't complete.", "Your payment to __receiverName__ __relativeTime__ couldn't complete.", "Your payment to __receiverName__  was refunded __relativeTime__.", "on Friday", "on Monday", "on Saturday", "on __date__", "on Sunday", "on Thursday", "on Tuesday", "on Wednesday", "__name__ changed this group's icon", "You changed this group's icon", "__name__ deleted this group's icon", "You deleted this group's icon", "Preview", "OFFICIAL ANNOUNCEMENTS", "Recent chats", "Recipients", "Your security code with __contactName__ changed because there was a logout from one of their devices.", 'Your security code with all recipients changed because there was a logout from one of your devices. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Your security code with __contactName__ changed because there was a logout from one of your devices.", 'Your security code with all participants changed because there was a logout from one of your devices. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Reset link", "Web Search", "Your security code with __contactName__ changed. Click to learn more.", "Your security code with __name__ changed because there was a registration on a new device of theirs.", 'Your security code with all recipients changed because there was a registration on a new device of yours. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Your security code with __name__ changed because there was a registration on a new device of yours.", 'Your security code with all participants changed because there was a registration on a new device of yours. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Select messages", "Help Center", "Share", "This business uses WhatsApp Business, which allows them to add their opening hours, address, website and catalog of products or services.", 'WhatsApp has verified that this is the official business account of "__businessName__". This business uses WhatsApp Business, which allows them to add their opening hours, address, website and catalog of products or services.', "Learn about getting the app", "About WhatsApp Business", "If you’re a business, the free WhatsApp Business app can help.", "If you’re a business, you can benefit from switching to the free WhatsApp Business app. It has tools to connect with customers and manage messages.", "Scan this code to get the WhatsApp Business App. Or, you can install it from the App Store or Google Play Store.", "WhatsApp Business app", "We are updating our WhatsApp Business Terms of Service. Agree to our new Terms on your phone to continue using WhatsApp Business.", 'We are updating our WhatsApp Business Terms of Service. Agree to our new Terms on your phone to continue using WhatsApp Business. If you have accepted the Terms of Service, click "LOG IN" to continue using WhatsApp Business.', "Starred Messages", "About", 'This chat is with the verified business account for "__businessName__". Click for more info.', 'WhatsApp has made changes to the business account types. "Verified Business" will now be labeled as "Official Business Account".', 'This chat is with the business account for "__businessName__". Click for more info.', 'WhatsApp has made changes to the business account types. "Confirmed Business" will now be labeled as "Business Account".', "This chat may be with a business account. Click for more info.", "__businessName__ may be a business account, but WhatsApp hasn’t verified their name yet.", 'The business account you’re chatting with is now verified as "__businessName__". Click for more info.', 'WhatsApp has made changes to the business account types. "Verified Business" will now be labeled as "Official Business Account".', "This business account has now registered as a standard account. Click for more info.", "This account was previously a business account and has now registered as a standard account. It may no longer belong to the business.", 'The business account you’re chatting with is no longer verified as "__businessName__". Click for more info.', 'WhatsApp is no longer able to verify that this is the account for "__businessName__".', 'The business account you’re chatting with is no longer verified as "__businessName__". Click for more info.', 'WhatsApp is no longer able to verify that this is the account for "__businessName__".', 'The business account you’re chatting with is no longer confirmed as "__businessName__". Click for more info.', 'WhatsApp is no longer able to confirm that this is the account for "__businessName__".', "This account has registered as a business account. Click for more info.", 'This account has registered as a business account and WhatsApp has confirmed that this is the account for "__businessName__".', "This chat may be with a business account. Click for more info.", "__businessName__ registered as a business account, but WhatsApp hasn’t verified their name yet.", 'The business account you\'re chatting with belongs to "__businessName__".', 'WhatsApp has made changes to the business account types. This "Confirmed Business" will now be labeled as "Business Account".', "WhatsApp is updating our Terms and Privacy Policy to reflect new features and comply with the new European Union data protection laws. Open WhatsApp on your phone to read our Terms and Privacy Policy and learn more about the choices you have.", "WhatsApp is updating our Terms and Privacy Policy to reflect new features and comply with the new European Union data protection laws. Open WhatsApp on your phone to read our Terms and Privacy Policy and learn more about the choices you have.", 'WhatsApp is updating our Terms and Privacy Policy to reflect new features and comply with the new European Union data protection laws. Open WhatsApp on your phone to read our Terms and Privacy Policy and learn more about the choices you have. If you have accepted the Terms and Privacy Policy, click "LOG IN" to continue using WhatsApp.', "__date__ at __time__", "today", "today at __time__", "Try Again", "There is already another active WhatsApp Web tab in this browser. WhatsApp Web does not support multiple active tabs in this browser. Please use the existing tab or close it and refresh this tab.", "Refresh", "The business account you're chatting with may belong to __businessName__. WhatsApp hasn't verified their name yet.", "The business account you're chatting with is now unverified. Click for more info.", "To help you connect with businesses, we have verified that the business account you're chatting with belongs to __businessName__.", "This chat is with a verified business account. Click for more info.", "The business account you're chatting with may belong to __businessName__. WhatsApp hasn't verified their name yet.", "This chat is with an unverified business account. Click for more info.", "To help you connect with businesses, we have verified that the business account you're chatting with belongs to __businessName__.", "The business account you're chatting with is now verified. Click for more info.", "Verify", "Download code", "Release to verify…", "The image does not contain a valid identity verification QR code.", 'You opened "Verify security code" for the wrong phone number. Open it for the correct number to verify __contact__.', '__contact__ opened "Verify security code" for the wrong phone number. Ask __contact__ to open it for your phone number.', "Scan the code on your contact's phone, or ask them to scan your code, to verify your messages and calls to them are end-to-end encrypted. You can also compare the number above to verify. This is optional.", "Couldn't display security code. You can verify using the QR code instead.", "Verify Security Code", "Upload Code", "Turn Off Camera", "Please try increasing the brightness or reducing light reflection.", "Scan Code", "WHATSAPP VIDEO CALL", "WHATSAPP VOICE CALL", "Yes", "yesterday", "yesterday at __time__", "You", "You created a broadcast list with __count__ recipient", "You", "To use WhatsApp, update __chrome_update__ or use __firefox_homepage__, __safari_homepage__, __edge_homepage__ or __opera_homepage__.", "WhatsApp works with Google Chrome __min_version_chrome__+", "WhatsApp Commerce Policies", "To use WhatsApp, update __edge_homepage__ or use __chrome_homepage__, __firefox_homepage__ or __opera_homepage__.", "WhatsApp works with Microsoft Edge __min_version_edge__+", "To use WhatsApp, update __firefox_update__ or use __chrome_homepage__, __safari_homepage__, __edge_homepage__ or __opera_homepage__.", "WhatsApp works with Mozilla Firefox __min_version_firefox__+", "WhatsApp group invite", "WhatsApp", "To use WhatsApp, update __safari_update__ or use __chrome_homepage__, __firefox_homepage__ or __opera_homepage__.", "To use all of WhatsApp's features like photo capturing and Voice Message recording, we recommend using __chrome_homepage__, __firefox_homepage__ or __opera_homepage__.", "Using Safari", "WhatsApp works with Safari __min_version_safari__+", "WhatsApp", "Send and receive WhatsApp messages right from your computer.", "WhatsApp is open in another window. Click “Use Here” to use WhatsApp in this window.", "Quickly send and receive WhatsApp messages right from your computer.", "We recommend using WhatsApp with one of the following browsers:", "WhatsApp also supports:", "You can't add more than __count__ labels", "Manage shop on Commerce Manager", "Go to Commerce Manager to update your Facebook shop.", "Your security code with __contactName__ changed", "This happened likely because __contactName__ or you recently changed which devices you use WhatsApp on. Please verify the security code again.", "Failed to update the setting.", "Group participants have changed. Click to view", "Can't join group", "Joining group invites from Web is not yet available on the multi-device beta. Use your phone instead.", "Joining group invites from Desktop is not yet available on the multi-device beta. Use your phone instead.", "Can't view group invite details", "Viewing and revoking group invites from Web is not yet available on the multi-device beta. Use your phone instead.", "Viewing and revoking group invites from Desktop is not yet available on the multi-device beta. Use your phone instead."], {
-                        39: "Changing __count__ labels",
-                        40: "Some labels could not be updated",
-                        41: "__count__ labels changed",
-                        144: "Couldn't delete __count__ messages because the messages may have expired",
-                        145: "Couldn't delete messages",
-                        146: "__count__ messages deleted",
-                        147: "Deleting messages",
-                        148: "Couldn't star messages because the messages may have expired",
-                        149: "Couldn't star messages",
-                        150: "__count__ messages starred",
-                        151: "Starring messages",
-                        153: "Couldn't unstar messages because the messages may have expired",
-                        154: "Couldn't unstar messages",
-                        155: "__count__ messages unstarred",
-                        157: "Unstarring messages",
-                        161: "Couldn't add __participantNames__.",
-                        163: "You added __participantNames__.",
-                        164: "Adding __participantNames__.",
-                        165: "Removing __participantNames__ as admins failed.",
-                        168: "__participantNames__ are no longer group admins.",
-                        169: "Removing __participantNames__ as group admins.",
-                        170: "They are no longer in this group.",
-                        171: "You can't add these participants because they left the group recently.",
-                        174: "Couldn't make __participantNames__ admins.",
-                        176: "__participantNames__ are now group admins.",
-                        177: "Making __participantNames__ group admins.",
-                        178: "Couldn't remove __participantNames__.",
-                        181: "You removed __participantNames__.",
-                        182: "Removing __participantNames__.",
-                        215: "Add participants",
-                        243: "__count__ Pages",
-                        247: "__number__ audio files you tried adding have no content.",
-                        252: "__number__ audio files you tried adding are larger than the __maxSize__ limit.",
-                        412: "__count__ messages couldn't be forwarded because __contact__ is on a version of WhatsApp that doesn't support them.",
-                        414: "__count__ messages couldn't be forwarded because the file is missing.",
-                        415: "__count__ messages couldn't be forwarded because the file is missing or __contact__ is on a version of WhatsApp that doesn't support them.",
-                        446: "__updated__ Items Updated",
-                        540: "__count__ items",
-                        560: "Send __count__ contacts to “__chat__”?",
-                        561: "Send __count__ contacts to “__chat__”?",
-                        562: "Send __count__ contacts to “__chat__”?",
-                        573: "Contact Cards",
-                        579: "__number__ contacts that you tried to add have no content.",
-                        580: "The contacts that you tried to add are larger than the __maxSize__ limit.",
-                        607: "Deleting a label removes it from all messages, contacts, and from the list of labels. Are you sure you want to delete these labels?",
-                        608: "Delete messages",
-                        609: "Delete messages?",
-                        626: "__count__ Docs",
-                        628: "__number__ documents you tried adding have no content.",
-                        629: "__number__ documents you tried adding are larger than the __maxSize__ limit.",
-                        661: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ days.",
-                        662: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ hours.",
-                        663: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ minutes.",
-                        664: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ seconds.",
-                        666: "You turned on disappearing messages. New messages will disappear from this chat after __number__ days.",
-                        667: "You turned on disappearing messages. New messages will disappear from this chat after __number__ hours.",
-                        668: "You turned on disappearing messages. New messages will disappear from this chat after __number__ minutes.",
-                        669: "You turned on disappearing messages. New messages will disappear from this chat after __number__ seconds.",
-                        671: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ days.",
-                        672: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ hours.",
-                        673: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ minutes.",
-                        674: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ seconds.",
-                        675: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ years.",
-                        677: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ days. Click to change.",
-                        678: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ hours. Click to change.",
-                        679: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ minutes. Click to change.",
-                        680: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ seconds. Click to change.",
-                        682: "You turned on disappearing messages. New messages will disappear from this chat after __number__ days. Click to change.",
-                        683: "You turned on disappearing messages. New messages will disappear from this chat after __number__ hours. Click to change.",
-                        684: "You turned on disappearing messages. New messages will disappear from this chat after __number__ minutes. Click to change.",
-                        685: "You turned on disappearing messages. New messages will disappear from this chat after __number__ seconds. Click to change.",
-                        687: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ days. Click to change.",
-                        688: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ hours. Click to change.",
-                        689: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ minutes. Click to change.",
-                        690: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ seconds. Click to change.",
-                        693: "New messages will disappear from this chat after __number__ days.",
-                        694: "New messages will disappear from this chat after __number__ hours.",
-                        695: "New messages will disappear from this chat after __number__ minutes.",
-                        696: "New messages will disappear from this chat after __number__ seconds.",
-                        700: "This message will disappear from this chat after __number__ days.",
-                        701: "This message will disappear from this chat after __number__ hours.",
-                        702: "This message will disappear from this chat after __number__ minutes.",
-                        703: "This message will disappear from this chat after __number__ seconds.",
-                        715: "__number__ days",
-                        716: "__number__ hours",
-                        717: "__number__ minutes",
-                        718: "__number__ seconds",
-                        728: "Wait until the messages finish sending and displays a checkmark before forwarding.",
-                        738: "__number__ files you tried adding have no content.",
-                        739: "__count__ files failed to be downloaded because they are no longer on your phone.",
-                        740: "__number__ files could not be added.",
-                        741: "__number__ files you tried adding are not supported.",
-                        742: "__number__ files you tried adding are larger than the __maxSize__ limit.",
-                        749: "You can only share with up to __count__ chats",
-                        750: "Forwarded many times. You can only share with up to __count__ chats.",
-                        751: "Messages forwarded many times can only be shared with up to __count__ chats at a time.",
-                        752: "Forward messages",
-                        753: "Forward messages to",
-                        755: "Forwarded __count__ times",
-                        760: "Found contact cards for this number. View contact cards?",
-                        802: "__count__ contacts",
-                        807: "__count__ participants",
-                        831: "__count__ more",
-                        836: "Couldn't add __participant__. You can invite them privately to join this group.",
-                        872: "__unreadCount__ New Messages",
-                        875: "__number__ images you tried adding have no content.",
-                        883: "__number__ images you tried adding are larger than the __maxSize__ limit.",
-                        901: "Expires in __number__ days",
-                        908: "__count__ items",
-                        924: "__count__ Links",
-                        925: "Accurate to __accuracy__ M",
-                        926: "__count__ people",
-                        933: "Live until __time__",
-                        940: "__hours__h left",
-                        942: "__minutes__m left",
-                        943: "__sharers__ are sharing live location",
-                        945: "__count__ people are sharing live location",
-                        948: "You and __count__ others are sharing live location",
-                        953: "Updated __hours__h ago",
-                        956: "Updated __minutes__m ago",
-                        1043: "__count__ remaining",
-                        1082: "__contactName__ and __count__ other contacts",
-                        1084: "__count__ contacts",
-                        1085: "You can only send up to __count__ contacts",
-                        1276: "__count__ Products",
-                        1277: "This photo is too small. Please select a photo with height and width of at least __size__ pixels.",
-                        1287: 'Remove label "__labelName__" from __count__ items',
-                        1321: "Retrying in __number__ seconds…",
-                        1358: "See __count__ archived chats",
-                        1361: "__count__ selected",
-                        1381: "__count__ Screenshots Maximum",
-                        1400: "Star messages",
-                        1445: "__count__ suspicious links",
-                        1461: "Maximum number of files uploaded. __number__ files have been ignored.",
-                        1473: "__count__ unread messages",
-                        1479: "Unstar messages",
-                        1501: "__participants__ joined using your invite",
-                        1502: "You invited __participants__",
-                        1525: "__number__ videos you tried adding have no content.",
-                        1527: "__number__ videos you tried adding are larger than the __maxSize__ limit.",
-                        1529: "View Contact Cards",
-                        1591: "Call cannot be placed for more than __count__ participants",
-                        1593: "You can only call up to __count__ contacts",
-                        1594: "__callee__ couldn't be added to the call, because they are using an old version of WhatsApp or an incompatible device.",
-                        1595: "__count__ others",
-                        1687: "__count__ pages",
-                        1750: "__participants__ are no longer admins",
-                        1756: "__participants__ are now admins",
-                        1779: "__num__ invites sent",
-                        1786: "__name__ were added to the list",
-                        1787: "__name__ were removed from the list",
-                        1814: "Missed group video call at __time__",
-                        1816: "Missed group voice call at __time__",
-                        1818: "Missed video call at __time__",
-                        1820: "Missed voice call at __time__",
-                        1828: "__count__ participants",
-                        1830: "__contactName__ canceled their payment request for __currencyAndAmount__",
-                        1831: "You canceled your payment request to __contactName__ for __currencyAndAmount__",
-                        1832: "__contactName__ declined your payment request for __currencyAndAmount__.",
-                        1833: "You declined __contactName__'s payment request for __currencyAndAmount__.",
-                        1834: "__senderName__'s payment request for __currencyAndAmount__ to you expired.",
-                        1835: "Your payment request to __receiverName__ for __currencyAndAmount__ expired.",
-                        1842: "Requested __amount__ from You",
-                        1843: "__senderName__ requested __amount__ from You",
-                        1844: "__senderName__ requested __amount__ from __receiverName__",
-                        1845: "Sent __amount__ to You",
-                        1846: "__senderName__ sent __amount__ to You",
-                        1847: "__senderName__ sent __amount__ to __receiverName__",
-                        1859: "__senderName__ sent you __currencyAndAmount__. Use WhatsApp on your phone to accept this transaction.",
-                        1965: "You created a broadcast list with __count__ recipients"
+                    ["", "Add additional hours", "Add product", "Chat list", "Close panel", "Open the chat context menu", "This is a disappearing message", "Full screen", "Exit full screen", "Mute", "Pause", "Play", "Unmute", "Message list. Press right arrow key on a message to open message context menu.", "Message list. Press left arrow key on a message to open message context menu.", "__author__:", "You:", "Delivered", "Pending", "Read", "Sent", "Voice message", "Muted chat", "Open emojis panel", "Open gif panel", "Open sticker panel", "Cancel", "Voice message", "Send", "Stop", "Result: __name__", "Search results.", "Starred", "Sticker with: __emojis__", "Sticker with no label", "Unselect category", "View once info", "Turn off view once", "Turn on view once", "View once photo", "View once video", "Changing __count__ label", "The label could not be updated", "__count__ label changed", "Adding new label: __labelName__", "Archived chats will unarchive when you receive a new message.", "Couldn't change archive setting.", "Changing archive setting", "Archived chats will remain archived when you receive a new message.", "Couldn't block __participant__", "__participant__ blocked", "Blocking __participant__", "Couldn't delete broadcast list.", "Broadcast list deleted", "Broadcast list deleted from this device", "Deleting broadcast list", "Group setting could not be changed", "Couldn't archive chat.", "Chat archived", "Archiving chat", "Couldn't clear chat.", "Chat cleared", "Chat cleared from this device", "Clearing chat", "Couldn't delete chat.", "Chat deleted", "Chat deleted from this device", "Deleting chat", "Couldn't dismiss change number notification.", "Change number notification dismissed.", "Dismissing change number notification.", "Couldn't mark chat as read.", "Couldn't mark chat as unread.", "Marked as read", "Marked as unread", "Marking as read", "Marking as unread", "Couldn't mute chat.", "Chat muted", "Muting chat", "Couldn't pin chat", "You can only pin up to 3 chats.", "Chat pinned", "Pinning chat", "Couldn't unarchive chat.", "Chat unarchived", "Unarchiving chat", "Unmute", "Couldn't unmute chat.", "Chat unmuted", "Unmuting chat", "Couldn't unpin chat", "Chat unpinned", "Unpinning chat", "Deleting label: __labelName__ failed", "Deleted label: __labelName__", "Deleting label: __labelName__", "Couldn't create group.", "Please enter a shorter subject.", "You've created too many groups too quickly. Try again later.", "Can't add more than __max__ participants", "Created group", "Creating group", "Couldn't delete group.", "Group deleted", "Group deleted from this device", "Deleting group", "Changing group description", "Group description change failed", "Group description changed", "Couldn't exit group.", "Exited group", "Exiting group", "You're not a participant.", "This group has ended.", "You've added too many contacts to groups too quickly. Try again later.", "Couldn't remove group icon.", "Group icon removed", "Removing group icon", "Group icon set", "Couldn't set group icon.", "Setting group icon", "Couldn't mute group.", "Group muted", "Muting group", "Couldn't rename group.", "Group renamed to __subject__", "Renaming group", "Group subject can't be empty", "Couldn't unmute group.", "Group unmuted", "Unmuting group", "Updating label color", "Label color update failed", "Label color updated", "Updating label name", "Label name update failed", "Label name updated", "Couldn't stop sharing live location", "Stop sharing live location with __name__?", "Stop sharing live location with __name__?", "Stopped sharing live location", "Stopping live location sharing", "Marking as not spam", "Couldn't mark as not spam", "Marked as not spam", "Couldn't delete message because the message may have expired", "Couldn't delete message", "__count__ message deleted", "Deleting message", "Couldn't star message because the message may have expired", "Couldn't star message", "__count__ message starred", "Starring message", "Couldn't unstar all messages", "Couldn't unstar message because the message may have expired", "Couldn't unstar message", "__count__ message unstarred", "All messages unstarred", "Unstarring message", "Unstarring all messages", "Failed to add label: __labelName__", "Label: __labelName__ added successfully", "Couldn't add __participantNames__.", "Couldn't add some participants.", "You added __participantNames__.", "Adding __participantNames__.", "Removing __participantNames__ as an admin failed.", "You can't dismiss __participant__ as admin because they created this group.", "Couldn't remove some participants as an admin.", "__participantNames__ is no longer a group admin.", "Removing __participantNames__ as a group admin.", "They are no longer in this group.", "You can't add this participant because they left the group recently.", "This group is full.", "Please try again.", "Couldn't make __participantNames__ an admin.", "Couldn't make some participants admin.", "__participantNames__ is now a group admin.", "Making __participantNames__ a group admin.", "Couldn't remove __participantNames__.", "Couldn't remove some participants.", "You can't remove __participant__ because they created this group.", "You removed __participantNames__.", "Removing __participantNames__.", "Couldn't remove profile photo.", "Profile photo removed", "Removing profile photo", "Profile photo set", "Couldn't set profile photo.", "Setting profile photo", "Your name can't be empty", "Your name changed", "Couldn't change your name.", "That emoji isn't allowed in your name", "Changing your name", "Reporting spam", "Couldn't report spam", "Reported spam", "About can't be empty", "About changed", "Couldn't change About.", "Changing About…", "Try again.", "Couldn't unblock __participant__", "__participant__ unblocked", "Unblocking __participant__", "Undo", "Add a caption…", "The contact you have selected is blocked. Would you like to unblock them and add them to the group?", "Blocked contacts will no longer be able to call you or send you messages", "Add blocked contact", "Add catalog", "Add to a group", "Add file", "Add group description", "Add group icon", "Add participant", "Add group participants", "Label name already exists", "NEW LABEL", "New label", "Add new label", "Add profile photo", "Add set of hours", "Add to catalog", "Drag the image to adjust", "All chats are archived", "Already added to group", "Only admins can send messages", "Only __admins__ can send messages", "admins", "Archive chat", "Archived", "Archived Chats", "To reduce interruptions, archived chats will stay here with notifications turned off. To change this experience, go to Settings > Archived Chats.", "Archived chats will stay archived", "Archive settings", "No archived chats", "Archived chats", "Archived", "Archived chats are muted", "Camera", "Attach Desktop Client Logs", "Document", "__count__ Page", "Photos & Videos", "Catalog", "Contact", "__number__ audio file you tried adding has no content.", "Your browser doesn’t support audio playback.", "1.5×", "1×", "2×", "__number__ audio you tried adding is larger than the __maxSize__ limit.", "Media Auto-Download", "Archived chats will remain archived when you receive a new message", "Keep chats archived", "Using __deviceName__ as your __deviceType__ for your WhatsApp calls", "BETA", "You're using the multi-device beta", "This chat is with a business account. Click for more info.", '"__businessName__" registered as a business account, but WhatsApp hasn’t verified their name yet.', 'This chat is with the official business account of "__businessName__". Click for more info.', 'WhatsApp has verified that this is the official business account of "__businessName__".', 'WhatsApp has verified that this is the official business account of "__businessName__". This account is saved with a different name in your address book.', "This business account has now registered as a standard account. Click for more info.", "This account was previously a business account but has now registered as a standard account and may no longer belong to the business.", 'This official business account changed its name to "__businessName__". Click for more info.', 'WhatsApp has verified that this official business account changed its name and now uses the name "__businessName__".', "__businessName__ used other companies to store and manage this message.", "__businessName__ used Facebook and other companies to store and manage this message.", "This message was delivered directly from __businessName__.", "This message was delivered directly to __businessName__.", "__businessName__ used Facebook to store and manage this message.", "This chat is with a business account. Click for more info.", '"__businessName__" registered as a business account, but WhatsApp hasn’t verified their name yet.', 'This chat is with the official business account of "__businessName__". Click for more info.', 'WhatsApp has verified that this is the official business account of "__businessName__".', 'WhatsApp has verified that this is the official business account of "__businessName__". This account is saved with a different name in your address book.', 'This chat is now with the official business account of "__businessName__". Click for more info.', 'WhatsApp has verified that this is the official business account of "__businessName__".', 'This chat is no longer with the official business account of "__businessName__". Click for more info.', 'WhatsApp is no longer able to verify that this is the official business account of "__businessName__".', "Block", "Block business", "Block __contact__? Blocked contacts will no longer be able to call you or send you messages.", "Block contact", "List of contacts that you have blocked", "No blocked contacts yet", "Blocked contacts", "WhatsApp secures messages while they're being delivered to and from the companies that store and manage this chat for __businessName__. Contact __businessName__ for more information on their privacy practices.", "This chat is with a business account.", "WhatsApp secures messages while they're being delivered to and from Facebook, where this chat is stored and managed for __businessName__. Contact __businessName__ for more information on their privacy practices.", "WhatsApp secures messages while they're being delivered to and from Facebook, where this chat is stored and managed for __businessName__.", "__businessName__ is registered as a business account.", "__businessName__ is registered as an official business account.", "__businessName__ is registered as an official business account. The business is saved as a different name in your contacts.", "This chat is with the official business account of __businessName__.", "This chat is with the official business account of __businessName__. The business is saved as a different name in your contacts.", "__businessName__ is now registered as a business account, instead of an official business account.", "__businessName__ no longer uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ now only uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ no longer uses Facebook or other companies to manage its WhatsApp conversations.", "This chat is with a business account that uses Facebook and other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is now registered as an official business account. This business no longer uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business no longer uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account that only uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business only uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account. This business no longer uses Facebook or other companies to manage its WhatsApp conversations. Click to learn more.", "This chat is with the official business account of __businessName__. This business uses Facebook and other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official business account of __businessName__, but it's saved as a different name in your contacts. This business uses Facebook and other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is no longer an official business account and it no longer uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it now only uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it no longer uses Facebook or other companies to manage its WhatsApp conversations. Click to learn more.", "__businessName__ no longer uses other companies to manage its WhatsApp conversations.", "This chat is with a business account that uses other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is now registered as an official business account. This business no longer uses other companies to manage its WhatsApp conversations. Click to learn more.", "This chat is with the official business account of __businessName__. This business uses other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official business account of __businessName__, but it's saved as a different name in your contacts. This business uses other companies to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is no longer an official business account and it no longer uses other companies to manage its WhatsApp conversations. Click to learn more.", "__businessName__ is now registered as a business account that uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as a business account that uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as a business account that uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as a business account. Click to learn more.", "__businessName__ now uses other companies instead of Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ no longer uses Facebook to manage its WhatsApp conversations.", "This chat is with a business account that uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is now registered as an official business account. This business now uses other companies instead of Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business now uses other companies instead of Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account. This business no longer uses Facebook to manage its WhatsApp conversations. Click to learn more.", "This chat is with the official business account of __businessName__. This business uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official business account of __businessName__, but it's saved as a different name in your contacts. This business uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official account of __businessName__, but it's saved as a different name in your contacts. This account uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "This chat is with the official account of __businessName__. This account uses Facebook to manage its WhatsApp conversations. Click to learn more about privacy in this chat.", "__businessName__ is no longer an official business account. This business uses other companies instead of Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it no longer uses Facebook to manage its WhatsApp conversations. Click to learn more.", "__businessName__ now uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "This chat is with a business account. Click to learn more.", "This chat is with the official business account of __businessName__. Click to learn more.", "__businessName__ now uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer registered as a business account.", "__businessName__ now uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account that uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account that uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account that uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account, but it's saved as a different name in your contacts. This business uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is now registered as an official business account. Click to learn more.", "__businessName__ is no longer an official business account. This business now uses Facebook and other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it now uses other companies to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer an official business account and it now uses Facebook to manage its WhatsApp conversations. Click to learn how this changes privacy in this chat.", "__businessName__ is no longer registered as an official business account. Click to learn more.", "Broadcast list deleted", "Broadcast list info", "Browser not supported", "and", "By appointment only", "Closed", "Closed now", "__closed__, opens at __time__", "Closed today", "Always Open", "By Appointment", "Edit Business Hours", "End Time", "Selected Hours", "Start Time", "Open", "Open 24 hours", "__open__ 24 hours", "__open__ by appointment only", "Open by appointment only", "Open now", "__open__ until __time__", "__open__ until __time__, __additionalOpenTime__ - __additionalCloseTime__", "Business Info", "This is your business name. It will be visible to your WhatsApp customers.", "This verified business is not in your contact list.", "__streetAddress__, __city__", "__streetAddress__, __city__ __zipCode__", "Business account", "Something went wrong.", 'You cannot select categories when you have selected "Not a Business"', "Choose up to three categories", "Confirmed as __businessName__", "Confirmed business", "About and Phone Number", "Add another website", "Business Address", "Business Hours", "Categories", "Business Description", "Email Address", "End Time", "Edit map on mobile", "This name will be visible to your WhatsApp customers and can only be editable from the app on your mobile device.", "Your phone number can only be editable from the app on your mobile device.", "Something went wrong", "An error occurred while saving.  Please try again.", "Business Information", "Website", "This name will be visible to your WhatsApp customers and can only be editable from the app on your mobile device.", "No categories found", "Official business account", "Search categories", "This is a business account.", "Verified", "__verified__ as __businessName__", "Verified business", "Use Here", "WhatsApp needs a camera for video calls and taking photos. Allow access in your computer's settings.", "Allow WhatsApp to access your camera?", "Calls are not supported on WhatsApp Web. Open WhatsApp on your phone to call this business.", "__count__ message couldn't be forwarded because __contact__ is on a version of WhatsApp that doesn't support it.", "No messages could be forwarded because __contact__ is on a version of WhatsApp that doesn't support them.", "__count__ message couldn't be forwarded because the file is missing.", "__count__ message couldn't be forwarded because the file is missing or __contact__ is on a version of WhatsApp that doesn't support it.", "No messages could be forwarded because the file is missing or __contact__ is on a version of WhatsApp that doesn't support them.", "No messages could be forwarded because the file is missing.", "Can't Load WhatsApp", "The caption you’re pasting is too long. Try shortening it or sending it as a separate message.", "Caption Too Long", "Your cart", "Add items to your cart", "Collect all the items you're interested in here and then send them to the business. Use your cart to ask about buying, customizing, delivery, or anything you want.", "Ask for price", "Qty __quantity__", "One or more items in your cart have been updated", "You can't add any more of this item", "Add a message", "The message you’re pasting is too long. Try shortening it or sending it as a separate message.", "Message Too Long", "Received cart", "Your sent cart", "Send a cart", "Something went wrong", "Add Images", "Add items to your catalog so customers can see what you're offering", "Add new item", "Failed to send review request.", "Add Items", "New collection", "Failed to delete collection", "When you delete this collection, items in the collection will not be deleted.", "Delete", "Delete Collection", "Edit", "__updated__ Item Updated", "Name required", "New collection", "New collection", "This collection won’t be visible to customers until you add at least 1 item", "Update Items", "Collections", "You already have a collection with this group of items. Add or delete items to make a different group.", "Failed to save collection", "Are you sure you want to delete this item from your catalog?", "Delete Item", "Failed to delete product", "Catalog disabled", "Your catalog is temporarily disabled because WhatsApp is a sales channel for your Facebook shop. To restore your catalog, go to Commerce Manager and set the shop’s visibility to “hidden”, or remove WhatsApp from the Business Manager account.", "By using this feature, you're using a __fb_product_link__ and agree that the __fb_commerce_link__ and __wa_commerce_policy_link__ apply.", "If you feel this is not correct, you can __request_review_link__.", "Your appeal was submitted. If it’s approved, your item will be added to your catalog. If it’s not approved, you’ll be notified.", "We reviewed this item again and found it didn't follow product or service guidelines. __learn_more_link__.", "We will review the item and if it meets our guidelines, it will be added to your catalog.", "When you hide an item, customers won’t see it in your catalog.", "Hide item", "Hide item in your catalog?", "This item wasn't approved because it doesn't follow our product or service guidelines. __learn_more_link__.", "request another review", "Changes saved", "Add to cart", "Delete", "Hide item", "Share", "Show item", "Show item in your catalog?", "This item is being reviewed. If it’s been approved, your customers will be able to see it on your profile. __learn_more_link__.", "This item is being reviewed. You hid it, so customers won’t see it in your catalog when it’s approved. __learn_more_link__.", "Catalog link", "Failed to save changes", "See all", "Add to cart", "Turn this on to let customers add items to a cart when shopping in your catalog. Turning this off won't affect carts you've already received. __learn_more_link__", "Failed to load catalog settings.", "Settings", "Off", "On", "Learn more about their products & services", "View __catalogOwnerName__'s Catalog on WhatsApp", "__productName__ from __catalogOwnerName__ on WhatsApp.", "Anyone with WhatsApp can follow this link to browse catalog", "Add new item", "Edit item", "View all", "Change group icon", "Message new number", "__name__ changed their phone number. You're currently chatting with their new number.", "__name__ changed their phone number to a new number.", "__name__ changed their phone number to a new number. Click to message the new number.", "Change profile photo", "You allowed all participants to send messages to this group", "You allowed only admins to send messages to this group", "You turned off disappearing messages in this chat", "You turned on disappearing messages in this chat", "You allowed participants to send messages that have been forwarded many times to this group", "You blocked participants from sending messages that have been forwarded many times to this group", "You allowed all participants to change this group's info", "You allowed only admins to change this group's info", "Allowing all participants to send messages to this group", "Allowing only admins to send messages to this group", "Turning off disappearing messages in this chat", "Turning on disappearing messages in this chat", "Allowing participants to send messages that have been forwarded many times to this group", "Blocking participants from sending messages that have been forwarded many times to this group", "Allowing all participants to change this group's info", "Allowing only admins to change this group's info", "Charge your phone to keep using WhatsApp", "Archived", "You are not an admin", "Search for messages within __chatName__.", "Starred Messages", "No Internet connection", "Group invite message. Open WhatsApp on your phone to view.", "Sharing live location. Open WhatsApp on your phone to view.", "Payment message. Open WhatsApp on your phone to view.", "Choose a phone number", "Clear this chat?", "Clear messages", "Clear chat", "Clear this chat?", "Delete file from your phone", "Clear this chat?", "click here for group info", "click here for contact info", "Update WhatsApp", "Click to reload QR code", "Click to save, ESC to cancel", "Click to update WhatsApp", "Close chat", "All Items", "__count__ item", "rejected", "See all", "This collection is currently under review. Once it’s been approved, your customers will be able to see it on your profile.", "Collections", "This collection wasn’t approved because it doesn’t follow our guidelines.", "Rename", "Commerce Manager", "Your computer is connected to a network that prevents WhatsApp from working correctly", "Computer not connected", "Add __participant__ to “__subject__” group?", "Add __participants__ to “__subject__” group?", "Confirm", "You are closing WhatsApp.", "Some messages can’t be forwarded, do you want to forward rest of the messages?", "Can't forward all messages", "Forward to __chat__?", "Log out?", "Make __participant__ an admin for “__subject__” group?", "Remove __participant__ from “__subject__” group?", "Send __count__ contact to “__chat__”?", "Send __count__ contact to “__chat__”?", "Send __count__ contact to “__chat__”?", "Unblock __chat__ and forward messages?", "Blocked. Click to unblock", "Unblock __contact__", "Unmute this chat?", "Enable sounds and notifications?", "Unmute this group?", "Connecting…", "Connecting to WhatsApp", "Connecting", "Contact", "Contact Card", "About and phone number", "Contact is blocked", "Hey there! I am using WhatsApp.", "Loading About…", "View contact", "You blocked this contact", "You unblocked this contact", "__number__ contact that you tried to add has no content.", "The contact that you tried to add is larger than the __maxSize__ limit.", "Use WhatsApp on your phone to see the complete message history.", "Older documents may be available", "Older files may be available", "Older links may be available", "Older media may be available", "Older messages may be available", "Older products may be available", "Use WhatsApp on your phone to search messages from before __date__.", "Use WhatsApp on your phone to see the complete chat history.", "Older chat history is available", "Additional messages for this chat are being synced", "Search for messages with __chatName__.", "Copy link", "Decrease speed of selected voice message", "WhatsApp message", "WhatsApp group message", "Default", "Delete all", "Delete broadcast list?", "Delete for me", "Delete chat", "Delete chat", "Delete this chat?", "Delete group", "Delete this group?", "Delete Item", "Deleting a label removes it from all messages, contacts, and from the list of labels. Are you sure you want to delete this label?", "Delete message", "Delete message?", "Tell us about your issue", "Update", "Please Update WhatsApp", "New version available", "Go To Settings", "Please update WhatsApp from the Mac App Store", "Desktop Settings", "Update", "To continue using WhatsApp, click Update and install the latest version.", "Couldn't Update Automatically", "Downloading an update to WhatsApp. This may take several minutes. WhatsApp will automatically update and restart when the download finishes.", "Updating WhatsApp", "Please update WhatsApp from the Windows App Store", "__name__ is using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ day. Click to learn more.", "__name__ is using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ hour. Click to learn more.", "__name__ is using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ minute. Click to learn more.", "__name__ is using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ second. Click to learn more.", "You are using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ day. Click to learn more.", "You are using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ hour. Click to learn more.", "You are using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ minute. Click to learn more.", "You are using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ second. Click to learn more.", "Dismiss", "Dismiss as admin", "Docs", "__count__ Doc", "“__name__” downloaded.", "__number__ document you tried adding has no content.", "__number__ document you tried adding is larger than the __maxSize__ limit.", "Download all", "This contact can't be displayed in WhatsApp Web. Download it to open it with another app on your computer?", "Download contact?", "Download failed", "open", "Downloading…", "Download completed", "This file can't be opened in WhatsApp Web. Download it to open it with another app on your computer?", "Download Unsupported File?", "Drag file here", "End-to-end encrypted", "Edit", "Choose who can change this group’s subject, icon, description and disappearing messages setting.", "Add text to your image…", "Edit label", "Did you know? You can type : and a word to search emoji", "smile", "Activity", "Animals & Nature", "Flags", "Food & Drink", "Objects", "Smileys & People", "Symbols", "Travel & Places", "Turn on desktop notifications", "& ", " • ", ", ", "Only admins can change this setting.", "Disappearing messages were turned off.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ day.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ hour.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ minute.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ second.", "You turned off disappearing messages.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ day.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ hour.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ minute.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ second.", "__name__ turned off disappearing messages.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ day.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ hour.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ minute.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ second.", "", "Disappearing messages were turned off. Click to change.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ day. Click to change.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ hour. Click to change.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ minute. Click to change.", "Disappearing messages were turned on. New messages will disappear from this chat after __number__ second. Click to change.", "You turned off disappearing messages. Click to change.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ day. Click to change.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ hour. Click to change.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ minute. Click to change.", "You turned on disappearing messages. New messages will disappear from this chat after __number__ second. Click to change.", "__name__ turned off disappearing messages. Click to change.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ day. Click to change.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ hour. Click to change.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ minute. Click to change.", "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ second. Click to change.", "Turning on this setting will make new messages disappear from this chat after 7 days. Recipients can still save these messages elsewhere.", "Turning on this setting will make new messages disappear from this chat after a selected amount of time. Recipients can still save these messages elsewhere.", "New messages will disappear from this chat after __number__ day.", "New messages will disappear from this chat after __number__ hour.", "New messages will disappear from this chat after __number__ minute.", "New messages will disappear from this chat after __number__ second.", "Anyone in this chat can change this setting.", "Group admins control who can change this setting.", "This message was sent while disappearing messages were turned off.", "This message will disappear from this chat after __number__ day.", "This message will disappear from this chat after __number__ hour.", "This message will disappear from this chat after __number__ minute.", "This message will disappear from this chat after __number__ second.", "Messages will disappear after 7 days if they’re sent to a chat that has disappearing messages turned on.", "Messages will disappear after a selected amount of time if they’re sent to a chat that has disappearing messages turned on.", "While this setting is on, new messages will disappear from this chat after 7 days.", "While this setting is on, new messages will disappear from this chat after a selected amount of time.", "Media and messages won’t disappear from outside the chat or from any devices they’re saved on.", "There are still ways for recipients to save messages, like forwarding them or taking a screenshot.", "Get Started With Disappearing Messages", "Disappearing Messages Were Turned On", "You can't change this setting because you're not connected to the Internet. Check your Internet and try again.", "Off", "On", "__number__ day", "__number__ hour", "__number__ minute", "__number__ second", "You can't turn off disappearing messages for this chat unless you unblock this contact.", "You can't turn on disappearing messages for this chat unless you unblock this contact.", "Catalog already created.", "Two or more images are the same. Delete any duplicates and try again.", "Item code must be unique.", "Incorrect email address format", "Add at least one image", "Add a title", "Enter a valid price", "Wait until the message finishes sending and displays a checkmark before forwarding.", "Wait until this message is fully delivered before forwarding.", "Unable to forward unsent message.", "Can’t Forward", "URL is incorrect", "Exit group", "Exit this group?", "Facebook shop", "Facebook Commercial Terms", "Facebook Product", "__number__ file you tried adding has no content.", "__count__ file failed to be downloaded because it's no longer on your phone.", "__number__ file could not be added.", "__number__ file you tried adding is not supported.", "__number__ file you tried adding is larger than the __maxSize__ limit.", "B", "GB", "kB", "MB", "Forward", "Forward all", "You can only share with up to __count__ chat", "Forwarded many times. You can only share with up to __count__ chat.", "Messages forwarded many times can only be shared with up to __count__ chat at a time.", "Forward message", "Forward message to", "Forwarded", "Forwarded __count__ time", "Can't send messages that have been forwarded many times", "Forwarded many times", "One or more messages will be marked as forwarded many times.", "This message will be marked as forwarded many times.", "Found a contact card for this number. View contact card?", "Older results may be available", "Gallery", "Get directions", "Microsoft Edge", "Google Chrome", "Mozilla Firefox", "Get notified of new messages", "Opera", "Safari (macOS 11+ Only)", "Get support via email", "Custom GIF animations are currently not supported. Please use provided GIF selection feature.", "Favorites", "Haha", "Love", "Reactions", "Sad", "Sports", "Trending", "TV", "Alerts and sounds off", "Alerts and sounds off for 1 day", "Alerts and sounds off for 1 hour", "Alerts and sounds off for 1 week", "Alerts and sounds off for 8 hours", "Alerts and sounds off. Click to restore.", "Notifications enabled", "Go to message", "Messages and calls are now end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Click to learn more.", "Failed to load Google Maps", "GOT IT", "Group", "You were added by someone who's not in your contacts", "Group deleted", "Description", "You can't join this group because you were removed.", "You can't join this group because it has ended.", "You can't join this group because this invite link was reset.", "You can't join this group because it is full.", "Couldn't join this group. Please try again.", "Cancel", "Checking invite link", "__count__ contact", "Reset link", "Join group", "Invite to group via link", "Anyone with WhatsApp can follow this link to join this group. Only share it with people you trust.", "__count__ participant", "You can't view this group's invite link because you're not an admin.", "You can't view this group's invite link because you're no longer a participant.", "You can't view this group's invite link because this group has ended.", "This invite link doesn't match any WhatsApp groups.", "Are you sure you want to reset the invite link for __groupName__? If you reset the link, no one will be able to use it to join this group.", "Resetting the invite link for __groupName__.", "The previous invite link is now reset and a new invite link has been created.", "Send link to", "Log in to WhatsApp Web to join this WhatsApp group", "View group", "Group muted", "Type contact name", "All participants", "Edit group info", "Disappearing Messages", "Allow", "Frequently forwarded messages", "Messages forwarded many times", "Don't allow", "Only admins", "Send messages", "Group Settings", "Follow this link to join my WhatsApp group:", "__count__ more", "Group Subject", "Invitation to join my WhatsApp group", "Invite Expired", "__number__ invited", "Couldn't add __participant__. You can invite them privately to join this group.", "WhatsApp group invite", "Invited", "View invite", "Group video call", "Group voice call", "Send invite to...", "Reset invite for __participant__? If you reset the invite, __participant__ won't be able to use it to join this group.", "To take photos, click “Allow” above to give WhatsApp access to your computer's camera.", "To take photos, click “Yes” below to give WhatsApp access to your computer's camera.", "To take photos, WhatsApp needs access to your computer's camera. Click __chrome_media_error__ in the URL bar and choose “Always allow web.whatsapp.com to access your camera.”", "To take photos, WhatsApp needs access to your computer’s camera. Refresh the page, try sending a camera image, and select “Yes” from the menu that appears.", "To take photos, WhatsApp needs access to your computer’s camera. Click __firefox_lock__ in the URL bar and set “Use the Camera” to “Allow.”", "To take photos, WhatsApp needs access to your computer’s camera. Click __opera_media__ in the URL bar and click “Clear This Setting and Reload.”", "To take photos, WhatsApp needs access to your computer’s camera. Open your browser’s Preferences → Websites and change camera setting for web.whatsapp.com to “Allow”.", "You can’t take a photo because it looks like your computer doesn’t have a camera. Try connecting one or if you have one connected, try restarting your browser.", "Camera Not Found", "Allow camera", "To record Voice Messages, click “Allow” above to give WhatsApp access to your computer's microphone.", "To record Voice Messages, click “Yes” below to give WhatsApp access to your computer's microphone.", "To record Voice Messages, WhatsApp needs access to your microphone. Click __chrome_media_error__ in the URL bar and choose “Always allow web.whatsapp.com to access your microphone.”", "To record Voice Messages, WhatsApp needs access to your computer’s microphone. Refresh the page, try sending a Voice Message, and select “Yes” from the menu that appears.", "To record Voice Messages, WhatsApp needs access to your computer’s microphone. Click __firefox_lock__ in the URL bar and set “Use the Microphone” to “Allow.”", "To record Voice Messages, WhatsApp needs access to your computer’s microphone. Click __opera_media__ in the URL bar and click “Clear This Setting and Reload.”", "To record Voice Messages, WhatsApp needs access to your computer’s microphone. Open your browser’s Preferences → Websites and change microphone setting for web.whatsapp.com to “Allow”.", "You can’t record a Voice Message because it looks like your computer doesn’t have a microphone. Try connecting one or if you have one connected, try restarting your browser.", "Microphone Not Found", "Can’t record voice messages during a WhatsApp call.", "Allow microphone", "To get notifications for new messages, click “Allow” above.", "To get notifications for new messages, click “Yes” below.", "To get notifications for new messages, select “Allow notifications” from the prompt below the URL bar.", "Allow notifications", "Help", "New Message", "Message from __author__", "__unreadCount__ New Message", "You'll be logged out after several minutes of inactivity", "Failed to load image", "__number__ image you tried adding has no content.", "Image may be subject to copyright.", "Image search failed", "Enter search term here", "No images found", "Search for images", "Image Search", "Terms of Service", "__number__ image you tried adding is larger than the __maxSize__ limit.", "Check your phone to answer", "WhatsApp group video call from __name__", "WhatsApp group voice call from __name__", "WhatsApp video call from __name__", "WhatsApp voice call from __name__", "Increase speed of selected voice message", "Send and receive messages without connecting your phone.", "Use WhatsApp on up to 4 devices at the same time.", "WhatsApp Web", "WhatsApp connects to your phone to sync messages. To reduce data usage, connect your phone to Wi-Fi.", "Make calls and send messages without connecting your phone.", "WhatsApp for Desktop", "Get it here", "WhatsApp is available for Mac. __get_it_here__.", "WhatsApp is available for Windows. __get_it_here__.", "Keep your phone connected", "Expires at __time__", "Expires in __number__ day", "Invite expired", "Keep starred messages", "Emoji Panel", "Gif Panel", "Sticker Panel", "Keyboard Shortcuts", "Catalog", "Catalog (temporarily disabled)", "Choose color", "__count__ item", "Label items", "Item Code (Optional)", "Description (Optional)", "Link (Optional)", "Name", "Price __currencySymbol__ (Optional)", "Enter reason for this request...", "Search in __labelName__...", "Labels", "There was an unexpected error, please click to reload the application.", "Learn more", "Licenses", "Couldn't copy to clipboard. Copy using mouse or keyboard.", "Link copied to clipboard.", "Links", "__count__ Link", "Accurate to __accuracy__ M", "__count__ people", "Live location ended", "Expired Location", "Last updated __date__ at __time__", "Last updated today at __time__", "Last updated __date__ at __time__", "Last updated yesterday at __time__", "Live until __time__", "Map view", "Satellite view", "Terrain view", "Hide traffic", "Show traffic", "Click to continue viewing live location", "__hours__h left", "__hours__h __minutes__m left", "__minutes__m left", "__sharers__ is sharing live location", "__name__ is sharing live location", "__count__ person is sharing live location", "You are sharing live location", "You and __name__ are sharing live location", "You and __count__ other person are sharing live location", "You are sharing live location", "Stop Sharing", "__name__ stopped sharing", "Live Location", "Updated __hours__h ago", "Updated __hours__h __minutes__m ago", "Updated just now", "Updated __minutes__m ago", "View Live Location", "load earlier messages…", "load recent messages…", "Loading…", "loading messages…", "Log in", "Menu __android_menu_icon__", "Click to reload QR code", "Need help to get started?", "Settings __iphone_settings_icon__", "Open WhatsApp on your phone", "Tap __android_menu__ or __iphone_settings__ and select __whatsapp_web_menu_item__", "Point your phone to this screen to capture the code", "To use WhatsApp on your computer:", "WhatsApp Web", "Linked Devices", "This business account is not in your contact list.", "Make sure your computer has an active Internet connection.", "Make sure your phone has an active Internet connection.", "Manage", "Edit group admins", "Mark as read", "Mark as unread", "You've reached the maximum number of images to add.", "Downloading messages: __progress__%", "Don't close this window. Your messages are downloading.", "Media", "Voice Messages are always automatically downloaded for the best communication experience", "Add a caption", "Background", "Done", "Failed to add image", "Bryndan Write", "Norican", "Oswald", "Sans Serif", "Serif", "No preview available", "Reset", "Crop & Rotate", "Delete", "Emoji", "Paint", "Redo", "Rotate left", "Rotate right", "Sticker", "Text", "Undo", "Type something", "The item you tried adding failed to load.", "This file was changed from original.", "Media, Links and Docs", "Media, Links, Docs and Products", "Archived", "Blocked", "Desktop Settings", "Help", "Keep me signed in", "Log out", "Make group admin", "Media Auto-Download", "Notifications", "Profile", "Profile", "Remove", "Security", "Settings", "Starred", "Theme", "Chat Wallpaper", "Attach", "Menu", "Message", "Message admin", "This audio is too large. You can send audio up to __maxSize__.", "Message __author__", "This document is too large. You can send documents up to __maxSize__.", "This file is too large. You can send files up to __maxSize__.", "This image is too large. You can send images up to __maxSize__.", "Message info", "Delivered", "Delivered to", "Played", "Played by", "Read", "Read by", "__count__ remaining", "Seen", "Seen by", "Seen", "Seen by", "Opened", "Opened by", "Couldn't find message", "The message you’re pasting is too long. Try shortening it or sending it in multiple parts.", "Message Too Long", "This video is too large. You can send videos up to __maxSize__.", "Room", "Continue in Messenger", "Create a room in Messenger and send a link to group video chat with anyone, even if they don't have WhatsApp or Messenger.", "Rooms are protected by Messenger's encryption and privacy controls, but they aren't end-to-end encrypted.", "Introducing Messenger Rooms", "Continue in Messenger to create a room.", "Create a room", "WhatsApp needs a microphone for calls and voice messages. Allow access in your computer's settings.", "Allow WhatsApp to access your microphone?", "Can’t play this Voice Message because it's no longer on your phone.", "Voice Message Unavailable", "Can’t view this contact because it's no longer on your phone.", "Contact Unavailable", "Can’t download this document because it's no longer on your phone.", "Document Unavailable", "Can’t view this GIF because it's no longer on your phone.", "GIF Unavailable", "Media Message Unavailable", "Can’t view this photo because it's no longer on your phone.", "Photo Unavailable", "Can’t download this sticker because it's no longer on your phone.", "Sticker Unavailable", "Can’t play this video because it's no longer on your phone.", "Video Unavailable", "Couldn't display message info. Try again later.", "Phone number shared via url is invalid.", "Send message to", "Log in to WhatsApp Web to share", "__contactName__ and __count__ other contact", "No contacts", "__count__ contact", "You can only send up to __count__ contact", "View all", "1 Day", "1 Hour", "1 Week", "1 Year", "8 Hours", "Always", "Mute “__name__” for…", "__A__, __B__", "__A__, and __B__", "__A__, __B__", "__A__ and __B__", "Archive Chat", "Close Window", "WhatsApp needed to restart because of a problem.", "Problem Detected", "Delete Chat", "Delete Group", "Exit Group", "Log Out", "Mark as Read", "Mark as Unread", "Call", "Always On Top", "Chat", "File", "Help", "Help Center", "Terms and Privacy Policy", "Copy", "Copy Image", "Copy Link", "Cut", "Edit", "About WhatsApp", "Hide", "Hide Others", "Preferences", "Quit WhatsApp", "Services", "Show All", "Paste", "Redo", "Search", "Select All", "Undo", "View", "Enter Full Screen", "Exit Full Screen", "Zoom In", "Actual Size", "Zoom Out", "Next Chat", "Previous Chat", "Search Chat", "Add to dictionary", "Copy", "Copy Image", "Copy Link", "Cut", "Paste", "Redo", "Select All", "Undo", "Window", "Bring All to Front", "Minimize", "Zoom", "Do Not Move", "Move to Applications", "You can move WhatsApp to Applications so it's easier to find.", "Move WhatsApp to Applications?", "Mute", "New Chat", "New Group", "Pin Chat", "Profile and About", "Unarchive Chat", "Cancel Mute", "Unpin Chat", "Cancel", "End Call", "Are you sure you want to end the current call?", "This video is unavailable. Please try again.", "New chat", "New group", "Next", "You need to create a catalog on the phone first", "No chats", "No contacts", "No Docs", "No groups", "No Links", "No Media", "No Media, Links and Docs", "No Media, Links, Docs and Products", "No products", "No result found for '__labelName__'", "No results", "No starred messages", "No thanks", "No update found", "Not spam", "Notifications", "__number__ of __totalNumber__", "+__number__", "Click to get started", "Set up your profile", "Get started", "Group items into collections to stay organized.", "Create new collection", "Click to get started", "Showcase your products", 'This chat is with the official business account of "WhatsApp". Click for more info.', 'This is the official business account of "WhatsApp".', 'This is the official business account of "WhatsApp". This account is saved with a different name in your address book.', "This official business account is not in your contact list.", "OK, got it", "Only admins can edit this group's info", "Opening link in new window...", "You will now be directed to", "Audio", "Start WhatsApp at Login", "Desktop Alerts", "Documents", "Show Previews", "Display message text in desktop alerts", "Outgoing Message Tone", "Toggles the audio tone that plays when you send a message", "Photos", "Sounds", "Videos", "Ask for total", "The seller has deleted your sent cart. Contact the seller for more information.", "Order Detail", "Your Order", "__subtotal__ (estimated)", "Qty __quantity__", "__total__ (estimated total)", "No Items", "View cart", "View sent cart", "Organizing messages", "This message can't be viewed in WhatsApp Desktop. View it on your phone instead.", "This message can't be viewed in WhatsApp Web. View it on your phone instead.", "Recent", "Already blocked", "Payment", "Not Now", "Phone battery low", "WhatsApp is open on another computer or browser. Click “Use Here” to use WhatsApp in this window.", "Phone not connected", 'The version of WhatsApp on your phone is too old. Please update to the latest version, then click "LOG IN" to continue using WhatsApp.', "The video can't be played.", "Open the link", "This video is playing in picture in picture.", "Currently playing video was revoked.", "Pin chat", "Waiting for this message. This may take a while.", "Previous", "Reply privately", "Add to cart", "Item added to cart", "Catalog", "More", "Send catalog", "Follow this link to view our catalog on WhatsApp:", "Something went wrong", "Catalog", "View catalog", "This item is out of stock.", "Details", "You hid this item. Your customers can't see it in your catalog", "Product link", "View items", "Items in this message are no longer available", "Message Business", "Can not send product before media is ready", "View", "Out of Stock", "Remove from cart", "This product or service has been removed", "This is abusive, harmful or illegal", "This appears to be a knockoff or counterfeit item", "The pictures or descriptions don't match the item", "Other", "Tell us more", "This is fraud or a scam", "This is spam", "Submit", "Couldn't report product", "Thanks for your feedback", "Reporting product", "Please select a reason.", "Follow this link to view our item on WhatsApp:", "Waiting for network", "Products", "__count__ Product", "This photo is too small. Please select a photo with height and width of at least __size__ pixel.", "Couldn't send this Voice Message.", "…", "Your Name", "This is not your username or pin. This name will be visible to your WhatsApp contacts.", "Group • __groupName__", "Read more", "Reconnect", "Remove", "Remove this group's icon?", 'Remove label "__labelName__" from __count__ item', "Remove photo", "Remove your profile photo?", "Reply", "Report", "Report and block", "Report business", "Block business and clear chat", "Report this business to WhatsApp?", "Report contact", "Block contact and clear chat", "Report this contact to WhatsApp?", "Report __contactInfo__", "Report group", "Exit group and clear chat", "Report this group to WhatsApp?", "Report product", "Report Product", "We will review the product and if it does not meet our guidelines, it will be removed.", "Your report has now been submitted.", "Report this product?", "Tell Us More", "Report spam", "This message will be forwarded to WhatsApp.", "The most recent messages from this contact will be forwarded to WhatsApp.", "The most recent messages from this group will be forwarded to WhatsApp.", "This contact will not be notified.", "This business will not be notified.", "No one in this group will be notified.", "Most recent messages in this group will be forwarded to WhatsApp.", "Most recent messages from this user will be forwarded to WhatsApp.", "Most recent messages from this business will be forwarded to WhatsApp.", "Request review", "Click to resend", "Retake", "Retry", "Retry Now", "Upload", "Retrying…", "Retrying in __duration__…", "Retrying in __number__ second…", "Delete for everyone", "Revoke invite", "This message was deleted", "Messages you selected will be deleted for everyone on the latest version of WhatsApp in this chat.", "You deleted this message", "Save", "Search…", "Search contacts", "Search Emoji", "Search GIFs via __service__", "Search groups", "Search Messages", "No chats, contacts or messages found", "No contacts found", "No groups found", "No messages found", "No results found for '__keyword__'", "Search or start new chat", "Search Participants", "Search results not yet available. Try again later.", "Search via WhatsApp sticker store", "Search Web", "Couldn't search the web. Check your computer's internet connection and try again.", "Would you like to search this on the web? This will upload the message to Google.", "Looking for chats, contacts or messages…", "Searching for images...", "Looking for messages…", "Security code notifications are no longer available for this chat.", "Learn which chats are end to end encrypted", "Get notified when your security code changes for a contact. If you have multiple devices, this setting must be enabled on each device where you want to get notifications.", "Get notified when your security code changes for a contact in an end-to-end encrypted chat. If you have multiple devices, this setting must be enabled on each device where you want to get notifications.", "Show security notifications", "Show security notifications on this computer", "WhatsApp secures your conversations with end-to-end encryption. This means your messages, calls and status updates stay between you and the people you choose. Not even WhatsApp can read or listen to them.", "Messages and calls in end-to-end encrypted chats stay between you and the people you choose. Not even WhatsApp can read or listen to them.", "Security", "See __count__ archived chat", "See Location", "See more", "__count__ selected", "Send contact", "Send contacts", "Couldn't send this message.", "Send link via WhatsApp", "send", "Feedback/Question about WhatsApp", "Email address", "Confirm email address", "Please enter a valid email address", "The email addresses do not match", "Subject", "Please upload images 10 MB or smaller", "Question about WhatsApp Business for Mac", "Question about WhatsApp for Mac", "Release to add...", "Add Screenshots", "Feedback sent", "Please enter a subject.", "Contact us", "__count__ Screenshot Maximum", "Please add more to your description", "Question about WhatsApp Business for Web", "Question about WhatsApp for Web", "Question about WhatsApp Business for Windows", "Question about WhatsApp for Windows", "To verify, send a message to __name__ and try again.", "Send product", "Send products", "The sender is not in your contact list", "Settings", "Shop", "Search in Broadcast lists", "Broadcast lists", "Unread chats", "Search in Groups", "Labels", "Search in Unread chats", "Some of your messages are still sending.", "Star all", "Star message", "No starred messages", "Starred messages", "Starting chat", "Status", "Camera", "HIDE", "SHOW", "Status update not found", "MUTED", "My Status", "No updates", "Click on a contact to view their status updates", "RECENT", "Sending reply…", "You received a status, but your version of WhatsApp doesn't support it.", "Update your status", "Upload", "View status", "View your updates", "VIEWED", "You don't have any stickers yet. Download sticker packs on your phone to get started.", "Angry", "Celebrate", "Greetings", "Happy", "Love", "Sad", "You haven't sent any stickers yet", "You haven't favorited any stickers yet", "Subject", "This chat has been closed", "Include device information? (optional)", "Technical details like your model and settings can help us answer your question.", "Tell us how we can help", "Your question has been sent to WhatsApp Support. We'll respond in a WhatsApp chat shortly.", "Contact us", "The support request form is not yet available for desktop. Use your phone to submit it.", "WhatsApp secures your messages and calls with this account.", "Learn more about chats with WhatsApp Support.", "Click to learn how messages and calls are secured.", "Security", "This chat is with the official account of WhatsApp Support. Click to learn more.", "WhatsApp Support", "Suspicious link", "__count__ suspicious link", "Open link", "This link contains unusual characters. It may be trying to appear as another site.", "Take photo", "You'll be able to use WhatsApp again in __duration__", "You're temporarily banned from WhatsApp because you sent too many messages to people who don’t have __phone__ in their address books.", "You're temporarily banned from WhatsApp because too many people blocked you.", "You're temporarily banned from WhatsApp because you created too many groups with people who don’t have __phone__ in their address books.", "You're temporarily banned from WhatsApp because you sent the same message to too many people.", "You're temporarily banned from WhatsApp because you sent too many messages to a broadcast list.", "You're temporarily banned from WhatsApp because you may have violated our terms of service.", "Terms and Privacy Policy", "Dark", "Light", "Choose theme", "System default", "Maximum number of files uploaded. __number__ file has been ignored.", "Trying to reach phone", "Turn off all desktop notifications", "Turn off all desktop notifications for:", "Type a message", "Type a reply…", "Unarchive chat", "Unblock", "Unblock __contact__?", "Unblock Contact", "unknown subject", "Unpin chat", "__count__ unread message", "Unread messages", "Could not forward this message because the file is no longer on your phone.", "Unstar all", "Unstar", "Unstar all messages?", "Unstar all", "Unstar message", "You received a message on your phone, but your version of WhatsApp Desktop doesn't support it.", "This message can't be shown on WhatsApp Desktop. Open WhatsApp on your phone to view.", "You received a message, but your version of WhatsApp doesn't support it.", "You sent a message from your phone, but your version of WhatsApp Web doesn't support it.", "You received a message on your phone, but your version of WhatsApp Web doesn't support it.", "Click here to update.", "This message can't be shown on WhatsApp Web. Open WhatsApp on your phone to view.", "Until __date__ at __time__", "Until today at __time__", "Until tomorrow at __time__", "Until __day__ at __time__", "Untitled", "Update available", "Download Microsoft Edge", "Update Google Chrome", "Update Mozilla Firefox", "Update Safari", "Updating WhatsApp", "WhatsApp is out of date. Updating now…", "Updating", "Upload photo", "__participants__ joined using your invite", "You invited __participants__", "AIM", "Birthday", "Description", "Business Name", "Mobile", "Email", "Home", "Home Fax", "ICQ", "iPhone", "Jabber", "Main", "Windows Live", "Nickname", "Pager", "Skype", "Work", "Work Fax", "Yahoo", "Version __version__", "Video call", "Switch", "__number__ video you tried adding has no content.", "Your browser doesn’t support video playback.", "__number__ video you tried adding is larger than the __maxSize__ limit.", "View business", "View Contact Card", "Expired", "This view once photo has expired. Please ask __name__ to re-send it.", "This view once video has expired. Please ask __name__ to re-send it.", "Photo expired", "Video expired", "For more privacy, your photo or video will disappear from the chat after the recipient opens it once. Remember, people can always take screenshots.", "Send photos and videos that can be viewed only once", "Photo", "Photo set to view once", "For more privacy, this photo will disappear after you close it.", "This photo is set to view once", "Video set to view once", "For more privacy, this video will disappear after you close it.", "This video is set to view once", "Video", "Opened", "View or edit catalog", "View photo", "View Shop", "Voice call", "End call", "Mute microphone", "Turn off camera", "Turn on camera", "Unmute microphone", "You can turn on your camera after __callee__ answers", "Request to switch to video call", "Calling…", "Camera not found", "camera off", "Call ended", "Call failed", "Call answered on your connected phone", "In call", "Your call will end in a few seconds because your microphone and sound output device were disconnected.", "Your call will end in a few seconds because your microphone was disconnected.", "Microphone not found", "Call not answered", "__name__'s camera and mic are off", "The other person's camera and mic are off", "__name__'s camera is off", "The other person's camera is off", "__name__'s mic is muted", "The other person's mic is muted", "Reconnecting…", "Call declined", "Your connected phone is already on a WhatsApp call", "__name__ is requesting to switch to a video call", "Requesting to switch to a video call...", "Requesting to switch to a video call...", "requesting video call...", "Ringing…", "Your call will end in a few seconds because your sound output device was disconnected.", "Your microphone is muted", "Camera", "Use System Setting", "Microphone", "Audio Device", "Default Communications Device", "You can turn off your camera after __callee__ answers", "WhatsApp didn't connect to a video or audio device. Try starting the call again. If the problem continues, you may have to restart WhatsApp or your computer.", "Call could not be started", "Please contact us with the make and model of your camera. ", "WhatsApp doesn't work with your camera yet", "You are already on a WhatsApp call", "Call cannot be placed for more than __count__ participant", "Couldn't place call: all recipients are using old versions of WhatsApp or incompatible devices.", "You can only call up to __count__ contact", "__callee__ couldn't be added to the call, because they are using an old version of WhatsApp or an incompatible device.", "__count__ others", "WhatsApp needs a camera for video calls. Connect one to your computer.", "WhatsApp could not find a connected camera", "WhatsApp needs a microphone for calls. Connect one to your computer.", "WhatsApp could not find a connected microphone", "Make sure your computer has an active Internet connection and try again.", "Computer not connected to the Internet", "Make sure your phone has an active Internet connection and try again.", "Phone not connected to the Internet", "WhatsApp needs an audio output device for calls. Connect one to your computer.", "WhatsApp could not find a connected audio device", "Call could not connect", "__callee__ is in a country where WhatsApp Calling is unavailable", "Couldn't place call: __callee__ is unable to receive WhatsApp calls.", "WhatsApp Calling is unavailable in your country.", "Couldn't place call: __callee__ is unable to receive WhatsApp calls at this time.", "Couldn't place call: __callee__ is unable to receive WhatsApp calls.", "Couldn't place call: __callee__ is not registered on WhatsApp", "Unblock this contact to call them.", "Couldn't place call: __callee__ is unable to receive WhatsApp video calls at this time.", "Your audio device is unavailable", "Your audio device or microphone is unavailable", "Your camera is unavailable or used by another app", "Allow WhatsApp to access your camera in computer's settings", "Your microphone is unavailable. Switch to another microphone or end the call and try again.", "Allow WhatsApp to access your microphone in computer's settings", "Accept", "Decline", "Ignore", "WhatsApp voice call", "WhatsApp group voice call", "WhatsApp group video call", "WhatsApp video call", "WhatsApp will use your computer's camera for video calls and taking photos. You can always change this later in your computer's settings.", "WhatsApp will use your computer's microphone for calls and voice messages. You can always change this later in your computer's settings.", "Call could not connect", "__contactName__ - WhatsApp voice call", "__contactName__ - WhatsApp video call", "Add WhatsApp Doodles", "Chat wallpaper set", "Chat wallpaper doodles added", "Chat wallpaper doodles removed", "Set Chat Wallpaper", "Wallpaper Preview", "Your security code with __contactName__ changed because there was a login on a new device of theirs.", "Your security code with __contactName__ changed because you logged into a new device.", 'Your security code with all recipients changed because there was a login on a new device of yours. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Your security code with __contactName__ changed because there was a login on a new device of yours.", 'Your security code with all participants changed because there was a login on a new device of yours. To verify a contact\'s security code, open their Contact Info page and click "Encryption"', "Your security code with __contactName__ changed because there was a login on this device.", 'Your security code with all recipients changed because there was a login on this device. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Messages are end-to-end encrypted. Click to learn more.", "Messages you send to this broadcast list are secured with end-to-end encryption. Click to learn more.", "Messages you send to this broadcast list are secured with end-to-end encryption, which means WhatsApp and third parties can't read them.", "Your security code with all recipients changed. Click to learn more.", 'WhatsApp has verified that this is the official business account of "__businessName__".', "WhatsApp has verified that this is the official business account of __businessName__. This account is saved with a different name in your contacts.", "This may be a business. WhatsApp hasn't verified their name yet.", "Download", "Add label", "Delete label", "Remove label", "Cancel", "You can't send messages to this group because you're no longer a participant.", "Can't send a message to blocked contact __contact__.", "Your security code with __contactName__ changed because there was a login or logout from one or more of their devices.", 'Your security code with all recipients changed because there was a login or logout from one or more of your devices. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Your security code with __contactName__ changed because there was a login or logout from one or more of your devices.", 'Your security code with all participants changed because there was a login or logout from one or more of your devices. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "WhatsApp secures your conversations with end-to-end encryption. This means your messages and status updates stay between you and the people you choose. Not even WhatsApp can read or listen to them.", "WhatsApp secures your conversations with end-to-end encryption. This means your messages, calls and status updates stay between you and the people you choose. Not even WhatsApp can read or listen to them.", "Muted", "Chats", "Close", "Contact info", "Messages are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Click to learn more.", "Messages to this chat are secured with end-to-end encryption. __businessName__ may use another company to store, read and respond to your messages. Click to learn more.", "Messages are end-to-end encrypted. Click to verify.", "Messages and calls are end-to-end encrypted. Click to verify.", "Contacts", "Continue", "online", "typing…", "recording audio…", "last seen __date__ at __time__", "last seen today at __time__", "last seen __date__ at __time__", "last seen yesterday at __time__", "__participant__ is typing…", "__participant__ is recording audio…", "Audio", "Contact", "__count__ page", "Document", "Photo", "Live location", "Location", "Product", "Sticker", "Video", "Voice message", "Delete", "Delete group", "Delete broadcast list", "Download “__name__”", "Encryption", "Exit", "Exit group", "Frequently Contacted", "Go", 'Your security code with all participants changed because there was a login on this device. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Group admin", "Only admins can message this group.", "__name__ changed this group's settings to allow all participants to send messages to this group.", "You changed this group's settings to allow all participants to send messages to this group.", "__name__ changed this group's settings to allow only admins to send messages to this group.", "You allowed only admins to send messages to this group", "An admin created this group", "__name__ created group “__subject__”", "__name__ created this group", "An admin created group “__subject__”", "You created group “__subject__”", "You created this group", "Created __date__ at __time__", "Created __date__ at __time__", "Created today at __time__", "Created today at __time__", "Created __day__ at __time__", "Created __day__ at __time__", "Created yesterday at __time__", "Created yesterday at __time__", "__name__ changed the group description. Click to view.", "__name__ changed the group description.", "A participant changed the group description. Click to view.", "A participant changed the group description.", "You changed the group description. Click to view.", "Group Description", "This group has ended", "Group info", "Messages are end-to-end encrypted. Click to learn more.", "Messages and calls are end-to-end encrypted. Click to learn more.", "Messages are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Click to learn more.", "Messages you send to this group are secured with end-to-end encryption, which means WhatsApp and third parties can't read them.", "Messages and calls to this group are secured with end-to-end encryption, which means WhatsApp and third parties can't read or listen to them.", "Messages and calls are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Click to learn more.", "__name__ reset this group's invite link. Click to view the new invite link.", "You reset this group's invite link. Click to view the new invite link.", "__name__ changed this group's settings to allow messages that have been forwarded many times.", "You changed this group's settings to allow messages that have been forwarded many times.", "__name__ changed this group's settings to not allow messages that have been forwarded many times.", "You changed this group's settings to not allow messages that have been forwarded many times.", "__name__ was added", "You were added", "__name__ changed their phone number to a new number.", "__name__ changed to __new_number__", "__participants__ is no longer an admin", "You're no longer an admin", "__name__ joined via an invite link", "You joined via an invite link", "__name__ left", "You left", "__participants__ is now an admin", "You're now an admin", "__name__ was removed", "You were removed", "__name__ added __participants__", "__name__ added you", "__name__ removed __participants__", "__name__ removed you", "A participant added __participants__", "A participant added you", "A participant removed __participants__", "A participant removed you", "You added __participants__", "You removed __participants__", "__name__ changed this group's settings to allow all participants to edit this group's info.", "You changed this group's settings to allow all participants to edit this group's info.", "__name__ changed this group's settings to allow only admins to edit this group's info.", "You changed this group's settings to allow only admins to edit this group's info.", "Your security code with all participants changed. Click to learn more.", "__name__ changed the subject to “__subject__”", "A participant changed the subject to “__subject__”", "You changed the subject to “__subject__”", "Invite to group", "__num__ invite sent", "Invite reset", "Groups", "Groups in common", "Messages to this chat and calls are secured with end-to-end encryption, which means that WhatsApp and third parties can’t read or listen to them. __businessName__ may use a service to store, read and respond to your messages and calls. Contact __businessName__ for information on their privacy practices.", "Learn more", "Broadcast list info", "__name__ added to the list", "__name__ removed from the list", "Logging Out", "Do not close this window", "One or more group participants are using old versions of WhatsApp that can't receive messages sent from this device. Use your phone to message them instead.", "__name__ and possibly other group participants are using an old version of WhatsApp that cannot receive messages sent from web/desktop using the multi-device beta. Use your phone to message this group.", "This message couldn’t be delivered", "__name__ is using an old version of WhatsApp that cannot receive messages sent from web/desktop using the multi-device beta. Use your phone to message them.", "Clearing or deleting entire chats will remove messages from this device only. They will not be removed from other devices.", "Changes to clearing or deleting a chat", "Messages will be removed from this device only.", "Messages will be removed from this device only.", "Your computer does not have enough space for WhatsApp to run. Please create more storage by deleting unused files from your computer, then log in again.", "The most recent messages in this group will be forwarded to WhatsApp. If you exit the group and clear the chat, it will be deleted from this device only.", "The most recent messages from this contact will be forwarded to WhatsApp. If you block this contact and clear the chat, it will be deleted from this device only.", "The most recent messages from this business will be forwarded to WhatsApp. If you block this business and clear the chat, it will be deleted from this device only.", "Pinning chats from web/desktop is not yet available on the multi-device beta", "Can't pin chat", "To verify that messages and calls with __contactName__ are end-to-end encrypted, open this screen on your phone, and follow the instructions.", "Catalog", "New group", "Mute notifications", "Unmute notifications", "New chat", "Shops", "About", "Status", "Could not deliver message", "Messages", "Missed group video call", "Missed group video call at __time__", "Missed group voice call", "Missed group voice call at __time__", "Missed video call", "Missed video call at __time__", "Missed voice call", "Missed voice call at __time__", "No", "The business account for __businessName__ has registered as a standard user account and may no longer belong to the business.", "The business account you were chatting with is now a standard account. Click for more info.", "Messages to this chat are now secured with end-to-end encryption, which means third parties can't read or listen to them.", "Messages to this chat are now secured with end-to-end encryption. Click to learn more.", "OK", "Other contacts", "__count__ participant", "To receive a payment from __senderName__, set up your payment account on your phone.", "__contactName__ canceled their payment request for __currencyAndAmount__", "You canceled your payment request to __contactName__ for __currencyAndAmount__", "__contactName__ declined your payment request for __currencyAndAmount__.", "You declined __contactName__'s payment request for __currencyAndAmount__.", "__senderName__'s payment request for __currencyAndAmount__ to you expired.", "Your payment request to __receiverName__ for __currencyAndAmount__ expired.", "You notified __receiverName__ that you are trying to send a payment.", "You can now send __receiverName__ a payment.", "Waiting for this payment message's note. This may take a while.", "Payment message • Amount unavailable", "This payment message has a note but your version of WhatsApp doesn't support viewing it.", "Requested from __receiverName__", "Requested __amount__ from You", "__senderName__ requested __amount__ from You", "__senderName__ requested __amount__ from __receiverName__", "Sent __amount__ to You", "__senderName__ sent __amount__ to You", "__senderName__ sent __amount__ to __receiverName__", "Sent to __receiverName__", "Canceled", "Completed", "Failed", "Expired", "In Review", "Pending", "Pending (expiring)", "Pending (expires __timeSpan__)", "Pending (expires in less than 1 minute)", "Processing", "__senderName__ sent you __currencyAndAmount__. Use WhatsApp on your phone to accept this transaction.", "__senderName__'s payment __relativeTime__ is complete.", "Declined", "Your payment to __receiverName__ __relativeTime__ couldn't complete.", "Your payment to __receiverName__ __relativeTime__ couldn't complete.", "Your payment to __receiverName__  was refunded __relativeTime__.", "on Friday", "on Monday", "on Saturday", "on __date__", "on Sunday", "on Thursday", "on Tuesday", "on Wednesday", "__name__ changed this group's icon", "You changed this group's icon", "__name__ deleted this group's icon", "You deleted this group's icon", "Preview", "OFFICIAL ANNOUNCEMENTS", "Recent chats", "Recipients", "Your security code with __contactName__ changed because there was a logout from one of their devices.", 'Your security code with all recipients changed because there was a logout from one of your devices. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Your security code with __contactName__ changed because there was a logout from one of your devices.", 'Your security code with all participants changed because there was a logout from one of your devices. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Reset link", "Web Search", "Your security code with __contactName__ changed. Click to learn more.", "Your security code with __name__ changed because there was a registration on a new device of theirs.", 'Your security code with all recipients changed because there was a registration on a new device of yours. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Your security code with __name__ changed because there was a registration on a new device of yours.", 'Your security code with all participants changed because there was a registration on a new device of yours. To verify a contact\'s security code, open their Contact Info page and click "Encryption".', "Select messages", "Help Center", "Share", "This business uses WhatsApp Business, which allows them to add their opening hours, address, website and catalog of products or services.", 'WhatsApp has verified that this is the official business account of "__businessName__". This business uses WhatsApp Business, which allows them to add their opening hours, address, website and catalog of products or services.', "Learn about getting the app", "About WhatsApp Business", "If you’re a business, the free WhatsApp Business app can help.", "If you’re a business, you can benefit from switching to the free WhatsApp Business app. It has tools to connect with customers and manage messages.", "Scan this code to get the WhatsApp Business App. Or, you can install it from the App Store or Google Play Store.", "WhatsApp Business app", "We are updating our WhatsApp Business Terms of Service. Agree to our new Terms on your phone to continue using WhatsApp Business.", 'We are updating our WhatsApp Business Terms of Service. Agree to our new Terms on your phone to continue using WhatsApp Business. If you have accepted the Terms of Service, click "LOG IN" to continue using WhatsApp Business.', "Starred Messages", "About", 'This chat is with the verified business account for "__businessName__". Click for more info.', 'WhatsApp has made changes to the business account types. "Verified Business" will now be labeled as "Official Business Account".', 'This chat is with the business account for "__businessName__". Click for more info.', 'WhatsApp has made changes to the business account types. "Confirmed Business" will now be labeled as "Business Account".', "This chat may be with a business account. Click for more info.", "__businessName__ may be a business account, but WhatsApp hasn’t verified their name yet.", 'The business account you’re chatting with is now verified as "__businessName__". Click for more info.', 'WhatsApp has made changes to the business account types. "Verified Business" will now be labeled as "Official Business Account".', "This business account has now registered as a standard account. Click for more info.", "This account was previously a business account and has now registered as a standard account. It may no longer belong to the business.", 'The business account you’re chatting with is no longer verified as "__businessName__". Click for more info.', 'WhatsApp is no longer able to verify that this is the account for "__businessName__".', 'The business account you’re chatting with is no longer verified as "__businessName__". Click for more info.', 'WhatsApp is no longer able to verify that this is the account for "__businessName__".', 'The business account you’re chatting with is no longer confirmed as "__businessName__". Click for more info.', 'WhatsApp is no longer able to confirm that this is the account for "__businessName__".', "This account has registered as a business account. Click for more info.", 'This account has registered as a business account and WhatsApp has confirmed that this is the account for "__businessName__".', "This chat may be with a business account. Click for more info.", "__businessName__ registered as a business account, but WhatsApp hasn’t verified their name yet.", 'The business account you\'re chatting with belongs to "__businessName__".', 'WhatsApp has made changes to the business account types. This "Confirmed Business" will now be labeled as "Business Account".', "WhatsApp is updating our Terms and Privacy Policy to reflect new features and comply with the new European Union data protection laws. Open WhatsApp on your phone to read our Terms and Privacy Policy and learn more about the choices you have.", "WhatsApp is updating our Terms and Privacy Policy to reflect new features and comply with the new European Union data protection laws. Open WhatsApp on your phone to read our Terms and Privacy Policy and learn more about the choices you have.", 'WhatsApp is updating our Terms and Privacy Policy to reflect new features and comply with the new European Union data protection laws. Open WhatsApp on your phone to read our Terms and Privacy Policy and learn more about the choices you have. If you have accepted the Terms and Privacy Policy, click "LOG IN" to continue using WhatsApp.', "__date__ at __time__", "today", "today at __time__", "Try Again", "There is already another active WhatsApp Web tab in this browser. WhatsApp Web does not support multiple active tabs in this browser. Please use the existing tab or close it and refresh this tab.", "Refresh", "The business account you're chatting with may belong to __businessName__. WhatsApp hasn't verified their name yet.", "The business account you're chatting with is now unverified. Click for more info.", "To help you connect with businesses, we have verified that the business account you're chatting with belongs to __businessName__.", "This chat is with a verified business account. Click for more info.", "The business account you're chatting with may belong to __businessName__. WhatsApp hasn't verified their name yet.", "This chat is with an unverified business account. Click for more info.", "To help you connect with businesses, we have verified that the business account you're chatting with belongs to __businessName__.", "The business account you're chatting with is now verified. Click for more info.", "Verify", "Download code", "Release to verify…", "The image does not contain a valid identity verification QR code.", 'You opened "Verify security code" for the wrong phone number. Open it for the correct number to verify __contact__.', '__contact__ opened "Verify security code" for the wrong phone number. Ask __contact__ to open it for your phone number.', "Scan the code on your contact's phone, or ask them to scan your code, to verify your messages and calls to them are end-to-end encrypted. You can also compare the number above to verify. This is optional.", "Couldn't display security code. You can verify using the QR code instead.", "Verify Security Code", "Upload Code", "Turn Off Camera", "Please try increasing the brightness or reducing light reflection.", "Scan Code", "WHATSAPP VIDEO CALL", "WHATSAPP VOICE CALL", "Yes", "yesterday", "yesterday at __time__", "You", "You created a broadcast list with __count__ recipient", "You", "To use WhatsApp, update __chrome_update__ or use __firefox_homepage__, __safari_homepage__, __edge_homepage__ or __opera_homepage__.", "WhatsApp works with Google Chrome __min_version_chrome__+", "WhatsApp Commerce Policies", "To use WhatsApp, update __edge_homepage__ or use __chrome_homepage__, __firefox_homepage__ or __opera_homepage__.", "WhatsApp works with Microsoft Edge __min_version_edge__+", "To use WhatsApp, update __firefox_update__ or use __chrome_homepage__, __safari_homepage__, __edge_homepage__ or __opera_homepage__.", "WhatsApp works with Mozilla Firefox __min_version_firefox__+", "WhatsApp group invite", "WhatsApp", "To use WhatsApp, update __safari_update__ or use __chrome_homepage__, __firefox_homepage__ or __opera_homepage__.", "To use all of WhatsApp's features like photo capturing and Voice Message recording, we recommend using __chrome_homepage__, __firefox_homepage__ or __opera_homepage__.", "Using Safari", "WhatsApp works with Safari __min_version_safari__+", "WhatsApp", "Send and receive WhatsApp messages right from your computer.", "WhatsApp is open in another window. Click “Use Here” to use WhatsApp in this window.", "Quickly send and receive WhatsApp messages right from your computer.", "We recommend using WhatsApp with one of the following browsers:", "WhatsApp also supports:", "You can't add more than __count__ labels", "Manage shop on Commerce Manager", "Go to Commerce Manager to update your Facebook shop.", "This business worked with other companies to manage this message.", "This message was secured with end-to-end encryption.", "This business used a secure service from the Facebook company to manage this message.", "This business works with other companies to manage this chat. Click to learn more.", "This business uses a secure service from the Facebook company to manage this chat. Click to learn more.", "You are always in control of the conversation. You can stop chatting with this business or block them at any time.", "WhatsApp secures your messages and calls with this business.", "The Facebook company will never show this chat in anyone’s personal Facebook account.", "For details about how this chat is secured, click Learn More.", "This business is now working with other companies to manage this chat. Click to learn more.", "This business is now using a secure service from the Facebook company to manage this chat. Click to learn more.", "Security", "WhatsApp secures your conversations with end-to-end encryption.", "Your messages and calls stay between you and the people and businesses you choose. Not even WhatsApp can read or listen to them.", "Your messages stay between you and the people and businesses you choose. Not even WhatsApp can read or listen to them.", "Business Account", "Your security code with __contactName__ changed", "This happened likely because __contactName__ or you recently changed which devices you use WhatsApp on. Please verify the security code again.", "Failed to update the setting.", "Group participants have changed. Click to view", "Can't join group", "Joining group invites from Web is not yet available on the multi-device beta. Use your phone instead.", "Joining group invites from Desktop is not yet available on the multi-device beta. Use your phone instead.", "Can't view group invite details", "Viewing and revoking group invites from Web is not yet available on the multi-device beta. Use your phone instead.", "Viewing and revoking group invites from Desktop is not yet available on the multi-device beta. Use your phone instead."], {
+                        41: "Changing __count__ labels",
+                        42: "Some labels could not be updated",
+                        43: "__count__ labels changed",
+                        146: "Couldn't delete __count__ messages because the messages may have expired",
+                        147: "Couldn't delete messages",
+                        148: "__count__ messages deleted",
+                        149: "Deleting messages",
+                        150: "Couldn't star messages because the messages may have expired",
+                        151: "Couldn't star messages",
+                        152: "__count__ messages starred",
+                        153: "Starring messages",
+                        155: "Couldn't unstar messages because the messages may have expired",
+                        156: "Couldn't unstar messages",
+                        157: "__count__ messages unstarred",
+                        159: "Unstarring messages",
+                        163: "Couldn't add __participantNames__.",
+                        165: "You added __participantNames__.",
+                        166: "Adding __participantNames__.",
+                        167: "Removing __participantNames__ as admins failed.",
+                        170: "__participantNames__ are no longer group admins.",
+                        171: "Removing __participantNames__ as group admins.",
+                        172: "They are no longer in this group.",
+                        173: "You can't add these participants because they left the group recently.",
+                        176: "Couldn't make __participantNames__ admins.",
+                        178: "__participantNames__ are now group admins.",
+                        179: "Making __participantNames__ group admins.",
+                        180: "Couldn't remove __participantNames__.",
+                        183: "You removed __participantNames__.",
+                        184: "Removing __participantNames__.",
+                        217: "Add participants",
+                        245: "__count__ Pages",
+                        249: "__number__ audio files you tried adding have no content.",
+                        254: "__number__ audio files you tried adding are larger than the __maxSize__ limit.",
+                        415: "__count__ messages couldn't be forwarded because __contact__ is on a version of WhatsApp that doesn't support them.",
+                        417: "__count__ messages couldn't be forwarded because the file is missing.",
+                        418: "__count__ messages couldn't be forwarded because the file is missing or __contact__ is on a version of WhatsApp that doesn't support them.",
+                        449: "__updated__ Items Updated",
+                        544: "__count__ items",
+                        564: "Send __count__ contacts to “__chat__”?",
+                        565: "Send __count__ contacts to “__chat__”?",
+                        566: "Send __count__ contacts to “__chat__”?",
+                        577: "Contact Cards",
+                        585: "__number__ contacts that you tried to add have no content.",
+                        586: "The contacts that you tried to add are larger than the __maxSize__ limit.",
+                        613: "Deleting a label removes it from all messages, contacts, and from the list of labels. Are you sure you want to delete these labels?",
+                        614: "Delete messages",
+                        615: "Delete messages?",
+                        629: "__name__ is using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ days. Click to learn more.",
+                        630: "__name__ is using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ hours. Click to learn more.",
+                        631: "__name__ is using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ minutes. Click to learn more.",
+                        632: "__name__ is using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ seconds. Click to learn more.",
+                        633: "You are using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ days. Click to learn more.",
+                        634: "You are using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ hours. Click to learn more.",
+                        635: "You are using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ minutes. Click to learn more.",
+                        636: "You are using disappearing mode for all new chats. Messages in this chat will disappear for everyone after __number__ seconds. Click to learn more.",
+                        640: "__count__ Docs",
+                        642: "__number__ documents you tried adding have no content.",
+                        643: "__number__ documents you tried adding are larger than the __maxSize__ limit.",
+                        675: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ days.",
+                        676: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ hours.",
+                        677: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ minutes.",
+                        678: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ seconds.",
+                        680: "You turned on disappearing messages. New messages will disappear from this chat after __number__ days.",
+                        681: "You turned on disappearing messages. New messages will disappear from this chat after __number__ hours.",
+                        682: "You turned on disappearing messages. New messages will disappear from this chat after __number__ minutes.",
+                        683: "You turned on disappearing messages. New messages will disappear from this chat after __number__ seconds.",
+                        685: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ days.",
+                        686: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ hours.",
+                        687: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ minutes.",
+                        688: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ seconds.",
+                        689: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ years.",
+                        691: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ days. Click to change.",
+                        692: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ hours. Click to change.",
+                        693: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ minutes. Click to change.",
+                        694: "Disappearing messages were turned on. New messages will disappear from this chat after __number__ seconds. Click to change.",
+                        696: "You turned on disappearing messages. New messages will disappear from this chat after __number__ days. Click to change.",
+                        697: "You turned on disappearing messages. New messages will disappear from this chat after __number__ hours. Click to change.",
+                        698: "You turned on disappearing messages. New messages will disappear from this chat after __number__ minutes. Click to change.",
+                        699: "You turned on disappearing messages. New messages will disappear from this chat after __number__ seconds. Click to change.",
+                        701: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ days. Click to change.",
+                        702: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ hours. Click to change.",
+                        703: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ minutes. Click to change.",
+                        704: "__name__ turned on disappearing messages. New messages will disappear from this chat after __number__ seconds. Click to change.",
+                        707: "New messages will disappear from this chat after __number__ days.",
+                        708: "New messages will disappear from this chat after __number__ hours.",
+                        709: "New messages will disappear from this chat after __number__ minutes.",
+                        710: "New messages will disappear from this chat after __number__ seconds.",
+                        714: "This message will disappear from this chat after __number__ days.",
+                        715: "This message will disappear from this chat after __number__ hours.",
+                        716: "This message will disappear from this chat after __number__ minutes.",
+                        717: "This message will disappear from this chat after __number__ seconds.",
+                        729: "__number__ days",
+                        730: "__number__ hours",
+                        731: "__number__ minutes",
+                        732: "__number__ seconds",
+                        742: "Wait until the messages finish sending and displays a checkmark before forwarding.",
+                        752: "__number__ files you tried adding have no content.",
+                        753: "__count__ files failed to be downloaded because they are no longer on your phone.",
+                        754: "__number__ files could not be added.",
+                        755: "__number__ files you tried adding are not supported.",
+                        756: "__number__ files you tried adding are larger than the __maxSize__ limit.",
+                        763: "You can only share with up to __count__ chats",
+                        764: "Forwarded many times. You can only share with up to __count__ chats.",
+                        765: "Messages forwarded many times can only be shared with up to __count__ chats at a time.",
+                        766: "Forward messages",
+                        767: "Forward messages to",
+                        769: "Forwarded __count__ times",
+                        774: "Found contact cards for this number. View contact cards?",
+                        816: "__count__ contacts",
+                        821: "__count__ participants",
+                        845: "__count__ more",
+                        850: "Couldn't add __participant__. You can invite them privately to join this group.",
+                        886: "__unreadCount__ New Messages",
+                        889: "__number__ images you tried adding have no content.",
+                        897: "__number__ images you tried adding are larger than the __maxSize__ limit.",
+                        915: "Expires in __number__ days",
+                        925: "__count__ items",
+                        941: "__count__ Links",
+                        942: "Accurate to __accuracy__ M",
+                        943: "__count__ people",
+                        950: "Live until __time__",
+                        957: "__hours__h left",
+                        959: "__minutes__m left",
+                        960: "__sharers__ are sharing live location",
+                        962: "__count__ people are sharing live location",
+                        965: "You and __count__ others are sharing live location",
+                        970: "Updated __hours__h ago",
+                        973: "Updated __minutes__m ago",
+                        1061: "__count__ remaining",
+                        1100: "__contactName__ and __count__ other contacts",
+                        1102: "__count__ contacts",
+                        1103: "You can only send up to __count__ contacts",
+                        1301: "__count__ Products",
+                        1302: "This photo is too small. Please select a photo with height and width of at least __size__ pixels.",
+                        1312: 'Remove label "__labelName__" from __count__ items',
+                        1352: "Retrying in __number__ seconds…",
+                        1389: "See __count__ archived chats",
+                        1392: "__count__ selected",
+                        1412: "__count__ Screenshots Maximum",
+                        1432: "Star messages",
+                        1477: "__count__ suspicious links",
+                        1493: "Maximum number of files uploaded. __number__ files have been ignored.",
+                        1505: "__count__ unread messages",
+                        1512: "Unstar messages",
+                        1534: "__participants__ joined using your invite",
+                        1535: "You invited __participants__",
+                        1558: "__number__ videos you tried adding have no content.",
+                        1560: "__number__ videos you tried adding are larger than the __maxSize__ limit.",
+                        1562: "View Contact Cards",
+                        1628: "Call cannot be placed for more than __count__ participants",
+                        1630: "You can only call up to __count__ contacts",
+                        1631: "__callee__ couldn't be added to the call, because they are using an old version of WhatsApp or an incompatible device.",
+                        1632: "__count__ others",
+                        1724: "__count__ pages",
+                        1787: "__participants__ are no longer admins",
+                        1793: "__participants__ are now admins",
+                        1816: "__num__ invites sent",
+                        1823: "__name__ were added to the list",
+                        1824: "__name__ were removed from the list",
+                        1853: "Missed group video call at __time__",
+                        1855: "Missed group voice call at __time__",
+                        1857: "Missed video call at __time__",
+                        1859: "Missed voice call at __time__",
+                        1867: "__count__ participants",
+                        1869: "__contactName__ canceled their payment request for __currencyAndAmount__",
+                        1870: "You canceled your payment request to __contactName__ for __currencyAndAmount__",
+                        1871: "__contactName__ declined your payment request for __currencyAndAmount__.",
+                        1872: "You declined __contactName__'s payment request for __currencyAndAmount__.",
+                        1873: "__senderName__'s payment request for __currencyAndAmount__ to you expired.",
+                        1874: "Your payment request to __receiverName__ for __currencyAndAmount__ expired.",
+                        1881: "Requested __amount__ from You",
+                        1882: "__senderName__ requested __amount__ from You",
+                        1883: "__senderName__ requested __amount__ from __receiverName__",
+                        1884: "Sent __amount__ to You",
+                        1885: "__senderName__ sent __amount__ to You",
+                        1886: "__senderName__ sent __amount__ to __receiverName__",
+                        1898: "__senderName__ sent you __currencyAndAmount__. Use WhatsApp on your phone to accept this transaction.",
+                        2004: "You created a broadcast list with __count__ recipients"
                     }
                 ]
             },
@@ -21038,39 +21058,35 @@
 
                 function y(e, t) {
                     var n = this;
-                    this._flags = 0, this._value = void 0, this._onFulfilled = void 0, this._onRejected = void 0, this._context = void 0, this._resolveLevel = 0, this._control = void 0, this.x = void 0, this._thenableParent = null, this._parent = void 0, this._child = void 0, this._children = void 0, this.control = void 0, t && (this._context = t.this), "function" == typeof e && (this._onFulfilled = e, this._flags |= 4, this._flags |= 256, $(e, this._context, (function(e) {
-                        return j(n, 0, !0, !1, e)
+                    this._flags = 0, this._value = void 0, this._onFulfilled = void 0, this._onRejected = void 0, this._context = void 0, this._resolveLevel = 0, this._control = void 0, this.x = void 0, this._thenableParent = null, this._parent = void 0, this._child = void 0, this._children = void 0, this.control = void 0, t && (this._context = t.this), "function" == typeof e && (this._onFulfilled = e, this._flags |= 4, this._flags |= 256, H(e, this._context, (function(e) {
+                        return U(n, 0, !0, !1, e)
                     }), (function(e) {
-                        return j(n, 0, !1, !1, e)
+                        return U(n, 0, !1, !1, e)
                     })))
                 }
 
                 function w(e) {
                     if (void 0 === e) return i;
-                    if (W(e)) return e;
+                    if (P(e)) return e;
                     var t = new y;
-                    return j(t, 0, !0, !1, e), X(t, b), t
+                    return U(t, 0, !0, !1, e), Z(t, b), t
                 }
 
                 function E(e) {
                     var t = new y;
-                    return t._value = e, X(t, 514), m.push(t), t
+                    return t._value = e, Z(t, 514), m.push(t), t
                 }
 
                 function A(e) {
                     var t = arguments.length - 1;
                     if (0 === t) return this.then(void 0, e);
-                    for (var n = new Array(t), r = 0; r < t; r++) n[r] = V(arguments[r]);
-                    var i = q(n, arguments[t]),
-                        a = U(this, void 0, i);
-                    return a._onRejected && X(a, v), a
+                    for (var n = new Array(t), r = 0; r < t; r++) n[r] = B(arguments[r]);
+                    var i = V(n, arguments[t]),
+                        a = W(this, void 0, i);
+                    return a._onRejected && Z(a, v), a
                 }
 
-                function S(e, t) {
-                    this.errors = e || [], this.message = t || `${this.errors.length} errors`
-                }
-
-                function T(e) {
+                function S(e) {
                     var t = "";
                     if (e._flags & v) t = (e._onFulfilled || e._onRejected).call(e._context, f);
                     else if (e._control) t = `.addRawControl(${e._control.name}, ${e._control.foo})`;
@@ -21085,63 +21101,63 @@
                     return t
                 }
 
-                function C(e) {
+                function T(e) {
                     this.message = e || "StackPromise timed out"
                 }
 
-                function k(e, t, n, r) {
+                function C(e, t, n, r) {
                     this.name = e, this.foo = t, this.lightning = !!n, this.canRunMultipleTimes = !!r
                 }
 
-                function O(e, t) {
+                function k(e, t) {
                     return function() {
                         for (var n, r, i = e._parent; i && !(3 & i._flags) && !(i._flags & _); i = i._parent) !i._control || i._control.name !== t || 4 & i._flags || (n = i);
                         if (!n) return y.NO_ACTIVE_CONTROL;
-                        if (n._control.canRunMultipleTimes || X(n, 4), arguments.length > 0) {
+                        if (n._control.canRunMultipleTimes || Z(n, 4), arguments.length > 0) {
                             r = new Array(arguments.length);
                             for (var a = 0; a < arguments.length; a++) r[a] = arguments[a]
                         }
                         return n._control.foo.call(n._context, (function(e) {
-                            return F(n, n._resolveLevel, !0, !1, e)
+                            return j(n, n._resolveLevel, !0, !1, e)
                         }), (function(e) {
-                            return F(n, n._resolveLevel, !1, !1, e)
+                            return j(n, n._resolveLevel, !1, !1, e)
                         }), n._parent, r)
                     }
                 }
 
-                function x(e) {
+                function O(e) {
                     this.message = e, this.stack = new Error(e || this.name).stack
                 }
                 y.resolve = w, y.reject = E, y.prototype.then = function(e, t) {
                     "function" != typeof e && (e = void 0), "function" != typeof t && (t = void 0);
                     var n = new y;
-                    n._onFulfilled = e, n._onRejected = t, n._context = this._context, this._flags & g && X(n, g);
+                    n._onFulfilled = e, n._onRejected = t, n._context = this._context, this._flags & g && Z(n, g);
                     var r = 3 & this._flags;
-                    return 0 === r ? M(this, n) : (X(this, 8), (1 === r ? e : t) ? (n._parent = this, u.push(n), L()) : (n._parent = this, X(n, r), n._value = this._value, 2 === r && m.push(n))), n
+                    return 0 === r ? I(this, n) : (Z(this, 8), (1 === r ? e : t) ? (n._parent = this, u.push(n), N()) : (n._parent = this, Z(n, r), n._value = this._value, 2 === r && m.push(n))), n
                 }, y.prototype.catch = A, y.prototype.catchType = A, y.prototype.catchTypes = A, y.prototype.catchTypes3 = A, y.prototype.catchEqualTo = A, y.prototype.catchConditional = A, y.prototype.end = function(e) {
                     var t = this.then();
-                    if (X(t, _), t.control = {}, t._context = void 0, e) {
+                    if (Z(t, _), t.control = {}, t._context = void 0, e) {
                         var n = e.controls;
                         if (n)
                             for (var r = 0; r < n.length; r++) {
                                 var i = n[r];
-                                t.control[i] = O(t, i)
+                                t.control[i] = k(t, i)
                             }
                         return t
                     }
                 }, y.prototype.endWithControls = function() {
                     var e = this.then();
-                    X(e, _), e.control = {}, e._context = void 0;
+                    Z(e, _), e.control = {}, e._context = void 0;
                     for (var t = 0; t < arguments.length; t++) {
                         var n = arguments[t];
-                        e.control[n] = O(e, n)
+                        e.control[n] = k(e, n)
                     }
                     return e
                 }, y.all = function(e) {
                     return new y((function(t, n) {
                         var r = e.length;
                         if (0 !== r)
-                            for (var i = new Array(e.length), a = 0; a < e.length; a++) i[a] = U(e[a], o, n);
+                            for (var i = new Array(e.length), a = 0; a < e.length; a++) i[a] = W(e[a], o, n);
                         else t([]);
 
                         function o(e) {
@@ -21160,7 +21176,7 @@
                         var n = Array.from(e),
                             r = n.length;
                         if (0 !== r)
-                            for (var i = new Array(n.length), a = u(!1), o = u(!0), s = 0; s < n.length; s++) i[s] = U(n[s], a, o);
+                            for (var i = new Array(n.length), a = u(!1), o = u(!0), s = 0; s < n.length; s++) i[s] = W(n[s], a, o);
                         else t([]);
 
                         function u(e) {
@@ -21184,8 +21200,8 @@
                         }
                     }))
                 }, y.race = function(e) {
-                    var t = P(e);
-                    if (W(t)) {
+                    var t = R(e);
+                    if (P(t)) {
                         var n = t.then((function(e) {
                             return y.race(e)
                         }));
@@ -21193,24 +21209,20 @@
                     }
                     return new y((function(e, n) {
                         for (var r = 0; r < t.length; r++) {
-                            var i = P(t[r]);
-                            if (!W(i) || 3 & i._flags)
+                            var i = R(t[r]);
+                            if (!P(i) || 3 & i._flags)
                                 for (e(i), r++; r < t.length; r++) {
                                     var a = t[r];
-                                    W(a) && X(a, 8)
+                                    P(a) && Z(a, 8)
                                 } else i.then(e, n)
                         }
                     }))
-                }, S.prototype = Object.create(Error.prototype, {
-                    name: {
-                        value: "AggregateError"
-                    }
-                }), y.AggregateError = S, y.onPossiblyUnhandledRejection = function(e, t) {
+                }, y.onPossiblyUnhandledRejection = function(e, t) {
                     console.error(`StackPromise did not catch ${e}`, t, e)
                 }, y.prototype.toString = function() {
                     for (var e, t = [], n = this, r = !1; n; n = n._parent) {
                         e = n, !r && 3 & n._flags && (r = !0, n._flags & b || (1 & n._flags ? t.push(`[resolved value: ${n._value}]`) : t.push(`[rejected reason: ${n._value}]`)));
-                        var i = T(n);
+                        var i = S(n);
                         1024 & n._flags && (i = `~${i}`), t.push(i)
                     }
                     return t.reverse(), 768 & e._flags || (t[0] = `[Promise]${t[0]}`), t.join("\n")
@@ -21222,14 +21234,14 @@
                         return r === f ? `.timeout(${e}, ${t})` : (clearTimeout(n), l)
                     }
                     var i = this.then(r, r);
-                    return X(i, 160), n = setTimeout((function(e, t) {
-                        3 & e._flags || F(e, 0, !1, !1, t instanceof Error ? t : new C(t))
+                    return Z(i, 160), n = setTimeout((function(e, t) {
+                        3 & e._flags || j(e, 0, !1, !1, t instanceof Error ? t : new T(t))
                     }), e, i, t), i
-                }, C.prototype = Object.create(Error.prototype, {
+                }, T.prototype = Object.create(Error.prototype, {
                     name: {
                         value: "TimeoutError"
                     }
-                }), y.TimeoutError = C, y.prototype.isFulfilled = function() {
+                }), y.TimeoutError = T, y.prototype.isFulfilled = function() {
                     return !!(1 & this._flags)
                 }, y.prototype.isRejected = function() {
                     return !!(2 & this._flags)
@@ -21247,33 +21259,24 @@
                     }
                     e = w(e);
                     var n = this.then(t, t);
-                    return X(n, v), n
+                    return Z(n, v), n
                 }, y.prototype.finally = function(e) {
                     function t(t) {
                         return t === f ? `.finally(${e})` : (e.call(this, t), l)
                     }
-                    return X(this.then(t, t), v)
+                    return Z(this.then(t, t), v)
                 }, y.prototype.tap = function(e) {
-                    return X("function" != typeof e ? this.then(I) : this.then((function(t) {
+                    return Z("function" != typeof e ? this.then(L) : this.then((function(t) {
                         return t === f ? `.tap(${e})` : (e.call(this, t), l)
                     })), v)
-                }, y.prototype.spread = function(e) {
-                    var t = this.then((function(t) {
-                        return t === f ? `.spread(${e})` : e.apply(this, t)
-                    }));
-                    return X(t, v), t
-                }, y.prototype.throw = function(e) {
-                    return this.then((function() {
-                        return E(e)
-                    }))
-                }, y.Control = k, y.NO_ACTIVE_CONTROL = new Error("No active control was found."), y.prototype.addControl = function(e) {
-                    if (!(e instanceof k)) throw new Error(`addControl must be given Control, but got ${e}`);
-                    var t = this.then(e.lightning ? void 0 : I);
+                }, y.Control = C, y.NO_ACTIVE_CONTROL = new Error("No active control was found."), y.prototype.addControl = function(e) {
+                    if (!(e instanceof C)) throw new Error(`addControl must be given Control, but got ${e}`);
+                    var t = this.then(e.lightning ? void 0 : L);
                     return t._control = e, t
                 }, y.prototype.addRawControl = function(e, t, n, r) {
-                    return this.addControl(new k(e, t, n, r))
+                    return this.addControl(new C(e, t, n, r))
                 }, y.prototype.addResolveControl = function(e, t, n, r) {
-                    return this.addControl(new k(e, (function(e, n, r, i) {
+                    return this.addControl(new C(e, (function(e, n, r, i) {
                         try {
                             e(t.apply(this, i))
                         } catch (e) {
@@ -21281,46 +21284,46 @@
                         }
                     }), n, r))
                 }, y.prototype.addRejectControl = function(e, t, n, r) {
-                    return this.addControl(new k(e, (function(e, n, r, i) {
+                    return this.addControl(new C(e, (function(e, n, r, i) {
                         try {
                             n(t.apply(this, i))
                         } catch (e) {
                             n(e)
                         }
                     }), n, r))
-                }, x.prototype = Object.create(Error.prototype, {
+                }, O.prototype = Object.create(Error.prototype, {
                     name: {
                         value: "CancellationError"
                     }
-                }), y.CancellationError = x;
-                var D, N = new k("cancel", (function(e, t, n, r) {
-                    t(new x(r && r[0]))
+                }), y.CancellationError = O;
+                var x, D = new C("cancel", (function(e, t, n, r) {
+                    t(new O(r && r[0]))
                 }), !1, !1);
 
-                function L() {
+                function N() {
                     var e, t;
-                    0 === o && (u.length || m.length) && (o = 1, D || (t = 0, D = "undefined" == typeof MutationObserver || self && self.navigator && self.navigator.standalone ? a ? function() {
-                        a.resolve().then(H)
+                    0 === o && (u.length || m.length) && (o = 1, x || (t = 0, x = "undefined" == typeof MutationObserver || self && self.navigator && self.navigator.standalone ? a ? function() {
+                        a.resolve().then(z)
                     } : "function" == typeof setImmediate ? function() {
-                        setImmediate(H)
+                        setImmediate(z)
                     } : function() {
-                        setTimeout(H, 0)
-                    } : (e = document.createTextNode(""), new MutationObserver(H).observe(e, {
+                        setTimeout(z, 0)
+                    } : (e = document.createTextNode(""), new MutationObserver(z).observe(e, {
                         characterData: !0
                     }), function() {
                         e.data = t = 1 - t
-                    })), D())
+                    })), x())
                 }
 
-                function I(e) {
+                function L(e) {
                     return e === f ? ".tap()" : l
                 }
 
-                function M(e, t) {
-                    X(e, 8), t._parent = e, e._children ? e._children.push(t) : e._child ? (e._children = [e._child, t], e._child = void 0) : e._child = t
+                function I(e, t) {
+                    Z(e, 8), t._parent = e, e._children ? e._children.push(t) : e._child ? (e._children = [e._child, t], e._child = void 0) : e._child = t
                 }
 
-                function R(e) {
+                function M(e) {
                     if (e && ("object" == typeof e || "function" == typeof e)) {
                         var t;
                         try {
@@ -21332,9 +21335,9 @@
                     }
                 }
 
-                function P(e) {
-                    if (!e || W(e)) return e;
-                    var t = R(e);
+                function R(e) {
+                    if (!e || P(e)) return e;
+                    var t = M(e);
                     if (t === h) return E(p);
                     if (t) {
                         var n = new y((function(n, r) {
@@ -21345,19 +21348,19 @@
                     return e
                 }
 
-                function W(e) {
+                function P(e) {
                     return e instanceof y
                 }
 
-                function U(e, t, n) {
-                    var r, i, a, o, s = W(e = P(e)),
+                function W(e, t, n) {
+                    var r, i, a, o, s = P(e = R(e)),
                         u = !1;
                     if (s) {
-                        if (!(3 & e._flags)) return X(e.then(t, n), 32);
-                        X(e, 8), u = !!(e._flags & g), a = e._context, r = 1 & e._flags ? t : n, i = e._value
+                        if (!(3 & e._flags)) return Z(e.then(t, n), 32);
+                        Z(e, 8), u = !!(e._flags & g), a = e._context, r = 1 & e._flags ? t : n, i = e._value
                     } else r = t, i = e;
                     if (!r) return w(e).then();
-                    if ((i = Z(r, a, i, !0)) === h) o = E(p);
+                    if ((i = K(r, a, i, !0)) === h) o = E(p);
                     else {
                         if (i === d) return w(e).then(t, n);
                         if (i === l) return s ? e.then() : w(e);
@@ -21366,30 +21369,30 @@
                     return u && (o = o.cancellable()), void 0 !== a && ((o = o.then())._context = a), o
                 }
 
-                function j(e, t, n, r, i) {
+                function U(e, t, n, r, i) {
                     if (t === e._resolveLevel) {
                         var a = ++e._resolveLevel;
-                        if (X(e, 4), e._thenableParent = null, n)
-                            if (i === e) e._parent = void 0, G(e, !1, r, new TypeError("promise resolved to itself"));
-                            else if (W(i)) {
+                        if (Z(e, 4), e._thenableParent = null, n)
+                            if (i === e) e._parent = void 0, q(e, !1, r, new TypeError("promise resolved to itself"));
+                            else if (P(i)) {
                             var o = 3 & i._flags;
-                            0 === o ? M(i, e) : (e._parent = i, X(e, 1024), X(i, 8), G(e, 1 === o, r, i._value))
+                            0 === o ? I(i, e) : (e._parent = i, Z(e, 1024), Z(i, 8), q(e, 1 === o, r, i._value))
                         } else {
-                            var s = R(i);
-                            s === h ? (e._parent = void 0, G(e, !1, r, p)) : s ? (e._parent = void 0, e._thenableParent = i, $(s, i, (function(t) {
-                                return j(e, a, !0, !1, t)
+                            var s = M(i);
+                            s === h ? (e._parent = void 0, q(e, !1, r, p)) : s ? (e._parent = void 0, e._thenableParent = i, H(s, i, (function(t) {
+                                return U(e, a, !0, !1, t)
                             }), (function(t) {
-                                return j(e, a, !1, !1, t)
-                            }))) : G(e, !0, r, i)
-                        } else G(e, !1, r, i)
+                                return U(e, a, !1, !1, t)
+                            }))) : q(e, !0, r, i)
+                        } else q(e, !1, r, i)
                     }
                 }
 
-                function F(e, t, n, r, i) {
-                    t === e._resolveLevel && (B(e), j(e, t, n, r, i))
+                function j(e, t, n, r, i) {
+                    t === e._resolveLevel && (F(e), U(e, t, n, r, i))
                 }
 
-                function B(e) {
+                function F(e) {
                     if (e._parent) {
                         var t = e._parent;
                         if (e._parent = void 0, t._child === e) t._child = void 0;
@@ -21403,7 +21406,7 @@
                     }
                 }
 
-                function V(e) {
+                function B(e) {
                     if (null == e) throw new Error(`Invalid .catch guard ${e}`);
                     if ("function" == typeof e) return e;
                     if ("object" == typeof e) throw new Error("Object guards in .catch are currently unsupported");
@@ -21412,7 +21415,7 @@
                     }
                 }
 
-                function q(e, t) {
+                function V(e, t) {
                     return function(n, r) {
                         return n === f ? `.catch(..., ${t})` : e && ! function(e, t) {
                             for (var n = 0; n < e.length; n++) {
@@ -21426,47 +21429,47 @@
                     }
                 }
 
-                function G(e, t, n, r) {
-                    if (X(e, 4 | (t ? 1 : 2)), e._value = r, e._child) Y(e._child, t, n, r), e._child = void 0;
+                function q(e, t, n, r) {
+                    if (Z(e, 4 | (t ? 1 : 2)), e._value = r, e._child) G(e._child, t, n, r), e._child = void 0;
                     else if (e._children) {
                         var i = e._children;
                         e._children = void 0;
-                        for (var a = 0; a < i.length; a++) Y(i[a], t, n, r)
+                        for (var a = 0; a < i.length; a++) G(i[a], t, n, r)
                     } else t || 8 & e._flags || m.push(e)
                 }
 
-                function Y(e, t, n, r) {
+                function G(e, t, n, r) {
                     e._resolveLevel++;
-                    var i = K(e, t);
+                    var i = $(e, t);
                     if (i && 32 & e._flags) {
-                        X(e, 4);
-                        var a = Z(i, e._context, r, !0);
-                        if (a !== d) return void(a === h ? (e._parent = void 0, G(e, !1, n, p)) : a === l ? G(e, t, n, r) : (e._parent = void 0, j(e, e._resolveLevel, !0, n, a)));
+                        Z(e, 4);
+                        var a = K(i, e._context, r, !0);
+                        if (a !== d) return void(a === h ? (e._parent = void 0, q(e, !1, n, p)) : a === l ? q(e, t, n, r) : (e._parent = void 0, U(e, e._resolveLevel, !0, n, a)));
                         e._flags &= -5
                     }
-                    i ? ((n ? c : u).push(e), L()) : G(e, t, n, r)
+                    i ? ((n ? c : u).push(e), N()) : q(e, t, n, r)
                 }
 
-                function z(e, t) {
+                function Y(e, t) {
                     for (; 0 !== e.length;) t.push(e.pop())
                 }
 
-                function H() {
+                function z() {
                     for (; 0 !== s.length || 0 !== u.length;) {
-                        0 === s.length && z(u, s);
+                        0 === s.length && Y(u, s);
                         var e = s.pop(),
                             t = e._parent,
                             n = !!(t && 1 & t._flags),
                             r = t && t._value,
-                            i = K(e, n);
-                        if (X(e, 4), i) {
+                            i = $(e, n);
+                        if (Z(e, 4), i) {
                             var a = void 0;
                             do {
-                                a = Z(i, e._context, r, !1)
+                                a = K(i, e._context, r, !1)
                             } while (a === d);
                             a === h ? (r = p, n = !1, e._parent = void 0) : a !== l && (r = a, n = !0, e._parent = void 0)
                         }
-                        3 & e._flags || (j(e, e._resolveLevel, n, !0, r), z(c, s))
+                        3 & e._flags || (U(e, e._resolveLevel, n, !0, r), Y(c, s))
                     }
                     for (o--; 0 !== m.length;) {
                         var f = m.pop();
@@ -21474,7 +21477,7 @@
                     }
                 }
 
-                function $(e, t, n, r) {
+                function H(e, t, n, r) {
                     try {
                         e.call(t, n, r)
                     } catch (e) {
@@ -21482,11 +21485,11 @@
                     }
                 }
 
-                function K(e, t) {
+                function $(e, t) {
                     if (!(4 & e._flags)) return t ? e._onFulfilled : e._onRejected
                 }
 
-                function Z(e, t, n, r) {
+                function K(e, t, n, r) {
                     try {
                         return r ? e.call(t, n, !0) : e.call(t, n)
                     } catch (e) {
@@ -21494,24 +21497,24 @@
                     }
                 }
 
-                function X(e, t) {
+                function Z(e, t) {
                     return e._flags |= t, e
                 }
                 y.prototype.addCancelControl = function() {
-                    return X(this.addControl(N), g)
+                    return Z(this.addControl(D), g)
                 }, y.prototype.cancellable = function() {
-                    return X(this.then(), g)
+                    return Z(this.then(), g)
                 }, y.prototype.uncancellable = function() {
                     var e = this.then();
                     return e._flags &= -65, e
                 }, y.prototype.cancel = function(e) {
                     for (var t, n = this; n && !(3 & n._flags); n = n._parent) n._flags & g && (t = n);
                     if (t)
-                        if (void 0 === e && (e = new x), K(t, !1)) {
+                        if (void 0 === e && (e = new O), $(t, !1)) {
                             var r = new y;
-                            B(t), M(r, t), F(r, 0, !1, !1, e)
-                        } else F(t, t._resolveLevel, !1, !1, e)
-                }, j(i = new y, 0, !0, !1, void 0)
+                            F(t), I(r, t), j(r, 0, !1, !1, e)
+                        } else j(t, t._resolveLevel, !1, !1, e)
+                }, U(i = new y, 0, !0, !1, void 0)
             },
             93155: (e, t, n) => {
                 "use strict";
@@ -22323,14 +22326,14 @@
                         MAC: "mac os",
                         CHROMEOS: "chromium os"
                     },
-                    LATEST_HASH: "02973273ef78990fc23068c7f8638ff47efdef26",
+                    LATEST_HASH: "354969b75a9386a7c328b367eaca5a520ef2452e",
                     VERSION: {
                         p: Number("2"),
-                        s: Number("2126"),
-                        t: Number("15")
+                        s: Number("2130"),
+                        t: Number("9")
                     },
-                    VERSION_BASE: "2.2126.15",
-                    VERSION_STR: "2.2126.15",
+                    VERSION_BASE: "2.2130.9",
+                    VERSION_STR: "2.2130.9",
                     DYN_ORIGIN: "https://web.whatsapp.com/",
                     PP_URL: "https://web.whatsapp.com/pp",
                     LOGOUT_URL: "https://web.whatsapp.com/logout",
@@ -22452,7 +22455,7 @@
                     VIDEO_THUMB_MAX_EDGE: 480,
                     MAX_PORTRAIT_MEDIA_CAPTION_LENGTH: 500,
                     MAX_FILES: 30,
-                    MMS_THUMBNAIL_UPLOAD_TIMEOUT: 1e4,
+                    MMS_THUMBNAIL_UPLOAD_TIMEOUT: 3e3,
                     FREQUENTLY_FORWARDED_SENTINEL: 127,
                     MAX_SMB_LABEL_COUNT: 20,
                     DEFAULT_SMB__NEW_LABEL_COLOR: "#d6d7d7",
@@ -22718,7 +22721,8 @@
                         ephemeral: "ephemeralDuration"
                     },
                     L10N: {
-                        DEFAULT: "en"
+                        DEFAULT: "en",
+                        MOMENT_DEFAULT: "en-US"
                     },
                     EMOJI: {
                         BUCKET_SIZE: 25,
@@ -22877,6 +22881,16 @@
                         wawc: "wawc",
                         wawc_db_enc: "wawc_db_enc"
                     }
+                };
+                t.default = n
+            },
+            34381: (e, t) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.default = void 0;
+                var n = {
+                    "zh-HK": "zh-TW"
                 };
                 t.default = n
             },
@@ -23204,7 +23218,7 @@
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.CallNetworkMedium = t.ParticipantState = t.VideoUpgradeRequestEndedReason = t.VideoState = t.VoipSettingsType = t.CALL_LOG_RESULT_TYPE = t.CALL_LOG_RESULT = t.CALL_RESULT_TYPE = t.RENDERER_IPC_EVENTS = t.MAIN_IPC_EVENTS = t.VOIP_WINDOW_IPC_EVENTS = t.CALL_STATES = t.CALL_UI_STATES = t.WACallState = t.WACallEndReason = t.WAVideoCodecScheme = t.WACallEvent = void 0;
+                }), t.RELAY_INFO = t.CallNetworkMedium = t.ParticipantState = t.VideoUpgradeRequestEndedReason = t.VideoState = t.VoipSettingsType = t.CALL_LOG_RESULT_TYPE = t.CALL_LOG_RESULT = t.CALL_RESULT_TYPE = t.RENDERER_IPC_EVENTS = t.MAIN_IPC_EVENTS = t.VOIP_WINDOW_IPC_EVENTS = t.WEB_CALL_EVENTS = t.WEB_CALL_STATES = t.CALL_STATES = t.CALL_UI_STATES = t.WACallState = t.WACallEndReason = t.WAVideoCodecScheme = t.WACallEvent = void 0;
                 t.WACallEvent = {
                     WANone: 0,
                     CallOfferSent: 1,
@@ -23361,6 +23375,16 @@
                     FAILED: "FAILED",
                     NOT_ANSWERED: "NOT_ANSWERED"
                 };
+                t.WEB_CALL_STATES = {
+                    OUTGOING_CALLING: "OUTGOING_CALLING",
+                    ACTIVE: "ACTIVE",
+                    NONE: "NONE"
+                };
+                t.WEB_CALL_EVENTS = {
+                    MEDIA_READY: "MEDIA_STREAM_READY",
+                    AUDIO_TRACK_RECEIVED: "AUDIO_TRACK_RECEIVED",
+                    VIDEO_TRACK_RECEIVED: "VIDEO_TRACK_RECEIVED"
+                };
                 t.VOIP_WINDOW_IPC_EVENTS = {
                     INIT: "VOIP_WINDOW_INIT",
                     UPDATE: "VOIP_WINDOW_UPDATE",
@@ -23487,6 +23511,10 @@
                     CallNetworkMediumCellular: 1,
                     CallNetworkMediumWifi: 2,
                     CallNetworkMediumNone: 3
+                };
+                t.RELAY_INFO = {
+                    RELAY_ELECTION: "relayelection",
+                    RELAY_LATENCY: "relaylatency"
                 }
             },
             89994: (e, t, n) => {
@@ -23806,7 +23834,7 @@
                                 this.callAlwaysOnTopEnabled = a;
                                 var c = new o.Menu;
                                 c.append(new o.MenuItem({
-                                    label: s.default.t(1109),
+                                    label: s.default.t(1127),
                                     enabled: a,
                                     type: "checkbox",
                                     checked: i || !a,
@@ -23819,7 +23847,7 @@
                                     }
                                 })), (0, u.buildDeviceSelectionMenu)(c);
                                 var l = {
-                                    label: s.default.t(1108),
+                                    label: s.default.t(1126),
                                     submenu: c
                                 };
                                 return new o.MenuItem(l)
@@ -23865,42 +23893,42 @@
                             value: function() {
                                 var e = this,
                                     t = [{
-                                        label: this._isArchived ? c.default.t(1163) : c.default.t(1098),
+                                        label: this._isArchived ? c.default.t(1181) : c.default.t(1116),
                                         accelerator: (0, l.getKey)(s.default.TOGGLE_ARCHIVE),
                                         click: function() {
                                             e.webContents.send(u.default.Action, s.default.TOGGLE_ARCHIVE)
                                         },
                                         enabled: !!this._kind
                                     }, {
-                                        label: this._isMuted ? c.default.t(1164) : c.default.t(1158),
+                                        label: this._isMuted ? c.default.t(1182) : c.default.t(1176),
                                         accelerator: (0, l.getKey)(s.default.TOGGLE_MUTE),
                                         click: function() {
                                             e.webContents.send(u.default.Action, s.default.TOGGLE_MUTE)
                                         },
                                         enabled: !!this._kind
                                     }, {
-                                        label: c.default.t(1140),
+                                        label: c.default.t(1158),
                                         accelerator: (0, l.getKey)(s.default.SEARCH_IN_CHAT),
                                         click: function() {
                                             e.webContents.send(u.default.Action, s.default.SEARCH_IN_CHAT)
                                         },
                                         enabled: !!this._kind
                                     }, {
-                                        label: "group" === this._kind ? this._isReadOnly ? c.default.t(1103) : c.default.t(1104) : c.default.t(1102),
+                                        label: "group" === this._kind ? this._isReadOnly ? c.default.t(1121) : c.default.t(1122) : c.default.t(1120),
                                         accelerator: (0, l.getKey)(s.default.DELETE_OR_EXIT_CHAT),
                                         click: function() {
                                             e.webContents.send(u.default.Action, s.default.DELETE_OR_EXIT_CHAT)
                                         },
                                         enabled: !!this._kind
                                     }, {
-                                        label: this._isRead ? c.default.t(1107) : c.default.t(1106),
+                                        label: this._isRead ? c.default.t(1125) : c.default.t(1124),
                                         accelerator: (0, l.getKey)(s.default.TOGGLE_UNREAD),
                                         click: function() {
                                             e.webContents.send(u.default.Action, s.default.TOGGLE_UNREAD)
                                         },
                                         enabled: !!this._kind
                                     }, {
-                                        label: this._isPinned ? c.default.t(1165) : c.default.t(1161),
+                                        label: this._isPinned ? c.default.t(1183) : c.default.t(1179),
                                         accelerator: (0, l.getKey)(s.default.TOGGLE_PIN),
                                         click: function() {
                                             e.webContents.send(u.default.Action, s.default.TOGGLE_PIN)
@@ -23908,7 +23936,7 @@
                                         enabled: !!this._kind
                                     }];
                                 return new o.MenuItem({
-                                    label: c.default.t(1110),
+                                    label: c.default.t(1128),
                                     submenu: t
                                 })
                             }
@@ -23945,35 +23973,35 @@
                             value: function() {
                                 var e = this,
                                     t = [{
-                                        label: c.default.t(1131),
+                                        label: c.default.t(1149),
                                         accelerator: "CmdOrCtrl+Z",
                                         role: "undo"
                                     }, {
-                                        label: c.default.t(1128),
+                                        label: c.default.t(1146),
                                         accelerator: "Shift+CmdOrCtrl+Z",
                                         role: "redo"
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: c.default.t(1118),
+                                        label: c.default.t(1136),
                                         accelerator: "CmdOrCtrl+X",
                                         role: "cut"
                                     }, {
-                                        label: c.default.t(1115),
+                                        label: c.default.t(1133),
                                         accelerator: "CmdOrCtrl+C",
                                         role: "copy"
                                     }, {
-                                        label: c.default.t(1127),
+                                        label: c.default.t(1145),
                                         accelerator: "CmdOrCtrl+V",
                                         role: "paste"
                                     }, {
-                                        label: c.default.t(1130),
+                                        label: c.default.t(1148),
                                         accelerator: "CmdOrCtrl+A",
                                         role: "selectAll"
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: c.default.t(1129),
+                                        label: c.default.t(1147),
                                         enabled: this.loggedIn,
                                         accelerator: (0, l.getKey)(s.default.SEARCH),
                                         click: function() {
@@ -23981,7 +24009,7 @@
                                         }
                                     }];
                                 return new o.MenuItem({
-                                    label: c.default.t(1119),
+                                    label: c.default.t(1137),
                                     submenu: t
                                 })
                             }
@@ -24052,21 +24080,21 @@ browserWindow: ${e}`
                             value: function() {
                                 var e = this,
                                     t = [{
-                                        label: l.default.t(1159),
+                                        label: l.default.t(1177),
                                         accelerator: (0, d.getKey)(u.default.OPEN_NEW_CHAT),
                                         click: function() {
                                             e.webContents.send(c.default.Action, u.default.OPEN_NEW_CHAT), e.maybeForegroundWindow()
                                         },
                                         enabled: this.loggedIn
                                     }, {
-                                        label: l.default.t(1160),
+                                        label: l.default.t(1178),
                                         accelerator: (0, d.getKey)(u.default.OPEN_NEW_GROUP),
                                         click: function() {
                                             e.webContents.send(c.default.Action, u.default.OPEN_NEW_GROUP), e.maybeForegroundWindow()
                                         },
                                         enabled: this.loggedIn
                                     }, {
-                                        label: l.default.t(1162),
+                                        label: l.default.t(1180),
                                         accelerator: (0, d.getKey)(u.default.OPEN_PROFILE),
                                         click: function() {
                                             e.webContents.send(c.default.Action, u.default.OPEN_PROFILE), e.maybeForegroundWindow()
@@ -24075,7 +24103,7 @@ browserWindow: ${e}`
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: l.default.t(1105),
+                                        label: l.default.t(1123),
                                         click: function() {
                                             e.webContents.send(c.default.Action, u.default.LOGOUT), e.maybeForegroundWindow()
                                         },
@@ -24083,13 +24111,13 @@ browserWindow: ${e}`
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: l.default.t(1099),
+                                        label: l.default.t(1117),
                                         accelerator: "Cmd+W",
                                         role: "close",
                                         enabled: !this.isClosed
                                     }];
                                 return new s.MenuItem({
-                                    label: l.default.t(1111),
+                                    label: l.default.t(1129),
                                     submenu: t
                                 })
                             }
@@ -24121,29 +24149,29 @@ browserWindow: ${e}`
                             value: function() {
                                 var e = this,
                                     t = [{
-                                        label: l.default.t(1113),
+                                        label: l.default.t(1131),
                                         click: function() {
                                             (0, d.default)((0, u.getFaqUrl)())
                                         }
                                     }, {
-                                        label: l.default.t(1380),
+                                        label: l.default.t(1411),
                                         accelerator: (0, f.getKey)(s.default.CONTACT_US),
                                         click: function() {
                                             e.webContents.send(c.default.Action, s.default.CONTACT_US)
                                         }
                                     }, {
-                                        label: l.default.t(1114),
+                                        label: l.default.t(1132),
                                         click: function() {
                                             (0, d.default)((0, u.getTosUrl)())
                                         }
                                     }, {
-                                        label: l.default.t(920),
+                                        label: l.default.t(937),
                                         click: function() {
                                             e.webContents.send(c.default.Action, s.default.LICENSES)
                                         }
                                     }];
                                 return new o.MenuItem({
-                                    label: l.default.t(1112),
+                                    label: l.default.t(1130),
                                     role: "help",
                                     submenu: t
                                 })
@@ -24186,12 +24214,12 @@ browserWindow: ${e}`
                             value: function() {
                                 var e = this,
                                     t = [{
-                                        label: c.default.t(1120),
+                                        label: c.default.t(1138),
                                         role: "about"
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: c.default.t(1123),
+                                        label: c.default.t(1141),
                                         accelerator: (0, l.getKey)(s.default.OPEN_SETTINGS),
                                         enabled: this.loggedIn,
                                         click: function() {
@@ -24200,26 +24228,26 @@ browserWindow: ${e}`
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: c.default.t(1125),
+                                        label: c.default.t(1143),
                                         role: "services",
                                         submenu: []
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: c.default.t(1121),
+                                        label: c.default.t(1139),
                                         accelerator: "Cmd+H",
                                         role: "hide"
                                     }, {
-                                        label: c.default.t(1122),
+                                        label: c.default.t(1140),
                                         accelerator: "Alt+Cmd+H",
                                         role: "hideOthers"
                                     }, {
-                                        label: c.default.t(1126),
+                                        label: c.default.t(1144),
                                         role: "unhide"
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: c.default.t(1124),
+                                        label: c.default.t(1142),
                                         accelerator: "Cmd+Q",
                                         click: function() {
                                             o.app.quit()
@@ -24360,19 +24388,19 @@ listener from browserWindow: ${e}`
                             value: function() {
                                 var e = this,
                                     t = [{
-                                        label: l.default.t(1135),
+                                        label: l.default.t(1153),
                                         accelerator: (0, d.getKey)(u.default.ZOOM_IN),
                                         click: function() {
                                             e.webContents.send(c.default.Action, u.default.ZOOM_IN), e.maybeForegroundWindow()
                                         }
                                     }, {
-                                        label: l.default.t(1136),
+                                        label: l.default.t(1154),
                                         accelerator: (0, d.getKey)(u.default.ZOOM_RESET),
                                         click: function() {
                                             e.webContents.send(c.default.Action, u.default.ZOOM_RESET), e.maybeForegroundWindow()
                                         }
                                     }, {
-                                        label: l.default.t(1137),
+                                        label: l.default.t(1155),
                                         accelerator: (0, d.getKey)(u.default.ZOOM_OUT),
                                         click: function() {
                                             e.webContents.send(c.default.Action, u.default.ZOOM_OUT), e.maybeForegroundWindow()
@@ -24380,14 +24408,14 @@ listener from browserWindow: ${e}`
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: this.isFullScreen ? l.default.t(1134) : l.default.t(1133),
+                                        label: this.isFullScreen ? l.default.t(1152) : l.default.t(1151),
                                         accelerator: "Ctrl+Cmd+F",
                                         click: function() {
                                             e.browserWindow.setFullScreen(!e.isFullScreen)
                                         }
                                     }];
                                 return new s.MenuItem({
-                                    label: l.default.t(1132),
+                                    label: l.default.t(1150),
                                     submenu: t
                                 })
                             }
@@ -24424,23 +24452,23 @@ listener from browserWindow: ${e}`
                             value: function() {
                                 var e = this,
                                     t = [{
-                                        label: c.default.t(1152),
+                                        label: c.default.t(1170),
                                         accelerator: "CmdOrCtrl+M",
                                         role: "minimize"
                                     }, {
-                                        label: c.default.t(1153),
+                                        label: c.default.t(1171),
                                         role: "zoom"
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: c.default.t(1138),
+                                        label: c.default.t(1156),
                                         accelerator: (0, l.getKey)(s.default.GO_TO_NEXT_CHAT),
                                         enabled: this.loggedIn,
                                         click: function() {
                                             e.webContents.send(u.default.Action, s.default.GO_TO_NEXT_CHAT)
                                         }
                                     }, {
-                                        label: c.default.t(1139),
+                                        label: c.default.t(1157),
                                         accelerator: (0, l.getKey)(s.default.GO_TO_PREV_CHAT),
                                         enabled: this.loggedIn,
                                         click: function() {
@@ -24449,7 +24477,7 @@ listener from browserWindow: ${e}`
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: c.default.t(1980),
+                                        label: c.default.t(2019),
                                         enabled: !0,
                                         click: function() {
                                             e.browserWindow.show()
@@ -24457,11 +24485,11 @@ listener from browserWindow: ${e}`
                                     }, {
                                         type: "separator"
                                     }, {
-                                        label: c.default.t(1151),
+                                        label: c.default.t(1169),
                                         role: "front"
                                     }];
                                 return new o.MenuItem({
-                                    label: c.default.t(1150),
+                                    label: c.default.t(1168),
                                     role: "window",
                                     submenu: t
                                 })
@@ -24802,7 +24830,7 @@ listener from browserWindow: ${e}`
                             key: "buildCopyLinkMenu",
                             value: function(e) {
                                 var t;
-                                return t = "darwin" === process.platform ? l.default.t(1117) : l.default.t(1144), e.linkURL && "none" === e.mediaType ? r.resolve({
+                                return t = "darwin" === process.platform ? l.default.t(1135) : l.default.t(1162), e.linkURL && "none" === e.mediaType ? r.resolve({
                                     label: t,
                                     click: function() {
                                         "darwin" === process.platform ? s.clipboard.writeBookmark(e.linkText, e.linkURL) : "win32" === process.platform && s.clipboard.writeText(e.linkURL)
@@ -24819,7 +24847,7 @@ listener from browserWindow: ${e}`
                         }, {
                             key: "buildCopyImageMenu",
                             value: function(e, t) {
-                                return "image" !== !t.mediaType && t.hasImageContents ? (n = "darwin" === process.platform ? l.default.t(1116) : l.default.t(1143), this.loadImage(e, t.srcURL).then((function(e) {
+                                return "image" !== !t.mediaType && t.hasImageContents ? (n = "darwin" === process.platform ? l.default.t(1134) : l.default.t(1161), this.loadImage(e, t.srcURL).then((function(e) {
                                     return [{
                                         label: n,
                                         click: function() {
@@ -24834,7 +24862,7 @@ listener from browserWindow: ${e}`
                             key: "buildEditMenu",
                             value: function(e, t) {
                                 var n, i, a, o, s, u, c = this;
-                                return "darwin" === process.platform ? (s = l.default.t(1131), u = l.default.t(1128), n = l.default.t(1118), i = l.default.t(1115), a = l.default.t(1127), o = l.default.t(1130)) : (s = l.default.t(1149), u = l.default.t(1147), n = l.default.t(1145), i = l.default.t(1142), a = l.default.t(1146), o = l.default.t(1148)), r.resolve([{
+                                return "darwin" === process.platform ? (s = l.default.t(1149), u = l.default.t(1146), n = l.default.t(1136), i = l.default.t(1133), a = l.default.t(1145), o = l.default.t(1148)) : (s = l.default.t(1167), u = l.default.t(1165), n = l.default.t(1163), i = l.default.t(1160), a = l.default.t(1164), o = l.default.t(1166)), r.resolve([{
                                     label: n,
                                     role: t.isEditable && t.editFlags.canCut ? "cut" : "",
                                     enabled: t.isEditable && t.editFlags.canCut,
@@ -24888,7 +24916,7 @@ listener from browserWindow: ${e}`
                                     }
                                 });
                                 return t.misspelledWord && n.push({
-                                    label: l.default.t(1141),
+                                    label: l.default.t(1159),
                                     click: function() {
                                         return e.webContents.session.addWordToSpellCheckerDictionary(t.misspelledWord)
                                     }
@@ -24929,8 +24957,8 @@ listener from browserWindow: ${e}`
                     o = n(58933),
                     s = n(12087),
                     u = o.crashReporter,
-                    c = "WhatsApp/2.2126.15 Web/" + [s.type(), s.release().slice(0, 5), s.arch()].join("-") + " Device/Electron",
-                    l = "WhatsApp/2.2126.15 Web/Unknown Device/Electron",
+                    c = "WhatsApp/2.2130.9 Web/" + [s.type(), s.release().slice(0, 5), s.arch()].join("-") + " Device/Electron",
+                    l = "WhatsApp/2.2130.9 Web/Unknown Device/Electron",
                     d = {
                         from: "",
                         type: "crashlog",
@@ -25766,8 +25794,9 @@ listener from browserWindow: ${e}`
                     f = a(n(78835)),
                     h = 100,
                     p = 140,
-                    m = 335,
-                    _ = function() {
+                    m = 300,
+                    _ = 8388608,
+                    g = function() {
                         function e() {
                             (0, s.default)(this, e)
                         }
@@ -25782,25 +25811,28 @@ listener from browserWindow: ${e}`
                                         path: `${n.pathname}${n.search}`
                                     };
                                 return new r((function(e, t) {
-                                    g(n.protocol, a, (function(n) {
-                                        if (200 !== n.statusCode) return t(`Failed to get image, status code: ${n.statusCode}`);
+                                    v(n.protocol, a, (function(n) {
+                                        if (200 !== n.statusCode) return t(new Error(`Failed to get image, status code: ${n.statusCode}`));
                                         n.setEncoding("binary");
                                         var r = n.headers["content-type"];
-                                        if (i(2)`content-type: ${r}`, "image/jpeg" !== r && "image/png" !== r) return t(`Image format not supported: ${r}`);
-                                        var a = "";
+                                        if (i(2)`generateLinkPreview: content-type: ${r}`, "image/jpeg" !== r && "image/png" !== r) return t(new Error(`Image format not supported: ${r}`));
+                                        var a = n.headers["content-length"];
+                                        if (i(2)`generateLinkPreview: content-length: ${a}`, a > _) return t(new Error(`Image is too large: ${a}`));
+                                        var o = "",
+                                            s = !1;
                                         n.on("data", (function(e) {
-                                            a += e
+                                            (o += e).length > _ && (s = !0, n.destroy(), t(new Error(`Downloaded image is too large: ${o.length}`)))
                                         })), n.on("end", (function() {
-                                            e(a)
+                                            s || e(o)
                                         }))
                                     }))
                                 })).then((function(e) {
-                                    i(2)`Response body length: ${e.length}`;
+                                    i(2)`generateLinkPreview: Response body length: ${e.length}`;
                                     var n = Buffer.from(e, "binary");
-                                    i(2)`Buffer size: ${n.length}`;
+                                    i(2)`generateLinkPreview: Buffer size: ${n.length}`;
                                     var a = c.nativeImage.createFromBuffer(n),
                                         o = a.getSize();
-                                    if (o.height < h || o.width < h) return r.reject(`Image size ${o.height}, ${o.width} too small for link preview`);
+                                    if (o.height < h || o.width < h) return r.reject(new Error(`Image size ${o.height}, ${o.width} too small for link preview`));
                                     var s = Math.min(o.width, o.height),
                                         u = {
                                             thumbnail: {
@@ -25817,34 +25849,33 @@ listener from browserWindow: ${e}`
                                                 width: p
                                             }
                                         };
-                                    if (!t || o.width < m || o.height < m) return u;
-                                    var l, d, f = o.width / o.height;
-                                    f < 1 ? (l = m, d = Math.round(m / f)) : (l = Math.round(m * f), d = m);
-                                    var _ = a.resize({
-                                        width: l,
-                                        height: d
-                                    }).toDataURL();
+                                    if (!t || o.width < m || o.height < 75) return u;
+                                    var l = a.resize({
+                                            width: m
+                                        }),
+                                        d = l.getSize(),
+                                        f = l.toDataURL();
                                     return u.thumbnailHQ = {
-                                        dataUrl: _,
-                                        height: d,
-                                        width: l
+                                        dataUrl: f,
+                                        height: d.height,
+                                        width: d.width
                                     }, u
                                 }))
                             }
                         }]), e
                     }();
 
-                function g(e, t, n) {
+                function v(e, t, n) {
                     switch (e) {
                         case "https:":
                             return d.default.get((0, o.default)({}, t), n);
                         case "http:":
                             return l.default.get((0, o.default)({}, t), n);
                         default:
-                            throw `Invalid protocol: ${e}`
+                            throw new Error(`Invalid protocol: ${e}`)
                     }
                 }
-                e.exports = new _
+                e.exports = new g
             },
             62716: (e, t, n) => {
                 var r = n(17885).log,
@@ -25872,11 +25903,11 @@ listener from browserWindow: ${e}`
                             value: function(e, t) {
                                 if ("darwin" === process.platform) {
                                     var n = i({}, Object.freeze({}));
-                                    return t && (n.version = "2.2126.15"), e && (n.beta = !0), c.isUpgradeTest && (n.upgrade_test = !0), n
+                                    return t && (n.version = "2.2130.9"), e && (n.beta = !0), c.isUpgradeTest && (n.upgrade_test = !0), n
                                 }
                                 if ("win32" === process.platform) {
                                     var r = i({}, Object.freeze({}));
-                                    return t && (r.version = "2.2126.15"), e && (r.beta = !0), r
+                                    return t && (r.version = "2.2130.9"), e && (r.beta = !0), r
                                 }
                             }
                         }, {
@@ -26875,7 +26906,7 @@ listener from browserWindow: ${e}`
                                     Windows_NT: "win_desktop",
                                     Linux: "linux_desktop"
                                 } [o.default.type()],
-                                s = ["WhatsApp/2.2126.15", "webclient/" + o.default.release(), "Device/" + a].join(" ");
+                                s = ["WhatsApp/2.2130.9", "webclient/" + o.default.release(), "Device/" + a].join(" ");
                             this.webContents.session.webRequest.onBeforeSendHeaders(c, (function(e, t) {
                                 e.requestHeaders.Origin = "whatsapp_win32", r.isMediaRequest(e.url) && (e.requestHeaders["User-Agent"] = s), t({
                                     cancel: !1,
@@ -27525,7 +27556,7 @@ listener from browserWindow: ${e}`
                     })).forEach((function(e) {
                         return a.append(e)
                     })), r && (a.append(new i.MenuItem({
-                        label: s.default.t(1109),
+                        label: s.default.t(1127),
                         type: "checkbox",
                         checked: n.isAlwaysOnTop(),
                         click: function() {
@@ -27556,7 +27587,7 @@ listener from browserWindow: ${e}`
                         var r = o.default.getAvailableDevices(t, a.AVDeviceType.Video);
                         r.length > 0 && (e.append(new i.MenuItem({
                             type: "checkbox",
-                            label: s.default.t(1580),
+                            label: s.default.t(1617),
                             enabled: !1
                         })), r.forEach((function(t) {
                             return e.append(f(t))
@@ -27564,7 +27595,7 @@ listener from browserWindow: ${e}`
                             type: "separator"
                         }))), e.append(new i.MenuItem({
                             type: "checkbox",
-                            label: s.default.t(1582),
+                            label: s.default.t(1619),
                             enabled: !1
                         }));
                         var u = o.default.getAvailableDevices(t, a.AVDeviceType.AudioInput),
@@ -27576,7 +27607,7 @@ listener from browserWindow: ${e}`
                             type: "separator"
                         })), e.append(new i.MenuItem({
                             type: "checkbox",
-                            label: s.default.t(1583),
+                            label: s.default.t(1620),
                             enabled: !1
                         }));
                         var p = o.default.getAvailableDevices(t, a.AVDeviceType.AudioOutput),
@@ -27590,7 +27621,7 @@ listener from browserWindow: ${e}`
 
                 function d(e, t) {
                     var n = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2],
-                        r = "win32" !== process.platform ? s.default.t(1581) : s.default.t(1584);
+                        r = "win32" !== process.platform ? s.default.t(1618) : s.default.t(1621);
                     if (!n) return new i.MenuItem({
                         type: "checkbox",
                         label: r,
@@ -27753,10 +27784,10 @@ listener from browserWindow: ${e}`
                             var t = y.default.getWindow();
                             !t || t.getBrowserWindow().isDestroyed() || t.getForceQuit() && E ? r(2)`VoipWindow:_handlePanelClose(), id: '${T.id}', skip dialog` : (e.preventDefault(), T._panel && !T._panel.isDestroyed() && (r(2)`VoipWindow:_handlePanelClose(), id: '${T.id}', show dialog`, f.dialog.showMessageBox(T._panel.getBrowserWindow(), {
                                 type: "warning",
-                                message: p.default.t(1168),
+                                message: p.default.t(1186),
                                 noLink: !0,
                                 cancelId: 1,
-                                buttons: [p.default.t(1167), p.default.t(1166)]
+                                buttons: [p.default.t(1185), p.default.t(1184)]
                             }).then((function(e) {
                                 if (0 === e.response) {
                                     var n = null == t ? void 0 : t.getBrowserWindow();
@@ -27798,7 +27829,7 @@ callState: '${t.callState}'`, this._data = t, this._updateData(t), e.next = 5, t
                             var e, t, n, i;
                             if (r(2)`VoipWindow:destroy(), id: '${this.id}', state: '${this.state}'`, this._panel) {
                                 var a, o;
-                                if (f.powerSaveBlocker.stop(this._powerSaveBlockerId), f.ipcMain.removeListener(b.VOIP_WINDOW_IPC_EVENTS.IGNORE, this._handleIpcIgnoreClick), f.ipcMain.removeListener(b.VOIP_WINDOW_IPC_EVENTS.OPEN_IN_CALL_MENU, this._handleIpcOpenInCallMenu), f.ipcMain.removeListener(b.VOIP_WINDOW_IPC_EVENTS.WINDOW_ESC_PRESS, this._handleIpcWindowEscPress), f.app.removeListener("accessibility-support-changed", this._handleAccessibilitySupportChanged), null === (e = this._panel) || void 0 === e || e.removeListener("leave-full-screen", this._handlePanelLeaveFullScreen), null === (t = this._panel) || void 0 === t || t.removeListener("always-on-top-changed", this._handlePanelAlwaysOnTopChange), null === (n = this._panel) || void 0 === n || n.removeListener("close", this._handlePanelClose), this._handlePanelResizeDebounced.cancel(), null === (i = this._panel) || void 0 === i || i.removeListener("resize", this._handlePanelResizeDebounced), this._callMenu && (this._callMenu.destroy(), this._callMenu = null), A) this._handlePanelExternalChangeDebounced.cancel(), null === (a = this._panel) || void 0 === a || a.removeListener("move", this._handlePanelExternalChangeDebounced), null === (o = this._panel) || void 0 === o || o.removeListener("unmaximize", this._handlePanelExternalChangeDebounced);
+                                if (f.powerSaveBlocker.stop(this._powerSaveBlockerId), f.ipcMain.removeListener(b.VOIP_WINDOW_IPC_EVENTS.IGNORE, this._handleIpcIgnoreClick), f.ipcMain.removeListener(b.VOIP_WINDOW_IPC_EVENTS.OPEN_IN_CALL_MENU, this._handleIpcOpenInCallMenu), f.ipcMain.removeListener(b.VOIP_WINDOW_IPC_EVENTS.WINDOW_ESC_PRESS, this._handleIpcWindowEscPress), f.app.removeListener("accessibility-support-changed", this._handleAccessibilitySupportChanged), null === (e = this._panel) || void 0 === e || e.removeListener("leave-full-screen", this._handlePanelLeaveFullScreen), null === (t = this._panel) || void 0 === t || t.removeListener("always-on-top-changed", this._handlePanelAlwaysOnTopChange), null === (n = this._panel) || void 0 === n || n.removeListener("close", this._handlePanelClose), this._handlePanelResizeDebounced.cancel(), null === (i = this._panel) || void 0 === i || i.removeListener("resize", this._handlePanelResizeDebounced), this._callMenu && (this._callMenu.clear(), this._callMenu = null), A) this._handlePanelExternalChangeDebounced.cancel(), null === (a = this._panel) || void 0 === a || a.removeListener("move", this._handlePanelExternalChangeDebounced), null === (o = this._panel) || void 0 === o || o.removeListener("unmaximize", this._handlePanelExternalChangeDebounced);
                                 this._panel = null
                             }
                         }
@@ -27831,7 +27862,7 @@ menu: ${e}`, i("voip-window-menu-update-failed")
                                             e.next = 13;
                                             break
                                         }
-                                        return o = this.state === w.ACTIVE_VOICE || this.state === w.ACTIVE_VIDEO && (n === b.CALL_STATES.FAILED || n === b.CALL_STATES.HANDLED_REMOTELY), null === (a = this._callMenu) || void 0 === a || a.closePopup(), e.next = 10, this._closePanel(o);
+                                        return o = this.state === w.ACTIVE_VOICE || this.state === w.ACTIVE_VIDEO && (n === b.CALL_STATES.FAILED || n === b.CALL_STATES.REJECTED || n === b.CALL_STATES.HANDLED_REMOTELY), null === (a = this._callMenu) || void 0 === a || a.closePopup(), e.next = 10, this._closePanel(o);
                                     case 10:
                                         n !== b.CALL_STATES.ENDED && (r(2)`VoipWindow:_updatePanel(), id: '${this.id}', ending the call based \
 on its state: ${n}`, null == (c = null === (s = y.default.getWindow()) || void 0 === s ? void 0 : s.getBrowserWindow()) || c.webContents.send(b.VOIP_WINDOW_IPC_EVENTS.END)), e.next = 15;
@@ -27869,23 +27900,27 @@ on its state: ${n}`, null == (c = null === (s = y.default.getWindow()) || void 0
                                     case 6:
                                         return this.state = t, o = a.isPanel, s = a.size, c = a.horizontalAlign, l = a.verticalAlign, d = a.resizable, f = a.aspectRatio, h = a.fullscreenable, p = this._getMainScreenBounds(), m = s(p), _ = this._getPosition(m, c, l), e.next = 13, this._restorePanel();
                                     case 13:
-                                        try {
-                                            r(2)`VoipWindow:_updatePanelState(), id: '${this.id}', hide panel`, i.hide(!1), o ? i.makePanel() : i.makeWindow(), this._setFocusable(), i.setResizable(d), i.setMinimumSize(m.minWidth, m.minHeight), i.setBounds({
-                                                x: _.left,
-                                                y: _.top,
-                                                width: m.width,
-                                                height: m.height
-                                            }), i.setAspectRatio(f), i.setVisibleOnAllWorkspaces(!0), i.setAlwaysOnTop(!0), i.setFullScreenable(!1)
-                                        } catch (e) {
-                                            r(2)`VoipWindow:_updatePanelState(), id: '${this.id}', failed to \
-configure panel: ${e}`
-                                        }
-                                        return this._config = a, e.next = 17, this._showPanel(h);
+                                        return e.prev = 13, r(2)`VoipWindow:_updatePanelState(), id: '${this.id}', hide panel`, e.next = 17, i.hide(!1);
                                     case 17:
+                                        o ? i.makePanel() : i.makeWindow(), this._setFocusable(), i.setResizable(d), i.setMinimumSize(m.minWidth, m.minHeight), i.setBounds({
+                                            x: _.left,
+                                            y: _.top,
+                                            width: m.width,
+                                            height: m.height
+                                        }), i.setAspectRatio(f), i.setVisibleOnAllWorkspaces(!0), i.setAlwaysOnTop(!0), i.setFullScreenable(!1), e.next = 31;
+                                        break;
+                                    case 28:
+                                        e.prev = 28, e.t0 = e.catch(13), r(2)`VoipWindow:_updatePanelState(), id: '${this.id}', failed to \
+configure panel: ${e.t0}`;
+                                    case 31:
+                                        return this._config = a, e.next = 34, this._showPanel(h);
+                                    case 34:
                                     case "end":
                                         return e.stop()
                                 }
-                            }), e, this)
+                            }), e, this, [
+                                [13, 28]
+                            ])
                         }))), function() {
                             return s.apply(this, arguments)
                         })
@@ -28286,7 +28321,8 @@ state: '${this.state}'`, this._panel) {
                             isRTL: !1,
                             enableVoipGroupFeatures: !1
                         }, this._voipWindow = void 0, this._panel = void 0, this._panelIsReady = void 0, this._updateQueue = r.resolve(), this._panelBecameUnresponsiveTimeout = null, this._panelBecameUnresponsiveStartTime = 0, this._isDestroyed = !1, this.updateL10n = function(e) {
-                            t._panel.webContents.send(_.VOIP_WINDOW_IPC_EVENTS.L10N_UPDATE, e)
+                            var n = e.l;
+                            t._panel.webContents.send(_.VOIP_WINDOW_IPC_EVENTS.L10N_UPDATE, n)
                         }, this._handleEnableVoipGroupFeatures = function(e, n) {
                             var r;
                             t._settings.enableVoipGroupFeatures !== n && (t._settings.enableVoipGroupFeatures = n), null === (r = t._voipWindow) || void 0 === r || r.updateVoipGroupFeaturesEnabled(n)
@@ -28347,7 +28383,8 @@ state: '${this.state}'`, this._panel) {
                                 },
                                 webPreferences: {
                                     nodeIntegration: !1,
-                                    preload: h.default.resolve(__dirname, "voip_window_preload.js")
+                                    preload: h.default.resolve(__dirname, "voip_window_preload.js"),
+                                    enableRemoteModule: !0
                                 }
                             }, (n = new f.Panel(t)).loadURL(`file://${__dirname}/voip_index.html`), n.webContents.on("did-finish-load", (function() {
                                 var e = g.default.getWindow();
@@ -28457,13 +28494,13 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                     }, {
                         key: "cleanup",
                         value: function() {
-                            i(2)`VoipWindowManager:cleanup()`;
-                            try {
+                            var e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
+                            if (i(2)`VoipWindowManager:cleanup()`, !e) try {
                                 this._panel.hide(!1)
                             } catch (e) {}
                             try {
-                                var e = n(65717);
-                                e.end(!0), e.cleanup()
+                                var t = n(65717);
+                                t.end(!0), t.cleanup()
                             } catch (e) {
                                 i(2)`VoipWindowManager:cleanup(), failed to end call and cleanup: ${e}`
                             }
@@ -28471,7 +28508,7 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                     }, {
                         key: "destructor",
                         value: function() {
-                            i(2)`VoipWindowManager:destructor()`, this.cleanup(), p.default.off("locale_change", this.updateL10n), d.powerMonitor.removeListener("lock-screen", this._handleLockScreenOrSleep), d.powerMonitor.removeListener("suspend", this._handleLockScreenOrSleep), d.ipcMain.removeListener(_.RENDERER_IPC_EVENTS.ENABLE_VOIP_GROUP_FEATURES, this._handleEnableVoipGroupFeatures), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.INITIATE_WINDOW_MOVE, this._handleIpcInitiateWindowMove), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.CLOSE_WINDOW_CLICK, this._handleIpcCloseWindowClick), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.MINIMIZE_WINDOW_CLICK, this._handleIpcMinimizeWindowClick), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.MAXIMIZE_WINDOW_CLICK, this._handleIpcMaximizeWindowClick), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.UNMAXIMIZE_WINDOW_CLICK, this._handleIpcUnmaximizeWindowClick), this._voipWindow && (this._voipWindow.destroy(), this._voipWindow = null), this._destroyPanel(), this._isDestroyed = !0
+                            i(2)`VoipWindowManager:destructor()`, this.cleanup(!0), p.default.off("locale_change", this.updateL10n), d.powerMonitor.removeListener("lock-screen", this._handleLockScreenOrSleep), d.powerMonitor.removeListener("suspend", this._handleLockScreenOrSleep), d.ipcMain.removeListener(_.RENDERER_IPC_EVENTS.ENABLE_VOIP_GROUP_FEATURES, this._handleEnableVoipGroupFeatures), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.INITIATE_WINDOW_MOVE, this._handleIpcInitiateWindowMove), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.CLOSE_WINDOW_CLICK, this._handleIpcCloseWindowClick), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.MINIMIZE_WINDOW_CLICK, this._handleIpcMinimizeWindowClick), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.MAXIMIZE_WINDOW_CLICK, this._handleIpcMaximizeWindowClick), d.ipcMain.removeListener(_.VOIP_WINDOW_IPC_EVENTS.UNMAXIMIZE_WINDOW_CLICK, this._handleIpcUnmaximizeWindowClick), this._voipWindow && (this._voipWindow.destroy(), this._voipWindow = null), this._destroyPanel(), this._isDestroyed = !0
                         }
                     }]), e
                 }();
@@ -28516,7 +28553,8 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                                 u = {
                                     preload: m.default.resolve(__dirname, "preload.js"),
                                     nodeIntegration: !1,
-                                    spellcheck: !0
+                                    spellcheck: !0,
+                                    enableRemoteModule: !0
                                 };
                             e.frame = !1, e.show = !1, e.backgroundColor = "#DDDBD1", a.browserWindow = new C(Object.assign(e, o, {
                                 minWidth: 650,
@@ -29687,7 +29725,7 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.default = void 0;
-                var r = n(54302).Mirrored(["CONTACT_US", "LICENSES", "DECREASE_PTT_SPEED", "DELETE_OR_EXIT_CHAT", "GO_TO_NEXT_CHAT", "GO_TO_PREV_CHAT", "INCREASE_PTT_SPEED", "LOGOUT", "OPEN_NEW_CHAT", "OPEN_NEW_GROUP", "OPEN_PROFILE", "OPEN_SETTINGS", "SEARCH", "SEARCH_IN_CHAT", "TOGGLE_ARCHIVE", "TOGGLE_MUTE", "TOGGLE_PIN", "TOGGLE_UNREAD", "ZOOM_IN", "ZOOM_OUT", "ZOOM_RESET"]);
+                var r = n(54302).Mirrored(["CONTACT_US", "LICENSES", "DECREASE_PTT_SPEED", "DELETE_OR_EXIT_CHAT", "GO_TO_NEXT_CHAT", "GO_TO_PREV_CHAT", "INCREASE_PTT_SPEED", "LOGOUT", "OPEN_NEW_CHAT", "OPEN_NEW_GROUP", "OPEN_PROFILE", "OPEN_SETTINGS", "SEARCH", "SEARCH_IN_CHAT", "TOGGLE_ARCHIVE", "TOGGLE_MUTE", "TOGGLE_PIN", "TOGGLE_UNREAD", "ZOOM_IN", "ZOOM_OUT", "ZOOM_RESET", "OPEN_EMOJI_PANEL", "OPEN_GIF_PANEL", "OPEN_STICKER_PANEL"]);
                 t.default = r
             },
             27258: (e, t, n) => {
@@ -29795,7 +29833,7 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                             }];
                         case o.default.TOGGLE_ARCHIVE:
                             return [{
-                                key: "e"
+                                key: "E"
                             }];
                         case o.default.TOGGLE_MUTE:
                             return [{
@@ -29830,6 +29868,18 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                         case o.default.DECREASE_PTT_SPEED:
                             return [{
                                 key: "<"
+                            }];
+                        case o.default.OPEN_EMOJI_PANEL:
+                            return [{
+                                key: "e"
+                            }];
+                        case o.default.OPEN_GIF_PANEL:
+                            return [{
+                                key: "g"
+                            }];
+                        case o.default.OPEN_STICKER_PANEL:
+                            return [{
+                                key: "s"
                             }];
                         default:
                             return []
@@ -29923,12 +29973,6 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                             value: function(e) {
                                 var t = g.default[e] || e;
                                 return b.default[t]
-                            }
-                        }, {
-                            key: "lng",
-                            value: function() {
-                                var e = this.getLocale();
-                                return b.default[e] || e
                             }
                         }, {
                             key: "isRTL",
@@ -30039,10 +30083,10 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                                     base: 2,
                                     round: 0,
                                     suffixes: {
-                                        B: t.t(743),
-                                        kB: t.t(745),
-                                        MB: t.t(746),
-                                        GB: t.t(744)
+                                        B: t.t(757),
+                                        kB: t.t(759),
+                                        MB: t.t(760),
+                                        GB: t.t(758)
                                     }
                                 }))
                             }
@@ -30171,6 +30215,12 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                 }), t.normalizeForm = a, t.removeAccents = function() {
                     var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "";
                     return (0, i.default)(a(e).replace(/(?:[\^`\xA8\xAF\xB4\xB7\xB8\u02B0-\u034E\u0350-\u0357\u035D-\u0362\u0374\u0375\u037A\u0384\u0385\u0483-\u0487\u0559\u0591-\u05A1\u05A3-\u05BD\u05BF\u05C1\u05C2\u05C4\u064B-\u0652\u0657\u0658\u06DF\u06E0\u06E5\u06E6\u06EA-\u06EC\u0730-\u074A\u07A6-\u07B0\u07EB-\u07F5\u0818\u0819\u08E3-\u08FE\u093C\u094D\u0951-\u0954\u0971\u09BC\u09CD\u0A3C\u0A4D\u0ABC\u0ACD\u0AFD-\u0AFF\u0B3C\u0B4D\u0B55\u0BCD\u0C4D\u0CBC\u0CCD\u0D3B\u0D3C\u0D4D\u0DCA\u0E47-\u0E4C\u0E4E\u0EBA\u0EC8-\u0ECC\u0F18\u0F19\u0F35\u0F37\u0F39\u0F3E\u0F3F\u0F82-\u0F84\u0F86\u0F87\u0FC6\u1037\u1039\u103A\u1063\u1064\u1069-\u106D\u1087-\u108D\u108F\u109A\u109B\u135D-\u135F\u17C9-\u17D3\u17DD\u1939-\u193B\u1A75-\u1A7C\u1A7F\u1AB0-\u1ABD\u1B34\u1B44\u1B6B-\u1B73\u1BAA\u1BAB\u1C36\u1C37\u1C78-\u1C7D\u1CD0-\u1CE8\u1CED\u1CF4\u1CF7-\u1CF9\u1D2C-\u1D6A\u1DC4-\u1DCF\u1DF5-\u1DF9\u1DFD-\u1DFF\u1FBD\u1FBF-\u1FC1\u1FCD-\u1FCF\u1FDD-\u1FDF\u1FED-\u1FEF\u1FFD\u1FFE\u2CEF-\u2CF1\u2E2F\u302A-\u302F\u3099-\u309C\u30FC\uA66F\uA67C\uA67D\uA67F\uA69C\uA69D\uA6F0\uA6F1\uA700-\uA721\uA788-\uA78A\uA7F8\uA7F9\uA8C4\uA8E0-\uA8F1\uA92B-\uA92E\uA953\uA9B3\uA9C0\uA9E5\uAA7B-\uAA7D\uAABF-\uAAC2\uAAF6\uAB5B-\uAB5F\uAB69-\uAB6B\uABEC\uABED\uFB1E\uFE20-\uFE2F\uFF3E\uFF40\uFF70\uFF9E\uFF9F\uFFE3]|\uD800\uDEE0|\uD802[\uDEE5\uDEE6]|\uD803[\uDD22-\uDD27\uDF46-\uDF50]|\uD804[\uDCB9\uDCBA\uDD33\uDD34\uDD73\uDDC0\uDDCA-\uDDCC\uDE35\uDE36\uDEE9\uDEEA\uDF3C\uDF4D\uDF66-\uDF6C\uDF70-\uDF74]|\uD805[\uDC42\uDC46\uDCC2\uDCC3\uDDBF\uDDC0\uDE3F\uDEB6\uDEB7\uDF2B]|\uD806[\uDC39\uDC3A\uDD3D\uDD3E\uDD43\uDDE0\uDE34\uDE47\uDE99]|\uD807[\uDC3F\uDD42\uDD44\uDD45\uDD97]|\uD81A[\uDEF0-\uDEF4\uDF30-\uDF36]|\uD81B[\uDF8F-\uDF9F\uDFF0\uDFF1]|\uD834[\uDD67-\uDD69\uDD6D-\uDD72\uDD7B-\uDD82\uDD85-\uDD8B\uDDAA-\uDDAD]|\uD838[\uDD30-\uDD36\uDEEC-\uDEEF]|\uD83A[\uDCD0-\uDCD6\uDD44-\uDD46\uDD48-\uDD4A])/g, ""))
+                }, t.getLanguageCodeFromLocale = function(e) {
+                    return e.replace(/_/g, "-").split("-")[0].toLowerCase()
+                }, t.getRegionCodeFromLocale = function(e) {
+                    var t = e.replace(/_/g, "-").split("-");
+                    if (t.length <= 1) return null;
+                    return t[t.length - 1].toUpperCase()
                 };
                 var i = r(n(97331));
 
@@ -30204,35 +30254,37 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                     y = o(n(8059)),
                     w = s(n(83018)),
                     E = n(88487),
-                    A = o(n(60822)),
-                    S = s(n(63692)),
-                    T = "en-gb",
-                    C = {
+                    A = n(76290),
+                    S = s(n(34381)),
+                    T = o(n(60822)),
+                    C = s(n(63692)),
+                    k = "en-GB",
+                    O = {
                         LTR: "LTR",
                         RTL: "RTL"
                     },
-                    k = {
+                    x = {
                         LTR: "style",
                         RTL: "style_rtl"
                     },
-                    O = w.default.L10N_PRIORITY;
-                var x = function(e) {
-                    (0, m.default)(s, e);
-                    var t, o = (0, _.default)(s);
+                    D = w.default.L10N_PRIORITY;
+                var N = function(e) {
+                    (0, m.default)(N, e);
+                    var t, o, s = (0, _.default)(N);
 
-                    function s() {
+                    function N() {
                         var e;
-                        (0, d.default)(this, s);
+                        (0, d.default)(this, N);
                         var t = {
                             l: w.default.L10N.DEFAULT,
-                            priority: O.DEFAULT,
+                            priority: D.DEFAULT,
                             loc: w.default.L10N.DEFAULT
                         };
-                        return (e = o.call(this, t, n(38097).default, w.default.MARK_TRANSLATIONS))._locale = void 0, e._fetchPromise = void 0, e._spellCheckLocale = void 0, e._locale = t, n(58933).ipcMain.on("change:locale", (function(t, n) {
-                            r(2)`Setting Locale: ${n}`, e.setLocale(n, O.DEFAULT)
+                        return (e = s.call(this, t, n(38097).default, w.default.MARK_TRANSLATIONS))._locale = void 0, e._fetchPromise = void 0, e._spellCheckLocale = void 0, e._locale = t, n(58933).ipcMain.on("change:locale", (function(t, n) {
+                            r(2)`Setting Locale: ${n}`, e.setLocale(n, D.DEFAULT)
                         })), e
                     }
-                    return (0, f.default)(s, [{
+                    return (0, f.default)(N, [{
                         key: "getLocale",
                         value: function() {
                             return this._locale.l
@@ -30243,10 +30295,20 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                             return this._locale.loc.replace("_", "-")
                         }
                     }, {
+                        key: "getLanguage",
+                        value: function() {
+                            return (0, A.getLanguageCodeFromLocale)(this.getFullLocale())
+                        }
+                    }, {
+                        key: "getRegion",
+                        value: function() {
+                            return (0, A.getRegionCodeFromLocale)(this.getFullLocale())
+                        }
+                    }, {
                         key: "normalizeForm",
                         value: function() {
                             var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "";
-                            if (!S.default.isTrident) return e.normalize("NFKD");
+                            if (!C.default.isTrident) return e.normalize("NFKD");
                             try {
                                 return e.normalize("NFKD")
                             } catch (t) {
@@ -30255,7 +30317,7 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                         }
                     }, {
                         key: "setLocale",
-                        value: (t = (0, l.default)(u.default.mark((function e(t) {
+                        value: (o = (0, l.default)(u.default.mark((function e(t) {
                             var r, a, o = this;
                             return u.default.wrap((function(e) {
                                 for (;;) switch (e.prev = e.next) {
@@ -30274,7 +30336,10 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                                                 l: r,
                                                 loc: t,
                                                 priority: 1
-                                            }, o.localeStrings[r] = n, o.trigger("locale_change", t)
+                                            }, o.localeStrings[r] = n, o.trigger("locale_change", {
+                                                l: r,
+                                                loc: t
+                                            })
                                         })));
                                     case 10:
                                         return e.abrupt("return", this.downloadAndSetTranslation(void 0));
@@ -30284,13 +30349,13 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                                 }
                             }), e, this)
                         }))), function() {
-                            return t.apply(this, arguments)
+                            return o.apply(this, arguments)
                         })
                     }, {
                         key: "isLocaleSupported",
                         value: function(e) {
                             try {
-                                return (0, h.default)((0, p.default)(s.prototype), "isLocaleSupported", this).call(this, e)
+                                return (0, h.default)((0, p.default)(N.prototype), "isLocaleSupported", this).call(this, e)
                             } catch (e) {
                                 return !1
                             }
@@ -30317,7 +30382,7 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                                     return u.default.wrap((function(t) {
                                         for (;;) switch (t.prev = t.next) {
                                             case 0:
-                                                return l = (0, g.delayMs)(A.expBackoff(s, 12e4, 1e3, .1)), t.next = 3, n(26299)(`./${e}`);
+                                                return l = (0, g.delayMs)(T.expBackoff(s, 12e4, 1e3, .1)), t.next = 3, n(26299)(`./${e}`);
                                             case 3:
                                                 return d = t.sent, t.abrupt("return", d.default().then((function(e) {
                                                     var t = (0, c.default)(e, 1)[0];
@@ -30337,49 +30402,79 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                             }())
                         }
                     }, {
+                        key: "_downloadMomentResourceFile",
+                        value: (t = (0, l.default)(u.default.mark((function e(t) {
+                            var i;
+                            return u.default.wrap((function(e) {
+                                for (;;) switch (e.prev = e.next) {
+                                    case 0:
+                                        return e.prev = 0, e.next = 3, n(19922)(`./${t}`);
+                                    case 3:
+                                        return i = e.sent, e.abrupt("return", i.default);
+                                    case 7:
+                                        e.prev = 7, e.t0 = e.catch(0), r(2)`l10n:_downloadMomentResourceFile failed to download resource ${t}`;
+                                    case 10:
+                                    case "end":
+                                        return e.stop()
+                                }
+                            }), e, null, [
+                                [0, 7]
+                            ])
+                        }))), function() {
+                            return t.apply(this, arguments)
+                        })
+                    }, {
                         key: "downloadMomentLocale",
                         value: function(e) {
-                            var t = e.l,
+                            var t = this,
+                                n = e.l,
                                 o = e.loc;
                             return b.default.locale() === o ? i.resolve() : (0, v.promiseLoop)(function() {
                                 var e = (0, l.default)(u.default.mark((function e(s, c, l) {
-                                    var d, f, h, p;
+                                    var d, f, h, p, m, _, v;
                                     return u.default.wrap((function(e) {
                                         for (;;) switch (e.prev = e.next) {
                                             case 0:
-                                                if (d = (0, g.delayMs)(A.expBackoff(l, 12e4, 1e3, .1)), f = function() {
-                                                        return i.resolve()
-                                                    }, o === w.default.L10N.DEFAULT) {
+                                                if (d = (0, g.delayMs)(T.expBackoff(l, 12e4, 1e3, .1)), (f = o.replace(/_/g, "-")) !== w.default.L10N.MOMENT_DEFAULT) {
+                                                    e.next = 7;
+                                                    break
+                                                }
+                                                h = function() {
+                                                    return i.resolve()
+                                                }, p = w.default.L10N.MOMENT_DEFAULT, e.next = 23;
+                                                break;
+                                            case 7:
+                                                (m = []).push(f), n === w.default.L10N.DEFAULT ? m.push(k) : (_ = n.replace(/_/g, "-"), m.push(_), null != S.default[_] && m.push(S.default[_])), m.push(k), v = 0;
+                                            case 12:
+                                                if (!(v < m.length)) {
                                                     e.next = 22;
                                                     break
                                                 }
-                                                return e.prev = 3, e.next = 6, n(19922)(`./${o}`);
-                                            case 6:
-                                                h = e.sent, f = h.default, e.next = 22;
-                                                break;
-                                            case 10:
-                                                return e.prev = 10, e.t0 = e.catch(3), e.prev = 12, e.next = 15, n(19922)(`./${t}`);
+                                                return e.next = 15, t._downloadMomentResourceFile(m[v]);
                                             case 15:
-                                                p = e.sent, f = p.default, e.next = 22;
-                                                break;
+                                                if (null == (h = e.sent)) {
+                                                    e.next = 19;
+                                                    break
+                                                }
+                                                return p = m[v], e.abrupt("break", 22);
                                             case 19:
-                                                e.prev = 19, e.t1 = e.catch(12), f = function() {
-                                                    return i.resolve()
-                                                };
+                                                ++v, e.next = 12;
+                                                break;
                                             case 22:
-                                                return e.abrupt("return", f().then((function() {
-                                                    return s()
-                                                })).catch((function() {
-                                                    return 10 === l && (r(4, void 0, new Error, !0)`${l} times, locale is (${t}, ${o})`, a("downloadMomentLocale failure")), d
-                                                })));
+                                                null == h && (r(3)`Could not fetch moment locales, using default en-US`, h = function() {
+                                                    return i.resolve()
+                                                }, p = w.default.L10N.MOMENT_DEFAULT);
                                             case 23:
+                                                return e.abrupt("return", h().then((function() {
+                                                    return s(p)
+                                                })).catch((function() {
+                                                    return 10 === l && (r(4, void 0, new Error, !0)`${l} times, locale is (${n}, ${o})`, a("downloadMomentLocale failure")), d
+                                                })));
+                                            case 24:
                                             case "end":
                                                 return e.stop()
                                         }
-                                    }), e, null, [
-                                        [3, 10],
-                                        [12, 19]
-                                    ])
+                                    }), e)
                                 })));
                                 return function() {
                                     return e.apply(this, arguments)
@@ -30395,23 +30490,24 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                                 o = n.loc,
                                 s = e.l,
                                 u = e.loc,
-                                l = this.isRTL(s) ? C.RTL : C.LTR;
-                            if ((0, E.isConnectedToPage)() && s === a && document.getElementById(k[l]) && u === o) return i.resolve();
+                                l = this.isRTL(s) ? O.RTL : O.LTR;
+                            if ((0, E.isConnectedToPage)() && document.getElementById(x[l]) && u === o) return i.resolve();
                             this._fetchPromise && this._fetchPromise.cancel();
                             var d, f, h = self.performance.now();
                             return this._fetchPromise = i.all([this.downloadAppLocale(s), this.downloadMomentLocale(e)]).then((function(n) {
-                                var r = (0, c.default)(n, 1)[0];
-                                d = self.performance.now(), t.localeStrings[s] = r, t._locale = e, t.trigger("set_collator", s);
-                                var i = [u, s, T].filter((function(e) {
-                                    return !!e
-                                }));
-                                b.default.locale(i), t.customizeMomentLocale(b.default.locale()), (0, E.isConnectedToPage)() && (document.documentElement && document.documentElement.setAttribute("lang", e.l), document.documentElement && document.documentElement.setAttribute("dir", l)), t.trigger("locale_change", s)
+                                var i = (0, c.default)(n, 2),
+                                    a = i[0],
+                                    o = i[1];
+                                d = self.performance.now(), t.localeStrings[s] = a, t._locale = e, t.trigger("set_collator", s), o && (b.default.locale(o), r(2)`l10n:moment locale updated to: ${o}`), t.customizeMomentLocale(b.default.locale()), (0, E.isConnectedToPage)() && (document.documentElement && document.documentElement.setAttribute("lang", e.l), document.documentElement && document.documentElement.setAttribute("dir", l)), t.trigger("locale_change", {
+                                    l: s,
+                                    loc: u
+                                })
                             })).then((function() {
                                 f = self.performance.now(), r(2)`l10n:locale updated: (${a}, ${o}) > (${s}, ${u}), Fetch: ${d-h}ms, Apply: ${f-d}ms`
                             })).catch((function() {
                                 return r(2)`l10n:locale update error: (${a}, ${o}) > (${s}, ${u})`, t.downloadAndSetTranslation({
                                     l: w.default.L10N.DEFAULT,
-                                    priority: O.DEFAULT,
+                                    priority: D.DEFAULT,
                                     loc: w.default.L10N.DEFAULT
                                 })
                             }))
@@ -30425,11 +30521,11 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                             var t = y.LOCALE_CUSTOMIZATIONS[e];
                             t && b.default.locale(e, t)
                         }
-                    }]), s
+                    }]), N
                 }(y.default);
-                x.Dir = C;
-                var D = new x;
-                t.default = D
+                N.Dir = O;
+                var L = new N;
+                t.default = L
             },
             97524: (e, t) => {
                 "use strict";
@@ -31518,25 +31614,27 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                         l = "SAFARI" === n,
                         d = "CHROME" === n,
                         f = "GECKO" === a,
-                        h = !1;
+                        h = "BLINK" === a,
+                        p = !1;
                     switch (u) {
                         case "MAC OS":
-                            d ? h = o(c, "10.10") && o(r, "41.0.0") : o(c, "10.7") && (h = !0);
+                            d ? p = o(c, "10.10") && o(r, "41.0.0") : o(c, "10.7") && (p = !0);
                             break;
                         case "WINDOWS":
-                            o(c, "8.1") && (f || d && o(r, "41.0.0")) && (h = !0)
+                            o(c, "8.1") && (f || d && o(r, "41.0.0")) && (p = !0)
                     }
-                    var p = l || d && s(r, "76");
+                    var m = l || d && s(r, "76");
                     return {
                         isWebkit: !a || "WEBKIT" === a,
                         isGecko: f,
                         isTrident: "TRIDENT" === a || "EDGEHTML" === a,
                         isSafari: l,
                         isElectron: !1,
-                        isBuggyVideoLoad: d && o(r, "76") || "BLINK" === a && !d,
-                        hasEmoji: h,
+                        isBlink: h,
+                        isBuggyVideoLoad: d && o(r, "76") || h && !d,
+                        hasEmoji: p,
                         troublesWithLotsOfVideos: d,
-                        supportsEmojiEllipsification: !p,
+                        supportsEmojiEllipsification: !m,
                         isBrokenGetUserMedia: d && s(r, "50"),
                         isLocalStorageBroken: l && o(r, "14.1"),
                         os: u.toLowerCase(),
@@ -31805,38 +31903,38 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
         9995: "locales/ar-XB",
         9999: "locales/fa"
     } [e] || e) + "." + {
-        155: "9ca4f1babb36b8fccb70",
-        165: "9ecb95be18df0990c39f",
-        248: "196a2e29e9700b967ddf",
+        155: "0bdbd55060fe053849ab",
+        165: "51298f0cebfffcc019ef",
+        248: "7f9fc46e75635a28c402",
         319: "f4aefe5c341dafd85f14",
-        673: "83d0e5fff29733599e34",
-        792: "197e3cefab80efd56b70",
-        820: "ebb97619942792a0a78d",
-        906: "0c781563e6bd3e1db5e9",
-        907: "5e77a9085ee1a4efa78b",
+        673: "c8c96b2ae1318a7b8ae3",
+        792: "e88e03b2bf484f0b9ebb",
+        820: "b0feb702b687d9011547",
+        906: "a682025b6b417b4d8f11",
+        907: "98a040ec652547702599",
         1055: "d932117ba0c4277f5f75",
         1069: "6c798a82bc82e04ef4c7",
-        1081: "54a76c136afce3213301",
-        1204: "1f1734c278be6ba4582c",
-        1248: "0fecf0651c10b97dd063",
+        1081: "6b6212a29ae73f8831e7",
+        1204: "c66eaca83a64ac8e09d8",
+        1248: "d5fcc576de1ef144b92a",
         1381: "1f66b4595361435cafae",
         1473: "db6fcfb5283e1b8a756b",
         1520: "2066868026b608780b4f",
-        1529: "9fd88b2d4fd09e73323b",
-        1628: "acb8e48d2343beff2b2a",
+        1529: "e546b4ffa1a2c582e22f",
+        1628: "584ae0d0eab0bef369e2",
         1715: "63eb42d4d4f883343011",
-        1770: "dcfdd8377aea6d96d8ed",
+        1770: "d83aa371b0bfb0766045",
         1791: "8d491cb445177aae9272",
         2017: "d9de6a54b8724a9ddca3",
         2023: "7ce073515309afe95eec",
-        2091: "fba083201ecc5822d542",
-        2135: "8205aa85c52d148b115e",
+        2091: "bf7937ab943294da43b8",
+        2135: "e44fdec0e92518fa068a",
         2394: "39b20301af8c302dec69",
         2445: "dc80e93b503d0b800fb6",
-        2556: "fa9e7b44295d28577136",
-        2739: "6b9b4a42f6fcdc8cba7d",
-        2830: "0468188264e49d1fea7a",
-        2944: "c40d3975a4f18f9681d7",
+        2556: "36288c4536ed5e2d0d4e",
+        2739: "8ef8bd466c1363eaed0f",
+        2830: "859fefc49dacf7638084",
+        2944: "42ce3b59723bd6827de9",
         2957: "97832d05e7b8b299ff3b",
         2966: "ef4d7d01d2e8ad809d46",
         2979: "c20abf6f17bcc7e26581",
@@ -31847,92 +31945,92 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
         3422: "1c0a2b29c972e8b3be1f",
         3501: "51f7b83007838dd55b00",
         3569: "d0411ad99f3f937c8a12",
-        3722: "97544ee09904262de678",
+        3722: "803904cfce807acb7d4e",
         3748: "47feee4baecef3b7c875",
         3892: "a4e3b141b54340462ebe",
         3934: "648072b5c4e81f7cb26a",
-        3998: "311b38d18c4acf577159",
-        4259: "5989472a23799f9c6d15",
+        3998: "764557896eb9c1b83db3",
+        4259: "40fe9f1169b6bd32817a",
         4339: "4a20c1ff0fe1c60db75c",
-        4361: "5e704f0c04b21cbe3bb5",
+        4361: "2bd4ea0343083160a6b6",
         4473: "e6c77abd9fc39c30ed34",
         4616: "8817e20899fe43dcc678",
-        4708: "7049e5c537bce6624bd0",
+        4708: "cc84c6d4d744971a8891",
         4818: "fa0487cd7e6b93d9ae6d",
-        4873: "2396e8c25118acc6f708",
+        4873: "347ec367340f5e6bab75",
         4980: "7b68deb14875ff627128",
         5027: "6db24e4365ef3ae6f156",
         5125: "54a219d7af9e9594ddf2",
-        5128: "aa68035071ffc4afaf92",
+        5128: "8b60144f8155dec822c5",
         5170: "190319243c650ccf2c8d",
-        5182: "a0f79dc6fe0a36766a9c",
+        5182: "83e3a0995cc6fe2bdb52",
         5247: "ff37cf8cb7b35e0f2eee",
-        5443: "f89f7a189e0a862efb2d",
-        5632: "b274eba593d65b40344e",
-        5650: "cbbeaeae6ccd34be4e83",
+        5443: "9080db25b07ad5061d8c",
+        5632: "ee91c730a47dfc6f2e59",
+        5650: "ef31e03c0a3f505a5198",
         5671: "5507227c906c16ea20f3",
-        5708: "720abc104cfdd01df9c7",
-        5729: "0ad39c2cc0088801164a",
+        5708: "2d74b0e5d0d4ff972150",
+        5729: "d13fd24daced9e9c4f3c",
         5740: "0c7e40c33ef01ece846d",
         5790: "69e7a8b4d1bbf70b98ee",
         5862: "51742131c8d84dd48477",
         5959: "693684bf5a7ad2e7f6be",
-        6038: "17745eef0f15f2dfe273",
+        6038: "ca904095c515d8112b15",
         6163: "c06f205ba07b932883e7",
         6282: "bd88fc6db08fc62fab29",
-        6293: "4f6f22f6e52a57a6471f",
-        6331: "328e16b326359e49395a",
-        6365: "a66986c819eb6191893a",
-        6483: "fa2a8f5645be6989ad03",
+        6293: "eeacc37a727d2e4d2a73",
+        6331: "b0364d1c70e84d2dde1e",
+        6365: "f15bad0d2942eb032a70",
+        6483: "de9add01386b549367bc",
         6496: "f5d683a9f71abb52f36b",
         6511: "861aaff012ca76b870ed",
         6547: "7a75be941ad3b2b3cc99",
         6568: "6201d9718dba30488ee2",
-        6651: "b040bb4fd2fe08ea9e43",
-        6655: "60b9560e0e1b2c9f1c9f",
+        6651: "a976874f4f0098da27ef",
+        6655: "7a8105855da64867a07d",
         6709: "f1ef40cc36805aa579b1",
         6884: "4e4f259ea3a4035a9862",
         6920: "96e5ca18b0ab5c4d36aa",
         6933: "5bd1397f421172182834",
-        6953: "989a6ffe1133582b7de3",
-        7072: "964adbe5211efbc775e0",
+        6953: "fd5c688075bae93b3e51",
+        7072: "36fbf50e7d1b9f2c158d",
         7074: "ff618926ce4dca62971c",
-        7102: "cc2e1a6343fd832b16b2",
-        7162: "320e7f95bdd27e8ff094",
-        7216: "a585bbf9ecaa0408ade7",
+        7102: "4b247b545e87bb4fdabb",
+        7162: "85a5f7686272ca4c8202",
+        7216: "02eb7789e58645eeb3cb",
         7315: "3a2f62d4688e7fd5d87a",
         7386: "a858068cb23b5b7298f4",
-        7542: "c990b83871e2bdbae3d1",
+        7542: "696dc5e3e79271665128",
         7662: "2dcc0cc2659f4d9eb88f",
         7728: "7c2920e4e49e115dbf55",
         7739: "29899be81f1351cdfa5a",
-        7749: "89fb8e2e0944ad075c12",
-        8054: "78d49e976e569131b07b",
+        7749: "4a549fccd5fc639601ef",
+        8054: "d01c10ccb7938b7aab45",
         8117: "4b56b706e117916649ac",
         8132: "59f5891c01b6bac76fda",
-        8292: "2c037af943f3d53649f0",
-        8598: "cab40eaafc1c526692ba",
-        8628: "b0ddba3ea02e7cd23336",
+        8292: "188fd572f4288c20002e",
+        8598: "8b5d961b4a3626ff627d",
+        8628: "b809d09a9356e345123f",
         8634: "c31c2b5a2974dfa9accc",
         8678: "38a55eb6a45c259c9b18",
-        8700: "77a37e655c97ae88d381",
+        8700: "be7f5390c4833dfdc773",
         8799: "2ad117c6d69ef6ab6215",
         9116: "ef7ad21933330f59a457",
         9227: "f0ac0aed4fb6da0cd90c",
         9289: "c5bc6c098fc089af4790",
         9313: "bd72e106112ac729d3db",
         9545: "e67e9dee37e8299b4cb7",
-        9613: "b2b2661ede03680ad4db",
+        9613: "4c4a6366bcdf61e6ccb5",
         9646: "c25f1f7e5b217d2edc27",
         9682: "9a2cd016426bebdc8878",
-        9719: "f0d4b1d12b39f399d737",
-        9737: "153856eecda77c1823c0",
-        9750: "cb79cd74724317f98a26",
+        9719: "6b6f83b54a9383492351",
+        9737: "896cc639f5f1f6e84c07",
+        9750: "cfb801f43a449cc8510b",
         9765: "83d69db674053d6ad72d",
-        9815: "9113c9ecac94898d9943",
+        9815: "b57c70ae72eaa29562d5",
         9817: "9bc2c86519cb9f076a0c",
-        9995: "f60dc5911ed1b702d59d",
-        9999: "7244e92cb7128c0d915e"
+        9995: "df5d030dee61aaa43c02",
+        9999: "30bed7af3b0b63de7de9"
     } [e] + ".js"), r.o = (e, t) => Object.prototype.hasOwnProperty.call(e, t), r.r = e => {
         "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e, Symbol.toStringTag, {
             value: "Module"
@@ -32017,7 +32115,7 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                     i.initializePromise.then((function() {
                         return o.setLocale(s.getLocale(), t.default.L10N_PRIORITY.BROWSER)
                     })).then((function() {
-                        e(2)`WhatsApp Desktop ${"2.2126.15"} Ready`;
+                        e(2)`WhatsApp Desktop ${"2.2130.9"} Ready`;
                         var t = !0;
                         if ("darwin" === process.platform && !process.mas && !i.get("hasLoaded") && !d.isUpgradeTest) {
                             var n = s.getAppPath(),
@@ -32029,9 +32127,9 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                                     m = l.join("/Applications", f);
                                 if (n !== m) t = !1, a.dialog.showMessageBox({
                                     type: "question",
-                                    title: o.t(1157),
-                                    message: o.t(1156),
-                                    buttons: [o.t(1155), o.t(1154)]
+                                    title: o.t(1175),
+                                    message: o.t(1174),
+                                    buttons: [o.t(1173), o.t(1172)]
                                 }).then((function(e) {
                                     if (0 === e.response) {
                                         s.quit();
@@ -32062,9 +32160,9 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                                 var e = a.dialog;
                                 p && e.showMessageBox(p.browserWindow, {
                                     type: "error",
-                                    title: o.t(1101),
-                                    message: o.t(1100),
-                                    buttons: [o.t(1826)]
+                                    title: o.t(1119),
+                                    message: o.t(1118),
+                                    buttons: [o.t(1865)]
                                 }).then((function() {
                                     p && (t.setForceQuit(!1), t.destroy(), p = null, _())
                                 }))
@@ -32073,9 +32171,9 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                                 p && n.showMessageBox(p.browserWindow, {
                                     browserWindow: p.browserWindow,
                                     type: "error",
-                                    title: o.t(1101),
-                                    message: o.t(1100),
-                                    buttons: [o.t(1826)]
+                                    title: o.t(1119),
+                                    message: o.t(1118),
+                                    buttons: [o.t(1865)]
                                 }).then((function() {
                                     e(2)`Application render process is gone, restart`, p && (t.setForceQuit(!1), t.destroy(), p = null, _())
                                 }))
@@ -32092,11 +32190,11 @@ window update failed: ${n.t0}`, a("voip-window-manager-update-failed"), t._isDes
                     })).catch((function(t) {
                         e(2)`Got exception: ${t}`
                     })), d.isUpgradeTest && setTimeout((function() {
-                        l.write("main_2.2126.15\n", "utf8")
+                        l.write("main_2.2130.9\n", "utf8")
                     }), 15e3)
                 })), "darwin" === process.platform && (process.versions.electron, s.setAboutPanelOptions({
                     applicationName: "WhatsApp ",
-                    applicationVersion: "2.2126.15",
+                    applicationVersion: "2.2130.9",
                     version: "",
                     copyright: " "
                 })), s.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required"))
