@@ -23,6 +23,9 @@
              * @licend The above is the entire license notice for the
              * Javascript code in this page
              */
+
+
+            // Algo aqui mas!!!!!
             var root, factory;
             root = this, factory = function() {
                 return function(e) {
